@@ -1,0 +1,753 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Interactive Invoice &amp; Receipt Generator | SmartCents</title><meta name="description" content="Free interactive business invoice generator with real-time tax/discount calculations, multi-currency support, PDF print export, and RFC-4180 CSV download."><link rel="canonical" href="https://smartcents.example.com/tools/invoice/"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="SmartCents" href="/rss.xml"><meta property="og:title" content="Interactive Invoice &amp; Receipt Generator | SmartCents"><meta property="og:description" content="Free interactive business invoice generator with real-time tax/discount calculations, multi-currency support, PDF print export, and RFC-4180 CSV download."><meta property="og:type" content="website"><style>:root{--text:#1c1c1e;--muted:#6b7280;--bg:#fff;--card:#f7f7f9}*{box-sizing:border-box}body{color:var(--text);background:var(--bg);margin:0;font:18px/1.7 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}a{color:var(--accent)}header{border-bottom:1px solid #eee;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem;padding:1rem max(1rem,50% - 480px);display:flex}.brand{font-size:1.4rem;font-weight:800;text-decoration:none}nav{flex-wrap:wrap;gap:1rem;font-size:.95rem;display:flex}nav a{color:var(--text);text-decoration:none}nav a:hover{color:var(--accent)}main{max-width:960px;margin:0 auto;padding:2rem 1rem}footer{text-align:center;color:var(--muted);border-top:1px solid #eee;padding:2rem 1rem;font-size:.85rem}.grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;display:grid}.card{background:var(--card);border-radius:12px;padding:1.25rem}.card h3{margin:.25rem 0;font-size:1.15rem;line-height:1.3}.card a{color:inherit;text-decoration:none}.meta{color:var(--muted);font-size:.85rem}.tag{background:var(--accent);color:#fff;border-radius:99px;padding:0 .6rem;font-size:.75rem;display:inline-block}article h1{line-height:1.2}article img{max-width:100%}article table{border-collapse:collapse;width:100%}article th,article td{border:1px solid #ddd;padding:.4rem .6rem}
+</style><link rel="stylesheet" href="/_astro/UpgradeModal.rCoh7SEV.css"><link rel="stylesheet" href="/_astro/invoice.BuIuvZkz.css"></head><body style="--accent:#0f9d58"><header><a class="brand" href="/">SmartCents</a><nav><a href="/category/saving/">Saving</a><a href="/category/budgeting/">Budgeting</a><a href="/category/investing/">Investing</a><a href="/category/side-hustles/">Side Hustles</a><a href="/tools/">Tools &amp; Templates</a><a href="/about/">About</a></nav></header><main><div class="invoice-saas-app" data-astro-cid-44b3w5zz><!-- Top Action Toolbar (No-Print) --><header class="app-toolbar no-print" data-astro-cid-44b3w5zz><div class="toolbar-left" data-astro-cid-44b3w5zz><a href="/tools/" class="back-link" data-astro-cid-44b3w5zz>&larr; Tools Catalog</a><div class="toolbar-title-wrap" data-astro-cid-44b3w5zz><h1 data-astro-cid-44b3w5zz>Invoice Generator</h1><span class="badge-free" id="tier-badge-indicator" data-astro-cid-44b3w5zz>Free Plan</span></div></div><div class="toolbar-actions" data-astro-cid-44b3w5zz><!-- Draft Management --><button type="button" class="tool-btn" id="btn-save-draft" title="Save draft to browser storage" data-astro-cid-44b3w5zz><svg class="icon" viewBox="0 0 20 20" fill="currentColor" data-astro-cid-44b3w5zz><path d="M7.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6h5a2 2 0 012 2v7a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2h5v5.586l-1.293-1.293zM9 4a1 1 0 012 0v2H9V4z" data-astro-cid-44b3w5zz></path></svg>Save Draft</button><button type="button" class="tool-btn" id="btn-load-draft" title="Restore saved draft" data-astro-cid-44b3w5zz><svg class="icon" viewBox="0 0 20 20" fill="currentColor" data-astro-cid-44b3w5zz><path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" data-astro-cid-44b3w5zz></path></svg>Load Draft</button><button type="button" class="tool-btn" id="btn-reset-invoice" title="Reset to clean invoice" data-astro-cid-44b3w5zz>Reset</button><!-- CSV Export --><button type="button" class="tool-btn btn-export" id="btn-export-csv" title="Export invoice to RFC-4180 CSV" data-astro-cid-44b3w5zz><svg class="icon" viewBox="0 0 20 20" fill="currentColor" data-astro-cid-44b3w5zz><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" data-astro-cid-44b3w5zz></path></svg>Export CSV</button><!-- PDF / Print --><button type="button" class="tool-btn btn-primary" id="btn-print-pdf" data-astro-cid-44b3w5zz><svg class="icon" viewBox="0 0 20 20" fill="currentColor" data-astro-cid-44b3w5zz><path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" data-astro-cid-44b3w5zz></path></svg>Download PDF / Print</button><!-- Pro Upgrade CTA --><button type="button" class="upgrade-btn-header" onclick="window.openUpgradeModal('Invoice Pro Suite')" data-astro-cid-44b3w5zz><span class="pro-sparkle" data-astro-cid-44b3w5zz>&#9733;</span> Upgrade Pro ($7/mo)</button></div></header><!-- Notification Toast (No-Print) --><div id="toast-message" class="toast-notification no-print" style="display:none;" data-astro-cid-44b3w5zz></div><!-- Mobile View Switcher Tabs (No-Print) --><div class="mobile-tabs no-print" data-astro-cid-44b3w5zz><button type="button" class="mobile-tab-btn active" id="tab-btn-editor" data-astro-cid-44b3w5zz>1. Edit Invoice</button><button type="button" class="mobile-tab-btn" id="tab-btn-preview" data-astro-cid-44b3w5zz>2. Live Preview &amp; Print</button></div><!-- Main Workspace: Split View --><div class="workspace-grid" data-astro-cid-44b3w5zz><!-- LEFT COLUMN: Form Editor (No-Print) --><section class="editor-pane no-print" id="editor-container" data-astro-cid-44b3w5zz><!-- Section: Invoice Header & Meta --><div class="form-card" data-astro-cid-44b3w5zz><h2 class="section-title" data-astro-cid-44b3w5zz>Invoice Configuration</h2><div class="form-row-3" data-astro-cid-44b3w5zz><div class="form-group" data-astro-cid-44b3w5zz><label for="inv-number" data-astro-cid-44b3w5zz>Invoice #</label><input type="text" id="inv-number" value="INV-2026-001" placeholder="INV-001" data-astro-cid-44b3w5zz></div><div class="form-group" data-astro-cid-44b3w5zz><label for="inv-date" data-astro-cid-44b3w5zz>Issue Date</label><input type="date" id="inv-date" data-astro-cid-44b3w5zz></div><div class="form-group" data-astro-cid-44b3w5zz><label for="inv-due-date" data-astro-cid-44b3w5zz>Due Date</label><input type="date" id="inv-due-date" data-astro-cid-44b3w5zz></div></div><div class="form-row-3" data-astro-cid-44b3w5zz><div class="form-group" data-astro-cid-44b3w5zz><label for="inv-currency" data-astro-cid-44b3w5zz>Currency</label><select id="inv-currency" data-astro-cid-44b3w5zz><option value="USD" data-symbol="$" data-astro-cid-44b3w5zz>USD ($) - US Dollar</option><option value="EUR" data-symbol="&euro;" data-astro-cid-44b3w5zz>EUR (&euro;) - Euro</option><option value="GBP" data-symbol="&pound;" data-astro-cid-44b3w5zz>GBP (&pound;) - British Pound</option><option value="CAD" data-symbol="CAD $" data-astro-cid-44b3w5zz>CAD ($) - Canadian Dollar</option><option value="AUD" data-symbol="AUD $" data-astro-cid-44b3w5zz>AUD ($) - Australian Dollar</option></select></div><div class="form-group" data-astro-cid-44b3w5zz><label for="inv-status" data-astro-cid-44b3w5zz>Status</label><select id="inv-status" data-astro-cid-44b3w5zz><option value="Draft" data-astro-cid-44b3w5zz>Draft</option><option value="Sent" selected data-astro-cid-44b3w5zz>Sent</option><option value="Paid" data-astro-cid-44b3w5zz>Paid</option><option value="Overdue" data-astro-cid-44b3w5zz>Overdue</option></select></div><div class="form-group" data-astro-cid-44b3w5zz><label for="inv-theme" data-astro-cid-44b3w5zz>Brand Palette <span class="badge-pro" data-astro-cid-44b3w5zz>PRO</span></label><select id="inv-theme" data-astro-cid-44b3w5zz><option value="navy" data-astro-cid-44b3w5zz>Ocean Navy (#1F4E79)</option><option value="sage" data-astro-cid-44b3w5zz>Sage Green (#4A6B57) [Pro]</option><option value="rose" data-astro-cid-44b3w5zz>Rose Berry (#A8445C) [Pro]</option><option value="charcoal" data-astro-cid-44b3w5zz>Charcoal Slate (#334155) [Pro]</option></select></div></div><!-- Pro Recurring Schedule Option --><div class="pro-feature-row" data-astro-cid-44b3w5zz><label class="pro-checkbox-label" data-astro-cid-44b3w5zz><input type="checkbox" id="inv-recurring-check" data-astro-cid-44b3w5zz><span data-astro-cid-44b3w5zz>Recurring Monthly Invoice</span><span class="badge-pro" data-astro-cid-44b3w5zz>PRO</span></label><span class="pro-helper-text" data-astro-cid-44b3w5zz>Automatically appends recurring billing cycle terms</span></div></div><!-- Section: Biller & Client Information --><div class="form-card" data-astro-cid-44b3w5zz><div class="split-columns" data-astro-cid-44b3w5zz><!-- Biller Info --><div class="biller-section" data-astro-cid-44b3w5zz><div class="section-header-row" data-astro-cid-44b3w5zz><h2 class="section-title" data-astro-cid-44b3w5zz>From (Your Business)</h2><div class="logo-toggle-wrap" data-astro-cid-44b3w5zz><label for="inv-logo-url" class="logo-label" title="Pro Feature: Add Custom Logo" data-astro-cid-44b3w5zz><span class="badge-pro" data-astro-cid-44b3w5zz>PRO</span> Logo URL:</label></div></div><div class="form-group" data-astro-cid-44b3w5zz><input type="text" id="inv-logo-url" placeholder="https://example.com/logo.png (Pro)" data-astro-cid-44b3w5zz></div><div class="form-group" data-astro-cid-44b3w5zz><label for="biller-name" data-astro-cid-44b3w5zz>Company / Biller Name</label><input type="text" id="biller-name" value="Acme Digital Consulting LLC" data-astro-cid-44b3w5zz></div><div class="form-group" data-astro-cid-44b3w5zz><label for="biller-email" data-astro-cid-44b3w5zz>Email Address</label><input type="email" id="biller-email" value="billing@acmeconsulting.com" data-astro-cid-44b3w5zz></div><div class="form-group" data-astro-cid-44b3w5zz><label for="biller-address" data-astro-cid-44b3w5zz>Address &amp; Tax ID</label><textarea id="biller-address" rows="2" data-astro-cid-44b3w5zz>120 Broadway, Suite 1400&#10;New York, NY 10271&#10;Tax ID: US-94821048</textarea></div><div class="form-group" data-astro-cid-44b3w5zz><label for="biller-phone" data-astro-cid-44b3w5zz>Phone Number</label><input type="text" id="biller-phone" value="+1 (212) 555-0199" data-astro-cid-44b3w5zz></div></div><!-- Client Info --><div class="client-section" data-astro-cid-44b3w5zz><h2 class="section-title" data-astro-cid-44b3w5zz>Bill To (Client)</h2><div class="form-group" data-astro-cid-44b3w5zz><label for="client-name" data-astro-cid-44b3w5zz>Client / Company Name</label><input type="text" id="client-name" value="Apex Global Solutions Inc." data-astro-cid-44b3w5zz></div><div class="form-group" data-astro-cid-44b3w5zz><label for="client-email" data-astro-cid-44b3w5zz>Client Email Address</label><input type="email" id="client-email" value="accounts@apexsolutions.com" data-astro-cid-44b3w5zz></div><div class="form-group" data-astro-cid-44b3w5zz><label for="client-address" data-astro-cid-44b3w5zz>Billing Address</label><textarea id="client-address" rows="2" data-astro-cid-44b3w5zz>742 Evergreen Terrace&#10;Springfield, OR 97477</textarea></div><div class="form-group" data-astro-cid-44b3w5zz><label for="client-ref" data-astro-cid-44b3w5zz>PO / Project Reference</label><input type="text" id="client-ref" value="PO-2026-9481" placeholder="e.g. PO-9842" data-astro-cid-44b3w5zz></div></div></div></div><!-- Section: Dynamic Line Items --><div class="form-card" data-astro-cid-44b3w5zz><div class="section-header-row" data-astro-cid-44b3w5zz><h2 class="section-title" data-astro-cid-44b3w5zz>Line Items</h2><span class="item-count-badge" id="line-items-count-badge" data-astro-cid-44b3w5zz>3 items</span></div><div class="line-items-editor-table" id="line-items-container" data-astro-cid-44b3w5zz><!-- Dynamic rows rendered by JS --></div><div class="items-actions-row" data-astro-cid-44b3w5zz><button type="button" class="btn-add-item" id="btn-add-line-item" data-astro-cid-44b3w5zz>+ Add Line Item</button><span class="pro-limit-note" id="pro-limit-hint" data-astro-cid-44b3w5zz>Free plan: Up to 3 items &middot; <a href="javascript:void(0)" onclick="window.openUpgradeModal('Unlimited Line Items')" data-astro-cid-44b3w5zz>Unlock Unlimited with Pro</a></span></div></div><!-- Section: Financial Calculations --><div class="form-card" data-astro-cid-44b3w5zz><h2 class="section-title" data-astro-cid-44b3w5zz>Financial Summary &amp; Taxes</h2><div class="form-row-4" data-astro-cid-44b3w5zz><div class="form-group" data-astro-cid-44b3w5zz><label for="inv-discount-rate" data-astro-cid-44b3w5zz>Invoice Discount (%)</label><input type="number" id="inv-discount-rate" min="0" max="100" step="0.5" value="0" data-astro-cid-44b3w5zz></div><div class="form-group" data-astro-cid-44b3w5zz><label for="inv-tax-rate" data-astro-cid-44b3w5zz>Tax Rate (%)</label><input type="number" id="inv-tax-rate" min="0" max="100" step="0.25" value="8.5" data-astro-cid-44b3w5zz></div><div class="form-group" data-astro-cid-44b3w5zz><label for="inv-shipping-fee" data-astro-cid-44b3w5zz>Shipping / Handling</label><input type="number" id="inv-shipping-fee" min="0" step="1" value="0" data-astro-cid-44b3w5zz></div><div class="form-group" data-astro-cid-44b3w5zz><label for="inv-amount-paid" data-astro-cid-44b3w5zz>Amount Already Paid</label><input type="number" id="inv-amount-paid" min="0" step="10" value="0" data-astro-cid-44b3w5zz></div></div></div><!-- Section: Notes & Terms --><div class="form-card" data-astro-cid-44b3w5zz><h2 class="section-title" data-astro-cid-44b3w5zz>Notes &amp; Payment Instructions</h2><div class="form-group" data-astro-cid-44b3w5zz><label for="inv-notes" data-astro-cid-44b3w5zz>Client Notes</label><textarea id="inv-notes" rows="2" data-astro-cid-44b3w5zz>Thank you for your business! Please feel free to contact us with any questions regarding this invoice.</textarea></div><div class="form-group" data-astro-cid-44b3w5zz><label for="inv-terms" data-astro-cid-44b3w5zz>Payment Terms &amp; Wire Info</label><textarea id="inv-terms" rows="2" data-astro-cid-44b3w5zz>Payment is due within 14 days of issue date. Please remit payment via ACH or Wire to: First Business Bank, Routing #021000021, Account #8849-2041.</textarea></div></div></section><!-- RIGHT COLUMN: Sticky Live Preview Pane (Printable Target) --><section class="preview-pane" id="preview-container" data-astro-cid-44b3w5zz><!-- Live Preview Document Sheet --><div class="invoice-sheet" id="invoice-printable-sheet" data-theme="navy" data-astro-cid-44b3w5zz><!-- Watermark for Free Tier (Print & Screen) --><div class="free-watermark-ribbon" id="free-watermark" data-astro-cid-44b3w5zz><span data-astro-cid-44b3w5zz>Generated with BizTools Free &middot; Upgrade to Pro for White-Label Invoices</span></div><!-- Document Header --><div class="doc-header" data-astro-cid-44b3w5zz><div class="doc-brand" data-astro-cid-44b3w5zz><div class="logo-box" id="preview-logo-box" style="display:none;" data-astro-cid-44b3w5zz><img id="preview-logo-img" src="" alt="Company Logo" data-astro-cid-44b3w5zz></div><h1 class="doc-biller-name" id="prev-biller-name" data-astro-cid-44b3w5zz>Acme Digital Consulting LLC</h1><div class="doc-biller-details" data-astro-cid-44b3w5zz><p id="prev-biller-address" class="pre-line" data-astro-cid-44b3w5zz>120 Broadway, Suite 1400&#10;New York, NY 10271&#10;Tax ID: US-94821048</p><p id="prev-biller-email" data-astro-cid-44b3w5zz>billing@acmeconsulting.com</p><p id="prev-biller-phone" data-astro-cid-44b3w5zz>+1 (212) 555-0199</p></div></div><div class="doc-meta-box" data-astro-cid-44b3w5zz><div class="invoice-heading-row" data-astro-cid-44b3w5zz><span class="doc-type-title" data-astro-cid-44b3w5zz>INVOICE</span><span class="status-stamp" id="prev-status-stamp" data-astro-cid-44b3w5zz>SENT</span></div><table class="meta-table" data-astro-cid-44b3w5zz><tr data-astro-cid-44b3w5zz><th data-astro-cid-44b3w5zz>Invoice #:</th><td id="prev-inv-number" data-astro-cid-44b3w5zz>INV-2026-001</td></tr><tr data-astro-cid-44b3w5zz><th data-astro-cid-44b3w5zz>Issue Date:</th><td id="prev-inv-date" data-astro-cid-44b3w5zz>2026-10-15</td></tr><tr data-astro-cid-44b3w5zz><th data-astro-cid-44b3w5zz>Due Date:</th><td id="prev-inv-due-date" data-astro-cid-44b3w5zz>2026-10-29</td></tr><tr id="prev-po-row" data-astro-cid-44b3w5zz><th data-astro-cid-44b3w5zz>PO Ref:</th><td id="prev-inv-po" data-astro-cid-44b3w5zz>PO-2026-9481</td></tr></table></div></div><!-- Bill To Section --><div class="doc-bill-to-row" data-astro-cid-44b3w5zz><div class="bill-to-col" data-astro-cid-44b3w5zz><span class="doc-subhead" data-astro-cid-44b3w5zz>BILLED TO:</span><strong id="prev-client-name" class="client-title" data-astro-cid-44b3w5zz>Apex Global Solutions Inc.</strong><p id="prev-client-address" class="pre-line" data-astro-cid-44b3w5zz>742 Evergreen Terrace&#10;Springfield, OR 97477</p><p id="prev-client-email" data-astro-cid-44b3w5zz>accounts@apexsolutions.com</p></div></div><!-- Line Items Table --><div class="doc-items-table-wrapper" data-astro-cid-44b3w5zz><table class="doc-table" data-astro-cid-44b3w5zz><thead data-astro-cid-44b3w5zz><tr data-astro-cid-44b3w5zz><th class="col-num" data-astro-cid-44b3w5zz>#</th><th class="col-desc" data-astro-cid-44b3w5zz>Description</th><th class="col-qty text-right" data-astro-cid-44b3w5zz>Qty</th><th class="col-rate text-right" data-astro-cid-44b3w5zz>Unit Rate</th><th class="col-disc text-right" data-astro-cid-44b3w5zz>Disc %</th><th class="col-total text-right" data-astro-cid-44b3w5zz>Amount</th></tr></thead><tbody id="preview-line-items-body" data-astro-cid-44b3w5zz><!-- Dynamically populated rows --></tbody></table></div><!-- Financial Calculation Breakdown --><div class="doc-summary-layout" data-astro-cid-44b3w5zz><div class="doc-notes-col" data-astro-cid-44b3w5zz><div class="notes-block" id="prev-notes-wrap" data-astro-cid-44b3w5zz><span class="doc-subhead" data-astro-cid-44b3w5zz>NOTES &amp; COMMENTS:</span><p id="prev-notes-text" data-astro-cid-44b3w5zz>Thank you for your business!</p></div><div class="terms-block" id="prev-terms-wrap" data-astro-cid-44b3w5zz><span class="doc-subhead" data-astro-cid-44b3w5zz>PAYMENT INSTRUCTIONS:</span><p id="prev-terms-text" data-astro-cid-44b3w5zz>Payment is due within 14 days of issue date.</p></div></div><div class="doc-totals-col" data-astro-cid-44b3w5zz><table class="totals-table" data-astro-cid-44b3w5zz><tr data-astro-cid-44b3w5zz><th data-astro-cid-44b3w5zz>Subtotal:</th><td id="prev-calc-subtotal" data-astro-cid-44b3w5zz>$0.00</td></tr><tr id="prev-row-discount" style="display:none;" data-astro-cid-44b3w5zz><th data-astro-cid-44b3w5zz>Discount (<span id="prev-calc-disc-rate" data-astro-cid-44b3w5zz>0</span>%):</th><td id="prev-calc-discount" class="text-neg" data-astro-cid-44b3w5zz>-$0.00</td></tr><tr id="prev-row-tax" data-astro-cid-44b3w5zz><th data-astro-cid-44b3w5zz>Tax (<span id="prev-calc-tax-rate" data-astro-cid-44b3w5zz>8.5</span>%):</th><td id="prev-calc-tax" data-astro-cid-44b3w5zz>+$0.00</td></tr><tr id="prev-row-shipping" style="display:none;" data-astro-cid-44b3w5zz><th data-astro-cid-44b3w5zz>Shipping &amp; Handling:</th><td id="prev-calc-shipping" data-astro-cid-44b3w5zz>+$0.00</td></tr><tr class="grand-total-row" data-astro-cid-44b3w5zz><th data-astro-cid-44b3w5zz>Total Amount:</th><td id="prev-calc-grand-total" data-astro-cid-44b3w5zz>$0.00</td></tr><tr id="prev-row-paid" style="display:none;" data-astro-cid-44b3w5zz><th data-astro-cid-44b3w5zz>Amount Paid:</th><td id="prev-calc-paid" class="text-neg" data-astro-cid-44b3w5zz>-$0.00</td></tr><tr class="balance-due-row" data-astro-cid-44b3w5zz><th data-astro-cid-44b3w5zz>Balance Due:</th><td id="prev-calc-balance-due" data-astro-cid-44b3w5zz>$0.00</td></tr></table></div></div><!-- Footer Watermark for Print & Screen --><div class="doc-footer" id="invoice-doc-footer" data-astro-cid-44b3w5zz><div class="footer-rule" data-astro-cid-44b3w5zz></div><p class="footer-disclaimer" id="footer-disclaimer-text" data-astro-cid-44b3w5zz>Generated with BizTools Free &middot; Get professional white-label invoices with Pro.</p></div></div></section></div></div><div id="upgrade-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title" style="display: none;" data-astro-cid-udg2w24d><div class="modal-card" data-astro-cid-udg2w24d><button class="modal-close-btn" id="modal-close" aria-label="Close modal" data-astro-cid-udg2w24d>&times;</button><div class="modal-header" data-astro-cid-udg2w24d><span class="pro-tag" data-astro-cid-udg2w24d>BIZTOOLS PRO</span><h2 id="modal-title" data-astro-cid-udg2w24d>Upgrade to Pro &amp; Unlock Everything</h2><p class="modal-subtitle" data-astro-cid-udg2w24d>Scale your freelance workflow or small business with unlimited invoices, advanced customization, and our complete digital template library.</p></div><div class="feature-checklist" data-astro-cid-udg2w24d><div class="feature-item" data-astro-cid-udg2w24d><svg class="check-icon" viewBox="0 0 20 20" fill="currentColor" data-astro-cid-udg2w24d><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" data-astro-cid-udg2w24d></path></svg><div data-astro-cid-udg2w24d><strong data-astro-cid-udg2w24d>White-Label Invoices</strong><span data-astro-cid-udg2w24d>Remove "Generated with BizTools Free" watermark on PDF prints</span></div></div><div class="feature-item" data-astro-cid-udg2w24d><svg class="check-icon" viewBox="0 0 20 20" fill="currentColor" data-astro-cid-udg2w24d><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" data-astro-cid-udg2w24d></path></svg><div data-astro-cid-udg2w24d><strong data-astro-cid-udg2w24d>Custom Logo &amp; Brand Colors</strong><span data-astro-cid-udg2w24d>Upload your company logo and choose custom brand palette accents</span></div></div><div class="feature-item" data-astro-cid-udg2w24d><svg class="check-icon" viewBox="0 0 20 20" fill="currentColor" data-astro-cid-udg2w24d><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" data-astro-cid-udg2w24d></path></svg><div data-astro-cid-udg2w24d><strong data-astro-cid-udg2w24d>Unlimited Invoices &amp; Line Items</strong><span data-astro-cid-udg2w24d>No limits on invoice items, recurring invoices, and saved drafts</span></div></div><div class="feature-item" data-astro-cid-udg2w24d><svg class="check-icon" viewBox="0 0 20 20" fill="currentColor" data-astro-cid-udg2w24d><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" data-astro-cid-udg2w24d></path></svg><div data-astro-cid-udg2w24d><strong data-astro-cid-udg2w24d>All 12 Automated Excel Spreadsheets</strong><span data-astro-cid-udg2w24d>Instant access to P&amp;L, timesheets, inventory, CRM, and debt planners</span></div></div><div class="feature-item" data-astro-cid-udg2w24d><svg class="check-icon" viewBox="0 0 20 20" fill="currentColor" data-astro-cid-udg2w24d><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" data-astro-cid-udg2w24d></path></svg><div data-astro-cid-udg2w24d><strong data-astro-cid-udg2w24d>All 48 Printable PDF Planners</strong><span data-astro-cid-udg2w24d>Complete collection of daily, weekly, and goal planners in Ocean, Sage &amp; Rose</span></div></div></div><div class="pricing-grid" data-astro-cid-udg2w24d><div class="pricing-card" data-astro-cid-udg2w24d><div class="plan-name" data-astro-cid-udg2w24d>Pro Monthly</div><div class="price" data-astro-cid-udg2w24d><span class="currency" data-astro-cid-udg2w24d>$</span><span class="amount" data-astro-cid-udg2w24d>7</span><span class="period" data-astro-cid-udg2w24d>/month</span></div><p class="plan-desc" data-astro-cid-udg2w24d>Flexible subscription, cancel anytime.</p><button class="plan-btn secondary-btn" id="btn-upgrade-monthly" data-astro-cid-udg2w24d>Choose Monthly</button></div><div class="pricing-card popular" data-astro-cid-udg2w24d><div class="best-value-badge" data-astro-cid-udg2w24d>BEST VALUE</div><div class="plan-name" data-astro-cid-udg2w24d>Lifetime Access</div><div class="price" data-astro-cid-udg2w24d><span class="currency" data-astro-cid-udg2w24d>$</span><span class="amount" data-astro-cid-udg2w24d>29</span><span class="period" data-astro-cid-udg2w24d>one-time</span></div><p class="plan-desc" data-astro-cid-udg2w24d>Pay once, own all current &amp; future tools forever.</p><button class="plan-btn primary-btn" id="btn-upgrade-lifetime" data-astro-cid-udg2w24d>Get Lifetime Access</button></div></div><div class="modal-footer" data-astro-cid-udg2w24d><button class="text-dismiss-btn" id="btn-continue-free" data-astro-cid-udg2w24d>Continue with Free Plan</button><div class="test-pro-wrapper" data-astro-cid-udg2w24d><label class="test-pro-label" data-astro-cid-udg2w24d><input type="checkbox" id="test-pro-toggle" data-astro-cid-udg2w24d><span data-astro-cid-udg2w24d>Simulate Pro Mode (Preview / Testing)</span></label></div></div></div></div><script>
+  // Global modal handlers
+  window.openUpgradeModal = function(featureReason) {
+    var modal = document.getElementById('upgrade-modal');
+    if (modal) {
+      modal.style.display = 'flex';
+      var title = document.getElementById('modal-title');
+      if (title && featureReason) {
+        title.setAttribute('data-original-title', title.innerText);
+        title.innerText = 'Unlock ' + featureReason + ' with Pro';
+      }
+    }
+  };
+
+  window.closeUpgradeModal = function() {
+    var modal = document.getElementById('upgrade-modal');
+    if (modal) {
+      modal.style.display = 'none';
+      var title = document.getElementById('modal-title');
+      if (title && title.getAttribute('data-original-title')) {
+        title.innerText = title.getAttribute('data-original-title');
+      }
+    }
+  };
+
+  // Setup click listeners on load
+  document.addEventListener('DOMContentLoaded', function() {
+    var closeBtn = document.getElementById('modal-close');
+    var continueBtn = document.getElementById('btn-continue-free');
+    var modal = document.getElementById('upgrade-modal');
+    var monthlyBtn = document.getElementById('btn-upgrade-monthly');
+    var lifetimeBtn = document.getElementById('btn-upgrade-lifetime');
+    var testProToggle = document.getElementById('test-pro-toggle');
+
+    if (closeBtn) closeBtn.addEventListener('click', window.closeUpgradeModal);
+    if (continueBtn) continueBtn.addEventListener('click', window.closeUpgradeModal);
+    if (modal) {
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) window.closeUpgradeModal();
+      });
+    }
+
+    var handleUpgradeClick = function(plan) {
+      alert('Thank you for choosing ' + plan + '! In production, this opens Stripe / Lemon Squeezy checkout. Toggle "Simulate Pro Mode" below to test all Pro features right now.');
+    };
+    if (monthlyBtn) monthlyBtn.addEventListener('click', function() { handleUpgradeClick('Pro Monthly ($7/mo)'); });
+    if (lifetimeBtn) lifetimeBtn.addEventListener('click', function() { handleUpgradeClick('Lifetime Access ($29)'); });
+
+    // Sync Pro mode state from localStorage
+    var savedPro = localStorage.getItem('biztools_pro_active') === 'true';
+    if (testProToggle) {
+      testProToggle.checked = savedPro;
+      testProToggle.addEventListener('change', function(e) {
+        localStorage.setItem('biztools_pro_active', e.target.checked ? 'true' : 'false');
+        window.dispatchEvent(new CustomEvent('biztools:pro_changed', { detail: { isPro: e.target.checked } }));
+        window.closeUpgradeModal();
+      });
+    }
+  });
+</script></main><footer><p>Some links are affiliate links. We may earn a commission at no cost to you.</p><p>&copy; 2026 SmartCents &middot;<a href="/tools/">Tools &amp; Templates</a> &middot;<a href="/about/">About</a> &middot; <a href="/privacy/">Privacy</a></p></footer></body></html><script>
+  // CLIENT APPLICATION LOGIC: Pure reactive JavaScript engine
+  (function() {
+    // Default Initial State
+    var state = {
+      isPro: false,
+      currency: 'USD',
+      currencySymbol: '$',
+      theme: 'navy',
+      meta: {
+        number: 'INV-2026-001',
+        date: '',
+        dueDate: '',
+        status: 'Sent',
+        po: 'PO-2026-9481',
+        isRecurring: false
+      },
+      biller: {
+        name: 'Acme Digital Consulting LLC',
+        email: 'billing@acmeconsulting.com',
+        address: '120 Broadway, Suite 1400\nNew York, NY 10271\nTax ID: US-94821048',
+        phone: '+1 (212) 555-0199',
+        logoUrl: ''
+      },
+      client: {
+        name: 'Apex Global Solutions Inc.',
+        email: 'accounts@apexsolutions.com',
+        address: '742 Evergreen Terrace\nSpringfield, OR 97477'
+      },
+      items: [
+        { id: '1', description: 'Web Application Architecture & UI Development', qty: 40, rate: 85, discount: 0 },
+        { id: '2', description: 'Cloud Infrastructure & Database Performance Tuning', qty: 15, rate: 110, discount: 5 },
+        { id: '3', description: 'Enterprise Monthly Security & Maintenance SLA', qty: 1, rate: 450, discount: 0 }
+      ],
+      financials: {
+        discountRate: 0,
+        taxRate: 8.5,
+        shipping: 0,
+        amountPaid: 0,
+        subtotal: 0,
+        discountAmount: 0,
+        taxAmount: 0,
+        grandTotal: 0,
+        balanceDue: 0
+      },
+      notes: 'Thank you for your business! Please feel free to reach out with any questions.',
+      terms: 'Payment is due within 14 days of issue date. Direct deposit to Account #1234-56789, Routing #987654321, Swift: ACMEXX.'
+    };
+
+    // Date formatting helper (YYYY-MM-DD)
+    function formatDate(d) {
+      var year = d.getFullYear();
+      var month = String(d.getMonth() + 1).padStart(2, '0');
+      var day = String(d.getDate()).padStart(2, '0');
+      return year + '-' + month + '-' + day;
+    }
+
+    // Money formatter helper with financial precision
+    function formatMoney(amount, symbol) {
+      var sym = symbol !== undefined ? symbol : state.currencySymbol;
+      var rounded = Math.round(amount * 100) / 100;
+      var parts = rounded.toFixed(2).split('.');
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return sym + parts.join('.');
+    }
+
+    // Toast messenger
+    function showToast(msg) {
+      var toast = document.getElementById('toast-message');
+      if (toast) {
+        toast.innerText = msg;
+        toast.style.display = 'block';
+        setTimeout(function() {
+          toast.style.display = 'none';
+        }, 3000);
+      }
+    }
+
+    // Calculation Engine
+    function recalculate() {
+      var subtotal = 0;
+      state.items.forEach(function(item) {
+        var q = parseFloat(item.qty) || 0;
+        var r = parseFloat(item.rate) || 0;
+        var d = parseFloat(item.discount) || 0;
+        var lineTotal = q * r * (1 - (d / 100));
+        lineTotal = Math.round(lineTotal * 100) / 100;
+        item.rowTotal = lineTotal;
+        subtotal += lineTotal;
+      });
+
+      subtotal = Math.round(subtotal * 100) / 100;
+      state.financials.subtotal = subtotal;
+
+      var discRate = parseFloat(state.financials.discountRate) || 0;
+      var discAmount = Math.round(subtotal * (discRate / 100) * 100) / 100;
+      state.financials.discountAmount = discAmount;
+
+      var taxableBase = Math.max(0, subtotal - discAmount);
+      var taxRate = parseFloat(state.financials.taxRate) || 0;
+      var taxAmount = Math.round(taxableBase * (taxRate / 100) * 100) / 100;
+      state.financials.taxAmount = taxAmount;
+
+      var shipping = parseFloat(state.financials.shipping) || 0;
+      var grandTotal = Math.round((taxableBase + taxAmount + shipping) * 100) / 100;
+      state.financials.grandTotal = grandTotal;
+
+      var paid = parseFloat(state.financials.amountPaid) || 0;
+      var balanceDue = Math.round((grandTotal - paid) * 100) / 100;
+      state.financials.balanceDue = balanceDue;
+
+      renderPreview();
+    }
+
+    // Render Preview DOM
+    function renderPreview() {
+      // Biller
+      document.getElementById('prev-biller-name').innerText = state.biller.name || 'Your Company Name';
+      document.getElementById('prev-biller-address').innerText = state.biller.address || '';
+      document.getElementById('prev-biller-email').innerText = state.biller.email || '';
+      document.getElementById('prev-biller-phone').innerText = state.biller.phone || '';
+
+      // Logo handling
+      var logoBox = document.getElementById('preview-logo-box');
+      var logoImg = document.getElementById('preview-logo-img');
+      if (state.isPro && state.biller.logoUrl && state.biller.logoUrl.trim() !== '') {
+        logoImg.src = state.biller.logoUrl.trim();
+        logoBox.style.display = 'block';
+      } else {
+        logoBox.style.display = 'none';
+      }
+
+      // Meta
+      document.getElementById('prev-inv-number').innerText = state.meta.number || 'INV-001';
+      document.getElementById('prev-inv-date').innerText = state.meta.date || '';
+      document.getElementById('prev-inv-due-date').innerText = state.meta.dueDate || '';
+      
+      var poRow = document.getElementById('prev-po-row');
+      if (state.meta.po && state.meta.po.trim() !== '') {
+        document.getElementById('prev-inv-po').innerText = state.meta.po;
+        poRow.style.display = '';
+      } else {
+        poRow.style.display = 'none';
+      }
+
+      // Status stamp
+      var statusStamp = document.getElementById('prev-status-stamp');
+      statusStamp.innerText = (state.meta.status || 'SENT').toUpperCase();
+      statusStamp.className = 'status-stamp ' + (state.meta.status || 'sent').toLowerCase();
+
+      // Client
+      document.getElementById('prev-client-name').innerText = state.client.name || 'Client Name';
+      document.getElementById('prev-client-address').innerText = state.client.address || '';
+      document.getElementById('prev-client-email').innerText = state.client.email || '';
+
+      // Line items table
+      var tbody = document.getElementById('preview-line-items-body');
+      tbody.innerHTML = '';
+      state.items.forEach(function(item, idx) {
+        var tr = document.createElement('tr');
+        tr.innerHTML = 
+          '<td class="col-num">' + (idx + 1) + '</td>' +
+          '<td class="col-desc"><strong>' + escapeHtml(item.description || 'Item') + '</strong></td>' +
+          '<td class="col-qty text-right">' + item.qty + '</td>' +
+          '<td class="col-rate text-right">' + formatMoney(item.rate) + '</td>' +
+          '<td class="col-disc text-right">' + (item.discount > 0 ? item.discount + '%' : '-') + '</td>' +
+          '<td class="col-total text-right"><strong>' + formatMoney(item.rowTotal) + '</strong></td>';
+        tbody.appendChild(tr);
+      });
+
+      // Notes & Terms
+      var notesWrap = document.getElementById('prev-notes-wrap');
+      var notesText = document.getElementById('prev-notes-text');
+      if (state.notes && state.notes.trim()) {
+        notesText.innerText = state.notes;
+        notesWrap.style.display = 'block';
+      } else {
+        notesWrap.style.display = 'none';
+      }
+
+      var termsWrap = document.getElementById('prev-terms-wrap');
+      var termsText = document.getElementById('prev-terms-text');
+      var recurringNotice = state.meta.isRecurring ? '\n[Recurring billing cycle: Monthly auto-renewal]' : '';
+      if ((state.terms && state.terms.trim()) || recurringNotice) {
+        termsText.innerText = (state.terms || '') + recurringNotice;
+        termsWrap.style.display = 'block';
+      } else {
+        termsWrap.style.display = 'none';
+      }
+
+      // Financials table
+      document.getElementById('prev-calc-subtotal').innerText = formatMoney(state.financials.subtotal);
+
+      var discRow = document.getElementById('prev-row-discount');
+      if (state.financials.discountRate > 0) {
+        document.getElementById('prev-calc-disc-rate').innerText = state.financials.discountRate;
+        document.getElementById('prev-calc-discount').innerText = '-' + formatMoney(state.financials.discountAmount);
+        discRow.style.display = '';
+      } else {
+        discRow.style.display = 'none';
+      }
+
+      document.getElementById('prev-calc-tax-rate').innerText = state.financials.taxRate;
+      document.getElementById('prev-calc-tax').innerText = '+' + formatMoney(state.financials.taxAmount);
+
+      var shipRow = document.getElementById('prev-row-shipping');
+      if (state.financials.shipping > 0) {
+        document.getElementById('prev-calc-shipping').innerText = '+' + formatMoney(state.financials.shipping);
+        shipRow.style.display = '';
+      } else {
+        shipRow.style.display = 'none';
+      }
+
+      document.getElementById('prev-calc-grand-total').innerText = formatMoney(state.financials.grandTotal);
+
+      var paidRow = document.getElementById('prev-row-paid');
+      if (state.financials.amountPaid > 0) {
+        document.getElementById('prev-calc-paid').innerText = '-' + formatMoney(state.financials.amountPaid);
+        paidRow.style.display = '';
+      } else {
+        paidRow.style.display = 'none';
+      }
+
+      document.getElementById('prev-calc-balance-due').innerText = formatMoney(state.financials.balanceDue);
+
+      // Watermark visibility
+      var ribbon = document.getElementById('free-watermark');
+      var footerText = document.getElementById('footer-disclaimer-text');
+      var tierIndicator = document.getElementById('tier-badge-indicator');
+
+      if (state.isPro) {
+        if (ribbon) ribbon.style.display = 'none';
+        if (footerText) footerText.innerText = 'Thank you for your prompt payment.';
+        if (tierIndicator) {
+          tierIndicator.innerText = 'Pro Plan Active';
+          tierIndicator.classList.add('pro-active');
+        }
+      } else {
+        if (ribbon) ribbon.style.display = 'block';
+        if (footerText) footerText.innerText = 'Generated with BizTools Free \u2022 Upgrade to Pro for White-Label Invoices.';
+        if (tierIndicator) {
+          tierIndicator.innerText = 'Free Plan';
+          tierIndicator.classList.remove('pro-active');
+        }
+      }
+
+      // Theme attribute on sheet
+      var sheet = document.getElementById('invoice-printable-sheet');
+      if (sheet) {
+        sheet.setAttribute('data-theme', state.theme);
+      }
+    }
+
+    // Helper: Escape HTML
+    function escapeHtml(text) {
+      return text.replace(/[&<>"']/g, function(m) {
+        return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[m];
+      });
+    }
+
+    // Render Editor Line Items List
+    function renderEditorLineItems() {
+      var container = document.getElementById('line-items-container');
+      container.innerHTML = '';
+      var countBadge = document.getElementById('line-items-count-badge');
+      if (countBadge) countBadge.innerText = state.items.length + (state.items.length === 1 ? ' item' : ' items');
+
+      state.items.forEach(function(item, idx) {
+        var card = document.createElement('div');
+        card.className = 'item-row-card';
+        card.setAttribute('data-index', idx);
+
+        card.innerHTML = 
+          '<div class="item-row-top">' +
+            '<input type="text" class="item-desc-input" placeholder="Item description / service" value="' + escapeHtml(item.description) + '" data-field="description" />' +
+            '<button type="button" class="btn-remove-item" title="Remove row" data-remove-index="' + idx + '">&times;</button>' +
+          '</div>' +
+          '<div class="item-row-bottom">' +
+            '<div><label style="font-size:0.75rem; color:#64748b;">Qty</label><input type="number" min="0" step="1" value="' + item.qty + '" data-field="qty" /></div>' +
+            '<div><label style="font-size:0.75rem; color:#64748b;">Rate (' + state.currencySymbol + ')</label><input type="number" min="0" step="0.5" value="' + item.rate + '" data-field="rate" /></div>' +
+            '<div><label style="font-size:0.75rem; color:#64748b;">Disc %</label><input type="number" min="0" max="100" step="1" value="' + item.discount + '" data-field="discount" /></div>' +
+            '<div><label style="font-size:0.75rem; color:#64748b;">Line Total</label><div class="row-total-display">' + formatMoney(item.rowTotal || (item.qty * item.rate)) + '</div></div>' +
+          '</div>';
+
+        // Add input listeners
+        var inputs = card.querySelectorAll('input');
+        inputs.forEach(function(input) {
+          input.addEventListener('input', function(e) {
+            var field = e.target.getAttribute('data-field');
+            var val = e.target.value;
+            if (field === 'qty' || field === 'rate' || field === 'discount') {
+              state.items[idx][field] = parseFloat(val) || 0;
+            } else {
+              state.items[idx][field] = val;
+            }
+            recalculate();
+            var totalDisp = card.querySelector('.row-total-display');
+            if (totalDisp) totalDisp.innerText = formatMoney(state.items[idx].rowTotal);
+          });
+        });
+
+        // Delete button listener
+        var removeBtn = card.querySelector('.btn-remove-item');
+        removeBtn.addEventListener('click', function() {
+          if (state.items.length <= 1) {
+            // Reset fields rather than removing last row
+            state.items[0].description = '';
+            state.items[0].qty = 1;
+            state.items[0].rate = 0;
+            state.items[0].discount = 0;
+          } else {
+            state.items.splice(idx, 1);
+          }
+          renderEditorLineItems();
+          recalculate();
+        });
+
+        container.appendChild(card);
+      });
+    }
+
+    // RFC-4180 CSV Generator & Exporter
+    function exportToCSV() {
+      var lines = [];
+      function escapeCsv(cell) {
+        var str = (cell === null || cell === undefined) ? '' : String(cell);
+        if (str.search(/("|,|\r|\n)/g) >= 0) {
+          str = '"' + str.replace(/"/g, '""') + '"';
+        }
+        return str;
+      }
+
+      // Metadata Headers
+      lines.push([escapeCsv('Invoice Number'), escapeCsv(state.meta.number)].join(','));
+      lines.push([escapeCsv('Issue Date'), escapeCsv(state.meta.date)].join(','));
+      lines.push([escapeCsv('Due Date'), escapeCsv(state.meta.dueDate)].join(','));
+      lines.push([escapeCsv('Currency'), escapeCsv(state.currency)].join(','));
+      lines.push([escapeCsv('Status'), escapeCsv(state.meta.status)].join(','));
+      lines.push([escapeCsv('Biller Name'), escapeCsv(state.biller.name)].join(','));
+      lines.push([escapeCsv('Biller Email'), escapeCsv(state.biller.email)].join(','));
+      lines.push([escapeCsv('Client Name'), escapeCsv(state.client.name)].join(','));
+      lines.push([escapeCsv('Client Email'), escapeCsv(state.client.email)].join(','));
+      lines.push(''); // Blank separator line
+
+      // Table Header
+      lines.push([
+        escapeCsv('Line #'),
+        escapeCsv('Description'),
+        escapeCsv('Quantity'),
+        escapeCsv('Unit Rate'),
+        escapeCsv('Line Discount %'),
+        escapeCsv('Line Total')
+      ].join(','));
+
+      // Table Rows
+      state.items.forEach(function(item, idx) {
+        lines.push([
+          escapeCsv(idx + 1),
+          escapeCsv(item.description),
+          escapeCsv(item.qty),
+          escapeCsv(item.rate),
+          escapeCsv(item.discount),
+          escapeCsv(item.rowTotal)
+        ].join(','));
+      });
+
+      // Blank line
+      lines.push('');
+
+      // Summary Calculations
+      lines.push([escapeCsv('Subtotal'), '', '', '', '', escapeCsv(state.financials.subtotal)].join(','));
+      if (state.financials.discountRate > 0) {
+        lines.push([escapeCsv('Discount (' + state.financials.discountRate + '%)'), '', '', '', '', escapeCsv('-' + state.financials.discountAmount)].join(','));
+      }
+      lines.push([escapeCsv('Tax (' + state.financials.taxRate + '%)'), '', '', '', '', escapeCsv(state.financials.taxAmount)].join(','));
+      if (state.financials.shipping > 0) {
+        lines.push([escapeCsv('Shipping/Handling'), '', '', '', '', escapeCsv(state.financials.shipping)].join(','));
+      }
+      lines.push([escapeCsv('Total Amount'), '', '', '', '', escapeCsv(state.financials.grandTotal)].join(','));
+      if (state.financials.amountPaid > 0) {
+        lines.push([escapeCsv('Amount Paid'), '', '', '', '', escapeCsv('-' + state.financials.amountPaid)].join(','));
+      }
+      lines.push([escapeCsv('Balance Due'), '', '', '', '', escapeCsv(state.financials.balanceDue)].join(','));
+
+      var csvContent = lines.join('\r\n');
+      var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', 'invoice-' + (state.meta.number || 'export') + '.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast('CSV export downloaded: invoice-' + (state.meta.number || 'export') + '.csv');
+    }
+
+    // LocalStorage Draft Persistence
+    var DRAFT_STORAGE_KEY = 'biztools_invoice_draft_state';
+
+    function saveDraft() {
+      try {
+        localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(state));
+        showToast('Draft successfully saved to local browser storage!');
+      } catch (e) {
+        alert('Unable to save draft: ' + e.message);
+      }
+    }
+
+    function loadDraft() {
+      try {
+        var raw = localStorage.getItem(DRAFT_STORAGE_KEY);
+        if (!raw) {
+          alert('No saved draft found in local storage.');
+          return;
+        }
+        var loaded = JSON.parse(raw);
+        if (loaded && loaded.meta && loaded.items) {
+          state = loaded;
+          syncStateToForm();
+          renderEditorLineItems();
+          recalculate();
+          showToast('Draft loaded successfully!');
+        }
+      } catch (e) {
+        alert('Failed to parse saved draft: ' + e.message);
+      }
+    }
+
+    function syncStateToForm() {
+      document.getElementById('inv-number').value = state.meta.number || '';
+      document.getElementById('inv-date').value = state.meta.date || '';
+      document.getElementById('inv-due-date').value = state.meta.dueDate || '';
+      document.getElementById('inv-currency').value = state.currency || 'USD';
+      document.getElementById('inv-status').value = state.meta.status || 'Sent';
+      document.getElementById('inv-theme').value = state.theme || 'navy';
+      document.getElementById('inv-recurring-check').checked = !!state.meta.isRecurring;
+      document.getElementById('inv-logo-url').value = state.biller.logoUrl || '';
+
+      document.getElementById('biller-name').value = state.biller.name || '';
+      document.getElementById('biller-email').value = state.biller.email || '';
+      document.getElementById('biller-address').value = state.biller.address || '';
+      document.getElementById('biller-phone').value = state.biller.phone || '';
+
+      document.getElementById('client-name').value = state.client.name || '';
+      document.getElementById('client-email').value = state.client.email || '';
+      document.getElementById('client-address').value = state.client.address || '';
+      document.getElementById('client-ref').value = state.meta.po || '';
+
+      document.getElementById('inv-discount-rate').value = state.financials.discountRate || 0;
+      document.getElementById('inv-tax-rate').value = state.financials.taxRate || 0;
+      document.getElementById('inv-shipping-fee').value = state.financials.shipping || 0;
+      document.getElementById('inv-amount-paid').value = state.financials.amountPaid || 0;
+
+      document.getElementById('inv-notes').value = state.notes || '';
+      document.getElementById('inv-terms').value = state.terms || '';
+    }
+
+    // Attach Event Listeners on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set Default Dates
+      var today = new Date();
+      var due = new Date();
+      due.setDate(today.getDate() + 14);
+
+      state.meta.date = formatDate(today);
+      state.meta.dueDate = formatDate(due);
+      document.getElementById('inv-date').value = state.meta.date;
+      document.getElementById('inv-due-date').value = state.meta.dueDate;
+
+      // Check Pro status from localStorage
+      state.isPro = localStorage.getItem('biztools_pro_active') === 'true';
+
+      // Listen for pro state change
+      window.addEventListener('biztools:pro_changed', function(e) {
+        state.isPro = !!e.detail.isPro;
+        recalculate();
+      });
+
+      // Toolbar Buttons
+      document.getElementById('btn-save-draft').addEventListener('click', saveDraft);
+      document.getElementById('btn-load-draft').addEventListener('click', loadDraft);
+      document.getElementById('btn-export-csv').addEventListener('click', exportToCSV);
+      document.getElementById('btn-print-pdf').addEventListener('click', function() {
+        window.print();
+      });
+
+      document.getElementById('btn-reset-invoice').addEventListener('click', function() {
+        if (confirm('Reset invoice to blank template? Any unsaved edits will be replaced.')) {
+          state.items = [
+            { id: '1', description: 'Consulting Services', qty: 1, rate: 100, discount: 0 }
+          ];
+          state.financials.discountRate = 0;
+          state.financials.taxRate = 8.5;
+          state.financials.shipping = 0;
+          state.financials.amountPaid = 0;
+          syncStateToForm();
+          renderEditorLineItems();
+          recalculate();
+          showToast('Invoice reset to blank template.');
+        }
+      });
+
+      // Add Line Item Button & Freemium Gate
+      document.getElementById('btn-add-line-item').addEventListener('click', function() {
+        if (!state.isPro && state.items.length >= 3) {
+          window.openUpgradeModal('Unlimited Line Items (Free tier limit: 3 items)');
+          return;
+        }
+        state.items.push({
+          id: String(Date.now()),
+          description: '',
+          qty: 1,
+          rate: 0,
+          discount: 0
+        });
+        renderEditorLineItems();
+        recalculate();
+      });
+
+      // Meta Form Inputs
+      document.getElementById('inv-number').addEventListener('input', function(e) {
+        state.meta.number = e.target.value;
+        recalculate();
+      });
+      document.getElementById('inv-date').addEventListener('change', function(e) {
+        state.meta.date = e.target.value;
+        recalculate();
+      });
+      document.getElementById('inv-due-date').addEventListener('change', function(e) {
+        state.meta.dueDate = e.target.value;
+        recalculate();
+      });
+      document.getElementById('inv-currency').addEventListener('change', function(e) {
+        var opt = e.target.options[e.target.selectedIndex];
+        state.currency = e.target.value;
+        state.currencySymbol = opt.getAttribute('data-symbol') || '$';
+        renderEditorLineItems();
+        recalculate();
+      });
+      document.getElementById('inv-status').addEventListener('change', function(e) {
+        state.meta.status = e.target.value;
+        recalculate();
+      });
+
+      // Pro Theme Selector
+      document.getElementById('inv-theme').addEventListener('change', function(e) {
+        var val = e.target.value;
+        if (!state.isPro && val !== 'navy') {
+          window.openUpgradeModal('Custom Color Palettes');
+          e.target.value = 'navy';
+          state.theme = 'navy';
+        } else {
+          state.theme = val;
+        }
+        recalculate();
+      });
+
+      // Pro Recurring Checkbox
+      document.getElementById('inv-recurring-check').addEventListener('change', function(e) {
+        if (!state.isPro && e.target.checked) {
+          window.openUpgradeModal('Recurring Invoice Automation');
+          e.target.checked = false;
+          state.meta.isRecurring = false;
+        } else {
+          state.meta.isRecurring = e.target.checked;
+        }
+        recalculate();
+      });
+
+      // Pro Logo URL Input
+      document.getElementById('inv-logo-url').addEventListener('focus', function() {
+        if (!state.isPro) {
+          window.openUpgradeModal('Custom Logo Upload');
+        }
+      });
+      document.getElementById('inv-logo-url').addEventListener('input', function(e) {
+        if (state.isPro) {
+          state.biller.logoUrl = e.target.value;
+          recalculate();
+        }
+      });
+
+      // Biller Inputs
+      document.getElementById('biller-name').addEventListener('input', function(e) {
+        state.biller.name = e.target.value;
+        recalculate();
+      });
+      document.getElementById('biller-email').addEventListener('input', function(e) {
+        state.biller.email = e.target.value;
+        recalculate();
+      });
+      document.getElementById('biller-address').addEventListener('input', function(e) {
+        state.biller.address = e.target.value;
+        recalculate();
+      });
+      document.getElementById('biller-phone').addEventListener('input', function(e) {
+        state.biller.phone = e.target.value;
+        recalculate();
+      });
+
+      // Client Inputs
+      document.getElementById('client-name').addEventListener('input', function(e) {
+        state.client.name = e.target.value;
+        recalculate();
+      });
+      document.getElementById('client-email').addEventListener('input', function(e) {
+        state.client.email = e.target.value;
+        recalculate();
+      });
+      document.getElementById('client-address').addEventListener('input', function(e) {
+        state.client.address = e.target.value;
+        recalculate();
+      });
+      document.getElementById('client-ref').addEventListener('input', function(e) {
+        state.meta.po = e.target.value;
+        recalculate();
+      });
+
+      // Financials Inputs
+      document.getElementById('inv-discount-rate').addEventListener('input', function(e) {
+        state.financials.discountRate = parseFloat(e.target.value) || 0;
+        recalculate();
+      });
+      document.getElementById('inv-tax-rate').addEventListener('input', function(e) {
+        state.financials.taxRate = parseFloat(e.target.value) || 0;
+        recalculate();
+      });
+      document.getElementById('inv-shipping-fee').addEventListener('input', function(e) {
+        state.financials.shipping = parseFloat(e.target.value) || 0;
+        recalculate();
+      });
+      document.getElementById('inv-amount-paid').addEventListener('input', function(e) {
+        state.financials.amountPaid = parseFloat(e.target.value) || 0;
+        recalculate();
+      });
+
+      // Notes & Terms
+      document.getElementById('inv-notes').addEventListener('input', function(e) {
+        state.notes = e.target.value;
+        recalculate();
+      });
+      document.getElementById('inv-terms').addEventListener('input', function(e) {
+        state.terms = e.target.value;
+        recalculate();
+      });
+
+      // Mobile Tabs Toggle
+      var tabEditor = document.getElementById('tab-btn-editor');
+      var tabPreview = document.getElementById('tab-btn-preview');
+      var editorPane = document.getElementById('editor-container');
+      var previewPane = document.getElementById('preview-container');
+
+      if (tabEditor && tabPreview) {
+        tabEditor.addEventListener('click', function() {
+          tabEditor.classList.add('active');
+          tabPreview.classList.remove('active');
+          editorPane.style.display = 'flex';
+          previewPane.style.display = 'none';
+        });
+
+        tabPreview.addEventListener('click', function() {
+          tabPreview.classList.add('active');
+          tabEditor.classList.remove('active');
+          editorPane.style.display = 'none';
+          previewPane.style.display = 'block';
+        });
+
+        // Initialize responsive display for mobile vs desktop
+        function checkViewport() {
+          if (window.innerWidth <= 1024) {
+            if (tabEditor.classList.contains('active')) {
+              editorPane.style.display = 'flex';
+              previewPane.style.display = 'none';
+            } else {
+              editorPane.style.display = 'none';
+              previewPane.style.display = 'block';
+            }
+          } else {
+            editorPane.style.display = 'flex';
+            previewPane.style.display = 'block';
+          }
+        }
+        window.addEventListener('resize', checkViewport);
+        checkViewport();
+      }
+
+      // Initial Render
+      renderEditorLineItems();
+      recalculate();
+    });
+  })();
+</script>
