@@ -1,28 +1,31 @@
 const fs = require('fs');
 const path = require('path');
 
-const ROOT = path.resolve(__dirname, '../../achrafbah.github.io-main');
+const ROOT = path.resolve(__dirname, '..');
 const EXCEL_DIR = path.join(ROOT, 'downloads/excel');
 const PLANNERS_DIR = path.join(ROOT, 'downloads/planners');
 const PLAYBOOKS_DIR = path.join(ROOT, 'downloads/playbooks');
+const AUTOMATIONS_DIR = path.join(ROOT, 'downloads/automations');
+const NOTION_DIR = path.join(ROOT, 'downloads/notion');
 const BUNDLES_DIR = path.join(ROOT, 'downloads/bundles');
 
 function formatTitle(slug) {
   return slug
     .replace(/\.xlsx$/i, '')
     .replace(/\.pdf$/i, '')
-    .replace(/-(xlsx|pdf)$/i, '')
+    .replace(/\.json$/i, '')
+    .replace(/-(xlsx|pdf|json)$/i, '')
     .split('-')
     .map(w => w.charAt(0).toUpperCase() + w.slice(1))
     .join(' ');
 }
 
 // 1. Gather Excel Models
-const excelFiles = fs.readdirSync(EXCEL_DIR).filter(f => f.endsWith('.xlsx'));
+const excelFiles = fs.existsSync(EXCEL_DIR) ? fs.readdirSync(EXCEL_DIR).filter(f => f.endsWith('.xlsx')) : [];
 console.log(`Found ${excelFiles.length} Excel models.`);
 
-// 2. Gather Planners (grouped by base name)
-const plannerFiles = fs.readdirSync(PLANNERS_DIR).filter(f => f.endsWith('.pdf'));
+// 2. Gather Planners
+const plannerFiles = fs.existsSync(PLANNERS_DIR) ? fs.readdirSync(PLANNERS_DIR).filter(f => f.endsWith('.pdf')) : [];
 const plannerGroups = {};
 plannerFiles.forEach(f => {
   const match = f.match(/^(.*)_(ocean|sage|rose)\.pdf$/i);
@@ -36,23 +39,31 @@ plannerFiles.forEach(f => {
 const uniquePlanners = Object.keys(plannerGroups);
 console.log(`Found ${uniquePlanners.length} unique planners (${plannerFiles.length} PDFs total).`);
 
-// 3. Gather Playbooks & SOP Kits
-const playbookFiles = fs.readdirSync(PLAYBOOKS_DIR).filter(f => f.endsWith('.pdf'));
+// 3. Gather Playbooks
+const playbookFiles = fs.existsSync(PLAYBOOKS_DIR) ? fs.readdirSync(PLAYBOOKS_DIR).filter(f => f.endsWith('.pdf')) : [];
 console.log(`Found ${playbookFiles.length} Playbooks & SOP Kits.`);
 
-// 4. Gather Bundles
-const bundleFiles = fs.readdirSync(BUNDLES_DIR).filter(f => f.endsWith('.zip'));
+// 4. Gather Automations
+const autoFiles = fs.existsSync(AUTOMATIONS_DIR) ? fs.readdirSync(AUTOMATIONS_DIR).filter(f => f.endsWith('.json') || f.endsWith('.pdf')) : [];
+console.log(`Found ${autoFiles.length} Automation Workflows.`);
+
+// 5. Gather Notion Systems
+const notionFiles = fs.existsSync(NOTION_DIR) ? fs.readdirSync(NOTION_DIR).filter(f => f.endsWith('.pdf')) : [];
+console.log(`Found ${notionFiles.length} Notion Systems.`);
+
+// 6. Gather Bundles
+const bundleFiles = fs.existsSync(BUNDLES_DIR) ? fs.readdirSync(BUNDLES_DIR).filter(f => f.endsWith('.zip')) : [];
 console.log(`Found ${bundleFiles.length} Mega Bundles.`);
 
 // Build Catalog Cards HTML
 let cardsHtml = '';
 
-// A. Interactive Web Tools (4)
+// A. Interactive Web Tools (9)
 const interactiveTools = [
   {
     title: 'Smart Invoice & Receipt Generator',
     url: '/tools/invoice/',
-    desc: 'Full-featured interactive invoice maker with real-time tax/discount math, multi-currency ($/€/£/CAD/AUD), vector PDF export, CSV export, and draft saving.',
+    desc: 'Full-featured interactive invoice maker with real-time tax/discount math, multi-currency ($/€/£/MAD), vector PDF export, CSV export, and draft saving.',
     category: 'interactive finance',
     tier: 'free'
   },
@@ -73,8 +84,43 @@ const interactiveTools = [
   {
     title: 'Deep Work & Pomodoro Focus OS',
     url: '/tools/focus-os/',
-    desc: 'Browser-based focus operating system with customizable timers, audio chimes, and an interactive 4-quadrant Eisenhower Task Matrix.',
+    desc: 'Browser-based focus operating system with customizable sprint timers, audio chimes, and an interactive 4-quadrant Eisenhower Task Matrix.',
     category: 'interactive productivity',
+    tier: 'free'
+  },
+  {
+    title: 'AI Prompt Formatter & Meta-Prompt Architect',
+    url: '/tools/prompt-architect/',
+    desc: 'Convert vague ideas into production-ready system prompts for Claude, GPT-4o, and Gemini with XML tags, role constraints, and output schemas.',
+    category: 'interactive ai productivity',
+    tier: 'free'
+  },
+  {
+    title: 'Viral Social Media Hook & Headline Scorer',
+    url: '/tools/hook-analyzer/',
+    desc: 'Analyze opening lines and headlines for LinkedIn, TikTok, and X. Get real-time viral potential scores and instant psychological rewrites.',
+    category: 'interactive marketing',
+    tier: 'free'
+  },
+  {
+    title: 'Custom QR Code & Dynamic Link Studio',
+    url: '/tools/qr-studio/',
+    desc: 'Generate branded, high-resolution QR codes for websites, WiFi networks, WhatsApp, and vCard business cards with instant HD PNG download.',
+    category: 'interactive utilities marketing',
+    tier: 'free'
+  },
+  {
+    title: 'Privacy Policy & Terms of Service Generator',
+    url: '/tools/legal-generator/',
+    desc: 'Generate customized GDPR and CCPA-compliant Privacy Policies, Terms of Service, and Cookie Disclaimers for SaaS and Shopify stores in 60s.',
+    category: 'interactive legal utilities',
+    tier: 'free'
+  },
+  {
+    title: 'SaaS & E-Commerce Unit Economics Simulator',
+    url: '/tools/unit-economics/',
+    desc: 'Simulate Customer Lifetime Value (LTV), CAC payback velocity, churn decay curves, and venture viability with interactive SVG charts.',
+    category: 'interactive finance',
     tier: 'free'
   }
 ];
@@ -97,476 +143,423 @@ interactiveTools.forEach(t => {
     </div>`;
 });
 
-// B. Mega Bundles (5)
+// B. Mega Bundles (ZIP)
 const bundles = [
   {
-    file: 'Complete-380-Digital-Products-Mega-Bundle.zip',
-    title: 'Complete 380+ Digital Products Mega Bundle',
-    desc: 'The ultimate VIP package: all 40 Excel models, all 300+ vector PDF planners (Ocean/Sage/Rose), and all 40 AI Playbooks & SOP Kits.',
-    badge: 'VIP BUNDLE',
-    category: 'bundle all',
-    tier: 'pro',
-    price: '$29'
+    file: 'Complete-400-Digital-Products-Mega-Bundle.zip',
+    title: 'Complete 400+ Digital Products Mega Bundle',
+    desc: 'The ultimate commercial empire collection: All 44 Excel models, all 300+ vector PDF planners across 3 color palettes, all 44 AI & SOP playbooks, and all n8n/Make automation workflows.',
+    category: 'bundle'
+  },
+  {
+    file: 'All-Automations-and-Notion-Systems-Bundle.zip',
+    title: 'All Automations & Notion Systems Suite',
+    desc: 'Production-ready n8n/Make.com JSON workflows and 5 comprehensive Notion architecture system guides (Second Brain, Real Estate CRM, Creator Hub).',
+    category: 'bundle automations notion'
   },
   {
     file: 'All-40-Business-Excel-Templates-Bundle.zip',
-    title: 'All 40 Business & Financial Excel Models',
-    desc: 'Complete workbook collection covering SaaS, P&L, Real Estate ROI, Cash Flow, E-Com ROAS, Cap Table, Agile, and HR.',
-    badge: 'EXCEL BUNDLE',
-    category: 'bundle spreadsheet finance operations',
-    tier: 'pro',
-    price: '$19'
+    title: 'All 44 Business & Financial Excel Models',
+    desc: 'Every executive spreadsheet: SaaS MRR/ARR, Real Estate Cash Flow, Unit Economics, Cap Table, ROAS Pricing, and 39 more fully formula-driven models.',
+    category: 'bundle excel'
   },
   {
     file: 'All-300-Printable-Planners-Bundle.zip',
     title: 'All 300+ Printable & Tablet PDF Planners',
-    desc: '102 unique planners in 3 signature themes (Ocean, Sage, Rose) covering Executive, ADHD, Wealth, Fitness, Home, and Academic.',
-    badge: 'PLANNER BUNDLE',
-    category: 'bundle planner productivity wellness lifestyle',
-    tier: 'pro',
-    price: '$19'
+    desc: 'Massive library of 102 unique planners each in Ocean Blue, Sage Green, and Rose Gold. Executive OKR, ADHD Focus, Budget, Fitness, and Travel binders.',
+    category: 'bundle planner'
   },
   {
     file: 'All-40-AI-Prompts-and-SOP-Kits-Bundle.zip',
-    title: 'All 40 AI Prompt Bibles & Business SOP Kits',
-    desc: 'Commercial digital books & playbooks: 500+ AI Prompts Bible, Agency Client Onboarding, Solopreneur AI OS, and Career Kits.',
-    badge: 'PLAYBOOK BUNDLE',
-    category: 'bundle playbook operations productivity',
-    tier: 'pro',
-    price: '$19'
+    title: 'All 44 AI Prompt Bibles, SOPs & ATS Kits',
+    desc: 'The 500+ AI Prompts Mega Bible, Faceless Content Engine, ATS-Engineered Resume Kits, and Agency Client Onboarding Standard Operating Procedures.',
+    category: 'bundle playbook'
   }
 ];
 
 bundles.forEach(b => {
   cardsHtml += `
-    <div class="tool-card item-card bundle-highlight-card" data-category="${b.category}" data-tier="pro" data-title="${b.title.toLowerCase()}" data-desc="${b.desc.toLowerCase()}" data-astro-cid-l4z7ivqh>
+    <div class="tool-card item-card bundle-highlight" data-category="${b.category}" data-tier="pro" data-title="${b.title.toLowerCase()}" data-desc="${b.desc.toLowerCase()}" data-astro-cid-l4z7ivqh>
       <div class="card-top" data-astro-cid-l4z7ivqh>
-        <span class="type-badge" style="background:#fef3c7; color:#b45309;" data-astro-cid-l4z7ivqh>${b.badge}</span>
-        <span class="tier-badge pro" data-astro-cid-l4z7ivqh>BESTSELLER</span>
+        <span class="type-badge bundle" data-astro-cid-l4z7ivqh>Mega Bundle (ZIP)</span>
+        <span class="tier-badge pro" data-astro-cid-l4z7ivqh>PRO ALL-ACCESS</span>
       </div>
       <h3 data-astro-cid-l4z7ivqh>${b.title}</h3>
       <p class="card-desc" data-astro-cid-l4z7ivqh>${b.desc}</p>
       <div class="card-meta" data-astro-cid-l4z7ivqh>
-        <span data-astro-cid-l4z7ivqh>Instant ZIP Archive • Commercial Lifetime Rights</span>
+        <span data-astro-cid-l4z7ivqh>Full ZIP Archive • Commercial License • Instant Download</span>
       </div>
       <div class="card-footer" data-astro-cid-l4z7ivqh>
-        <button class="card-btn pro-btn" data-download-url="/downloads/bundles/${b.file}" onclick="if(localStorage.getItem('biztools_pro_active')==='true'){window.location.href='/downloads/bundles/${b.file}';}else{window.openUpgradeModal('${b.title.replace(/'/g, "\\'")}');}" data-astro-cid-l4z7ivqh>
-          <svg class="lock-icon" viewBox="0 0 20 20" fill="currentColor" data-astro-cid-l4z7ivqh><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" data-astro-cid-l4z7ivqh></path></svg>
-          <span class="pro-btn-label" data-astro-cid-l4z7ivqh>Unlock Bundle (${b.price})</span>
-        </button>
+        <a href="/downloads/bundles/${b.file}" class="card-btn primary" download data-astro-cid-l4z7ivqh>Direct ZIP Download &darr;</a>
+        <button class="card-btn pro-btn" onclick="openUpgradeModal()" data-astro-cid-l4z7ivqh>Unlock VIP ($29)</button>
       </div>
     </div>`;
 });
 
-// C. Excel Spreadsheets (40)
-excelFiles.forEach((file, idx) => {
-  const title = formatTitle(file);
-  const isFree = idx < 3; // First 3 free starter
-  const tier = isFree ? 'free' : 'pro';
-  const category = file.toLowerCase().includes('roas') || file.toLowerCase().includes('hr') || file.toLowerCase().includes('warehouse') || file.toLowerCase().includes('agile') || file.toLowerCase().includes('inventory')
-    ? 'spreadsheet operations'
-    : 'spreadsheet finance';
-
+// C. Automation Workflows (JSON / PDF)
+autoFiles.forEach(f => {
+  const isJson = f.endsWith('.json');
+  const title = formatTitle(f);
   cardsHtml += `
-    <div class="tool-card item-card" data-category="${category}" data-tier="${tier}" data-title="${title.toLowerCase()} ${file.toLowerCase()}" data-desc="professional formula-driven excel model for ${title.toLowerCase()}" data-astro-cid-l4z7ivqh>
+    <div class="tool-card item-card" data-category="automations ai" data-tier="pro" data-title="${title.toLowerCase()}" data-desc="automation workflow json" data-astro-cid-l4z7ivqh>
       <div class="card-top" data-astro-cid-l4z7ivqh>
-        <span class="type-badge excel" data-astro-cid-l4z7ivqh>Excel .XLSX</span>
-        <span class="tier-badge ${tier}" data-astro-cid-l4z7ivqh>${tier.toUpperCase()}</span>
+        <span class="type-badge" style="background: #ede9fe; color: #7c3aed;" data-astro-cid-l4z7ivqh>${isJson ? 'Automation JSON' : 'Master Guide'}</span>
+        <span class="tier-badge pro" data-astro-cid-l4z7ivqh>PRO</span>
       </div>
       <h3 data-astro-cid-l4z7ivqh>${title}</h3>
-      <p class="card-desc" data-astro-cid-l4z7ivqh>Executive formula-driven workbook with KPI summary dashboard, dynamic calculations, and structured data tables.</p>
-      <div class="formula-tags" data-astro-cid-l4z7ivqh>
-        <span class="formula-label" data-astro-cid-l4z7ivqh>Formulas:</span><code data-astro-cid-l4z7ivqh>SUM, IF, AVERAGE, KPI Models</code>
-      </div>
-      <div class="card-footer" data-astro-cid-l4z7ivqh>
-        ${isFree
-          ? `<a href="/downloads/excel/${file}" download class="card-btn secondary" data-astro-cid-l4z7ivqh>Get Free Template &darr;</a>`
-          : `<button class="card-btn pro-btn" data-download-url="/downloads/excel/${file}" onclick="if(localStorage.getItem('biztools_pro_active')==='true'){window.location.href='/downloads/excel/${file}';}else{window.openUpgradeModal('${title.replace(/'/g, "\\'")}');}" data-astro-cid-l4z7ivqh>
-              <svg class="lock-icon" viewBox="0 0 20 20" fill="currentColor" data-astro-cid-l4z7ivqh><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" data-astro-cid-l4z7ivqh></path></svg>
-              <span class="pro-btn-label" data-astro-cid-l4z7ivqh>Unlock with Pro ($7)</span>
-            </button>`
-        }
-      </div>
-    </div>`;
-});
-
-// D. Printable & Digital Planners (102 Unique Planners)
-uniquePlanners.forEach((base, idx) => {
-  const title = formatTitle(base);
-  const isFree = idx < 2; // First 2 free
-  const tier = isFree ? 'free' : 'pro';
-
-  let subCategory = 'productivity';
-  const l = base.toLowerCase();
-  if (l.includes('budget') || l.includes('debt') || l.includes('spend') || l.includes('wealth') || l.includes('sinking') || l.includes('tax') || l.includes('expense') || l.includes('savings')) subCategory = 'finance';
-  else if (l.includes('workout') || l.includes('meal') || l.includes('health') || l.includes('sleep') || l.includes('cbt') || l.includes('75-day') || l.includes('running') || l.includes('hydration') || l.includes('mindful')) subCategory = 'wellness';
-  else if (l.includes('home') || l.includes('travel') || l.includes('cleaning') || l.includes('wedding') || l.includes('family') || l.includes('pet') || l.includes('garden') || l.includes('spiritual')) subCategory = 'lifestyle';
-  else if (l.includes('exam') || l.includes('study') || l.includes('language') || l.includes('creator') || l.includes('reading') || l.includes('research') || l.includes('college') || l.includes('script') || l.includes('seller')) subCategory = 'academic';
-
-  cardsHtml += `
-    <div class="tool-card item-card" data-category="planner ${subCategory}" data-tier="${tier}" data-title="${title.toLowerCase()} ${base.toLowerCase()}" data-desc="printable and tablet vector pdf planner for ${title.toLowerCase()}" data-astro-cid-l4z7ivqh>
-      <div class="card-top" data-astro-cid-l4z7ivqh>
-        <span class="type-badge pdf" data-astro-cid-l4z7ivqh>PDF Planner</span>
-        <span class="tier-badge ${tier}" data-astro-cid-l4z7ivqh>${tier.toUpperCase()}</span>
-      </div>
-      <h3 data-astro-cid-l4z7ivqh>${title}</h3>
-      <p class="card-desc" data-astro-cid-l4z7ivqh>High-resolution vector printable planner and digital tablet journal with priority matrices, habit checkboxes, and ruled pages.</p>
-      <div class="planner-meta" data-astro-cid-l4z7ivqh>
-        <span data-astro-cid-l4z7ivqh>US Letter • Multi-Page Vector</span>
-        <div class="theme-dots" title="Click dot to select Ocean, Sage, or Rose theme" data-astro-cid-l4z7ivqh>
-          <span class="dot ocean active-dot" onclick="switchPlannerTheme(this, '${base}', 'ocean')" data-astro-cid-l4z7ivqh></span>
-          <span class="dot sage" onclick="switchPlannerTheme(this, '${base}', 'sage')" data-astro-cid-l4z7ivqh></span>
-          <span class="dot rose" onclick="switchPlannerTheme(this, '${base}', 'rose')" data-astro-cid-l4z7ivqh></span>
-        </div>
-      </div>
-      <div class="card-footer" data-astro-cid-l4z7ivqh>
-        ${isFree
-          ? `<a id="link-${base}" href="/downloads/planners/${base}_ocean.pdf" download class="card-btn secondary" data-astro-cid-l4z7ivqh>Get Free PDF (Ocean) &darr;</a>`
-          : `<button id="btn-${base}" class="card-btn pro-btn" data-download-url="/downloads/planners/${base}_ocean.pdf" onclick="if(localStorage.getItem('biztools_pro_active')==='true'){window.location.href=this.getAttribute('data-download-url');}else{window.openUpgradeModal('${title.replace(/'/g, "\\'")}');}" data-astro-cid-l4z7ivqh>
-              <svg class="lock-icon" viewBox="0 0 20 20" fill="currentColor" data-astro-cid-l4z7ivqh><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" data-astro-cid-l4z7ivqh></path></svg>
-              <span class="pro-btn-label" data-astro-cid-l4z7ivqh>Unlock PDF (${title.length > 20 ? 'Planner' : title})</span>
-            </button>`
-        }
-      </div>
-    </div>`;
-});
-
-// E. AI Prompt Bibles & Business SOP Kits (40)
-playbookFiles.forEach(file => {
-  const title = formatTitle(file);
-  const isAI = file.toLowerCase().includes('ai') || file.toLowerCase().includes('prompt') || file.toLowerCase().includes('chatgpt') || file.toLowerCase().includes('claude') || file.toLowerCase().includes('midjourney');
-  const catBadge = isAI ? 'AI Prompt Bible' : 'Business SOP Kit';
-  const badgeColor = isAI ? '#7c3aed' : '#0284c7';
-  const badgeBg = isAI ? '#ede9fe' : '#e0f2fe';
-  const subCategory = isAI ? 'playbook productivity' : 'playbook operations';
-
-  cardsHtml += `
-    <div class="tool-card item-card" data-category="${subCategory}" data-tier="pro" data-title="${title.toLowerCase()} ${file.toLowerCase()}" data-desc="comprehensive digital playbook and execution vault for ${title.toLowerCase()}" data-astro-cid-l4z7ivqh>
-      <div class="card-top" data-astro-cid-l4z7ivqh>
-        <span class="type-badge" style="background:${badgeBg}; color:${badgeColor};" data-astro-cid-l4z7ivqh>${catBadge}</span>
-        <span class="tier-badge pro" data-astro-cid-l4z7ivqh>PRO GUIDE</span>
-      </div>
-      <h3 data-astro-cid-l4z7ivqh>${title}</h3>
-      <p class="card-desc" data-astro-cid-l4z7ivqh>Comprehensive digital playbook featuring step-by-step systems, copy-paste prompt vaults, checklists, and implementation frameworks.</p>
+      <p class="card-desc" data-astro-cid-l4z7ivqh>Production-ready automation scenario blueprint for ${isJson ? 'n8n or Make.com with pre-built nodes, API authentication, and error loops' : 'autonomous multi-agent architecture and deployment'}.</p>
       <div class="card-meta" data-astro-cid-l4z7ivqh>
-        <span data-astro-cid-l4z7ivqh>Full-Length Digital PDF • Lifetime Commercial License</span>
+        <span data-astro-cid-l4z7ivqh>${isJson ? 'Import-Ready Workflow JSON' : 'Comprehensive PDF Guide'} • Zero Code Config</span>
       </div>
       <div class="card-footer" data-astro-cid-l4z7ivqh>
-        <button class="card-btn pro-btn" data-download-url="/downloads/playbooks/${file}" onclick="if(localStorage.getItem('biztools_pro_active')==='true'){window.location.href='/downloads/playbooks/${file}';}else{window.openUpgradeModal('${title.replace(/'/g, "\\'")}');}" data-astro-cid-l4z7ivqh>
-          <svg class="lock-icon" viewBox="0 0 20 20" fill="currentColor" data-astro-cid-l4z7ivqh><path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" data-astro-cid-l4z7ivqh></path></svg>
-          <span class="pro-btn-label" data-astro-cid-l4z7ivqh>Unlock Playbook ($7)</span>
-        </button>
+        <a href="/downloads/automations/${f}" class="card-btn secondary" download data-astro-cid-l4z7ivqh>Download ${isJson ? 'JSON' : 'PDF'} &darr;</a>
+        <button class="card-btn pro-btn" onclick="openUpgradeModal()" data-astro-cid-l4z7ivqh>Pro ($29)</button>
       </div>
     </div>`;
 });
 
-// Construct full tools/index.html
-const catalogHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Tools &amp; Business Templates Catalog | SmartCents Digital Studio</title><meta name="description" content="Explore over 380 professional digital products: interactive SaaS tools, formula-driven Excel models, vector printable planners, AI prompt bibles, and business SOP kits."><link rel="canonical" href="https://achrafbah.github.io/tools/"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="SmartCents" href="/rss.xml"><style>:root{--text:#1c1c1e;--muted:#6b7280;--bg:#fff;--card:#f7f7f9}*{box-sizing:border-box}body{color:var(--text);background:var(--bg);margin:0;font:18px/1.7 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}a{color:var(--accent)}header{border-bottom:1px solid #eee;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem;padding:1rem max(1rem,50% - 480px);display:flex}.brand{font-size:1.4rem;font-weight:800;text-decoration:none;color:#0f172a}nav{flex-wrap:wrap;gap:1rem;font-size:.95rem;display:flex}nav a{color:var(--text);text-decoration:none}nav a:hover{color:var(--accent)}main{max-width:1200px;margin:0 auto;padding:2rem 1rem}footer{text-align:center;color:var(--muted);border-top:1px solid #eee;padding:2rem 1rem;font-size:.85rem}.grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem;display:grid}.card{background:var(--card);border-radius:12px;padding:1.25rem}.card h3{margin:.25rem 0;font-size:1.15rem;line-height:1.3}.card a{color:inherit;text-decoration:none}.meta{color:var(--muted);font-size:.85rem}.tag{background:var(--accent);color:#fff;border-radius:99px;padding:0 .6rem;font-size:.75rem;display:inline-block}article h1{line-height:1.2}article img{max-width:100%}article table{border-collapse:collapse;width:100%}article th,article td{border:1px solid #ddd;padding:.4rem .6rem}
-.dot{cursor:pointer;transition:transform .15s;}
-.dot:hover{transform:scale(1.35);}
-.dot.active-dot{outline:2px solid #0f172a; outline-offset:1px;}
-.bundle-highlight-card{border:2px solid #f59e0b !important; background:#fffdf5 !important;}
-</style><link rel="stylesheet" href="/_astro/UpgradeModal.rCoh7SEV.css"><link rel="stylesheet" href="/_astro/index.HiuEWove.css"></head><body style="--accent:#0f9d58"><header><a class="brand" href="/">SmartCents</a><nav><a href="/category/saving/">Saving</a><a href="/category/budgeting/">Budgeting</a><a href="/category/investing/">Investing</a><a href="/category/side-hustles/">Side Hustles</a><a href="/tools/">Tools &amp; Templates (380+)</a><a href="/about/">About</a></nav></header><main><div class="tools-container" data-astro-cid-l4z7ivqh><!-- Hero Section --><header class="catalog-hero" data-astro-cid-l4z7ivqh><div class="hero-badge" data-astro-cid-l4z7ivqh>380+ COMMERCIAL ASSETS</div><h1 data-astro-cid-l4z7ivqh>Digital Products &amp; Template Empire</h1><p class="hero-subtitle" data-astro-cid-l4z7ivqh>Accelerate your business and wealth with 4 interactive SaaS utilities, 40 automated Excel financial models, 300+ vector PDF planners, and 40 AI prompt bibles &amp; SOP playbooks.</p><!-- Freemium Banner --><div class="freemium-banner" data-astro-cid-l4z7ivqh><div class="banner-content" data-astro-cid-l4z7ivqh><span class="pro-chip" data-astro-cid-l4z7ivqh>VIP ALL-ACCESS</span><div data-astro-cid-l4z7ivqh><strong data-astro-cid-l4z7ivqh>Free Starter Tier Active:</strong> Test web SaaS tools &amp; download starter templates.<span class="pro-pitch" data-astro-cid-l4z7ivqh>Unlock Pro for $7/mo or $29 Lifetime for all 380+ files, 40 Excel models, 300+ planners, and 40 AI Playbooks.</span></div></div><button class="upgrade-banner-btn" onclick="window.openUpgradeModal('Complete 380+ Product Suite')" data-astro-cid-l4z7ivqh>Upgrade to Pro ($29 Lifetime) &rarr;</button></div></header>
+// D. Notion Systems (PDF Guides & Templates)
+notionFiles.forEach(f => {
+  const title = formatTitle(f);
+  cardsHtml += `
+    <div class="tool-card item-card" data-category="notion productivity" data-tier="pro" data-title="${title.toLowerCase()}" data-desc="notion database architecture" data-astro-cid-l4z7ivqh>
+      <div class="card-top" data-astro-cid-l4z7ivqh>
+        <span class="type-badge" style="background: #fef3c7; color: #b45309;" data-astro-cid-l4z7ivqh>Notion System</span>
+        <span class="tier-badge pro" data-astro-cid-l4z7ivqh>PRO</span>
+      </div>
+      <h3 data-astro-cid-l4z7ivqh>${title}</h3>
+      <p class="card-desc" data-astro-cid-l4z7ivqh>Full database schema, relation formulas, rollups, and structured dashboard layout designed for high-performance productivity.</p>
+      <div class="card-meta" data-astro-cid-l4z7ivqh>
+        <span data-astro-cid-l4z7ivqh>Notion Architecture PDF Guide & Direct Template Blueprint</span>
+      </div>
+      <div class="card-footer" data-astro-cid-l4z7ivqh>
+        <a href="/downloads/notion/${f}" class="card-btn secondary" download data-astro-cid-l4z7ivqh>Download PDF &darr;</a>
+        <button class="card-btn pro-btn" onclick="openUpgradeModal()" data-astro-cid-l4z7ivqh>Pro ($29)</button>
+      </div>
+    </div>`;
+});
 
-<!-- Featured Interactive SaaS Apps Row -->
-<section class="featured-app-section" data-astro-cid-l4z7ivqh>
-  <div class="featured-badge" data-astro-cid-l4z7ivqh>FEATURED INTERACTIVE WEB SAAS SUITE</div>
-  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 0.75rem;">
-    <div style="background:#fff; border:2px solid #0f9d58; border-radius:12px; padding:1.25rem;">
-      <h3 style="margin-bottom:0.5rem; color:#0f172a;">Smart Invoice Maker</h3>
-      <p style="font-size:0.88rem; color:#64748b; margin-bottom:1rem;">Real-time taxes, multi-currency ($/€/£), vector PDF export &amp; CSV.</p>
-      <a href="/tools/invoice/" class="card-btn primary">Launch Invoice App &rarr;</a>
-    </div>
-    <div style="background:#fff; border:2px solid #0f9d58; border-radius:12px; padding:1.25rem;">
-      <h3 style="margin-bottom:0.5rem; color:#0f172a;">Compound &amp; FIRE Simulator</h3>
-      <p style="font-size:0.88rem; color:#64748b; margin-bottom:1rem;">Visual portfolio growth curves, inflation adjustment &amp; retirement timeline.</p>
-      <a href="/tools/wealth-simulator/" class="card-btn primary">Launch Wealth Simulator &rarr;</a>
-    </div>
-    <div style="background:#fff; border:2px solid #2563eb; border-radius:12px; padding:1.25rem;">
-      <h3 style="margin-bottom:0.5rem; color:#0f172a;">Freelance Rate Estimator</h3>
-      <p style="font-size:0.88rem; color:#64748b; margin-bottom:1rem;">Sustainable hourly &amp; day rates, overhead buffers, and client quote builder.</p>
-      <a href="/tools/rate-calculator/" class="card-btn primary" style="background:#2563eb;">Launch Rate Tool &rarr;</a>
-    </div>
-    <div style="background:#fff; border:2px solid #8b5cf6; border-radius:12px; padding:1.25rem;">
-      <h3 style="margin-bottom:0.5rem; color:#0f172a;">Deep Work &amp; Pomodoro OS</h3>
-      <p style="font-size:0.88rem; color:#64748b; margin-bottom:1rem;">Sprint focus timers, audio chimes, and interactive Eisenhower task board.</p>
-      <a href="/tools/focus-os/" class="card-btn primary" style="background:#8b5cf6;">Launch Focus OS &rarr;</a>
+// E. Excel Models (44)
+excelFiles.forEach(f => {
+  const title = formatTitle(f);
+  cardsHtml += `
+    <div class="tool-card item-card" data-category="excel finance ops" data-tier="pro" data-title="${title.toLowerCase()}" data-desc="${title.toLowerCase()} automated excel template" data-astro-cid-l4z7ivqh>
+      <div class="card-top" data-astro-cid-l4z7ivqh>
+        <span class="type-badge excel" data-astro-cid-l4z7ivqh>Excel (.xlsx)</span>
+        <span class="tier-badge pro" data-astro-cid-l4z7ivqh>PRO</span>
+      </div>
+      <h3 data-astro-cid-l4z7ivqh>${title}</h3>
+      <p class="card-desc" data-astro-cid-l4z7ivqh>Executive-grade multi-sheet financial and operational model. Features dynamic formulas, formatted KPI cards, and realistic pre-filled data rows.</p>
+      <div class="card-meta" data-astro-cid-l4z7ivqh>
+        <span data-astro-cid-l4z7ivqh>Microsoft Excel & Google Sheets Compatible • Unlocked Formulas</span>
+      </div>
+      <div class="card-footer" data-astro-cid-l4z7ivqh>
+        <a href="/downloads/excel/${f}" class="card-btn secondary" download data-astro-cid-l4z7ivqh>Download .xlsx &darr;</a>
+        <button class="card-btn pro-btn" onclick="openUpgradeModal()" data-astro-cid-l4z7ivqh>Pro ($29)</button>
+      </div>
+    </div>`;
+});
+
+// F. Printable Planners (102 unique)
+uniquePlanners.forEach(base => {
+  const title = formatTitle(base);
+  cardsHtml += `
+    <div class="tool-card item-card planner-card" data-category="planner productivity wellness lifestyle" data-tier="free" data-title="${title.toLowerCase()}" data-desc="${title.toLowerCase()} printable pdf planner" data-astro-cid-l4z7ivqh>
+      <div class="card-top" data-astro-cid-l4z7ivqh>
+        <span class="type-badge pdf" data-astro-cid-l4z7ivqh>Printable PDF</span>
+        <span class="tier-badge free" data-astro-cid-l4z7ivqh>Free Tier</span>
+      </div>
+      <h3 data-astro-cid-l4z7ivqh>${title}</h3>
+      <p class="card-desc" data-astro-cid-l4z7ivqh>High-resolution vector printable and GoodNotes/iPad planner. Available in 3 signature color palettes: Ocean Blue, Sage Green, and Rose Gold.</p>
+      <div class="theme-options" data-astro-cid-l4z7ivqh>
+        <span style="font-size: 0.8rem; font-weight: 600; color: #64748b;" data-astro-cid-l4z7ivqh>Palettes:</span>
+        <a href="/downloads/planners/${base}_ocean.pdf" class="color-dot ocean active" download title="Download Ocean Blue Theme" data-astro-cid-l4z7ivqh></a>
+        <a href="/downloads/planners/${base}_sage.pdf" class="color-dot sage" download title="Download Sage Green Theme" data-astro-cid-l4z7ivqh></a>
+        <a href="/downloads/planners/${base}_rose.pdf" class="color-dot rose" download title="Download Rose Gold Theme" data-astro-cid-l4z7ivqh></a>
+      </div>
+      <div class="card-footer" data-astro-cid-l4z7ivqh>
+        <a href="/downloads/planners/${base}_ocean.pdf" class="card-btn secondary planner-dl" download data-astro-cid-l4z7ivqh>Download PDF (Ocean) &darr;</a>
+        <button class="card-btn pro-btn" onclick="openUpgradeModal()" data-astro-cid-l4z7ivqh>Pro Bundle</button>
+      </div>
+    </div>`;
+});
+
+// G. Playbooks & SOP Kits (44)
+playbookFiles.forEach(f => {
+  const title = formatTitle(f);
+  cardsHtml += `
+    <div class="tool-card item-card" data-category="playbook ai career" data-tier="pro" data-title="${title.toLowerCase()}" data-desc="${title.toLowerCase()} playbook sop guide" data-astro-cid-l4z7ivqh>
+      <div class="card-top" data-astro-cid-l4z7ivqh>
+        <span class="type-badge" style="background: #e0e7ff; color: #4338ca;" data-astro-cid-l4z7ivqh>AI Bible & SOP</span>
+        <span class="tier-badge pro" data-astro-cid-l4z7ivqh>PRO</span>
+      </div>
+      <h3 data-astro-cid-l4z7ivqh>${title}</h3>
+      <p class="card-desc" data-astro-cid-l4z7ivqh>Executive standard operating procedure, prompt engineering vault, and career playbooks with copy-pasteable templates.</p>
+      <div class="card-meta" data-astro-cid-l4z7ivqh>
+        <span data-astro-cid-l4z7ivqh>Full E-Book Edition • Commercial Ready • Verified Frameworks</span>
+      </div>
+      <div class="card-footer" data-astro-cid-l4z7ivqh>
+        <a href="/downloads/playbooks/${f}" class="card-btn secondary" download data-astro-cid-l4z7ivqh>Download Guide (PDF) &darr;</a>
+        <button class="card-btn pro-btn" onclick="openUpgradeModal()" data-astro-cid-l4z7ivqh>Pro ($29)</button>
+      </div>
+    </div>`;
+});
+
+// Build Storefront HTML
+const storefrontPath = path.join(ROOT, 'tools/index.html');
+const storefrontHtml = `<!DOCTYPE html>
+<html lang="en" data-astro-cid-l4z7ivqh>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tools & Business Templates Catalog (400+) | SmartCents Digital Studio</title>
+  <meta name="description" content="Explore 400+ verified commercial assets: 9 interactive SaaS apps, 44 automated Excel models, 300+ vector PDF planners across 3 color themes, and 50+ AI prompt bibles and n8n automations.">
+  <link rel="stylesheet" href="/_astro/index.HiuEWove.css">
+  <link rel="stylesheet" href="/_astro/UpgradeModal.rCoh7SEV.css">
+  <style data-astro-cid-l4z7ivqh>
+    .store-hero { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #fff; padding: 4rem 1.5rem; text-align: center; border-bottom: 1px solid #334155; }
+    .store-hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.02em; }
+    .store-hero p { font-size: 1.15rem; color: #94a3b8; max-width: 760px; margin: 0 auto 1.5rem; }
+    .search-filter-section { max-width: 1200px; margin: -2rem auto 2.5rem; padding: 0 1rem; position: relative; z-index: 10; }
+    .search-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.25rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 1rem; }
+    .search-input-wrapper { position: relative; width: 100%; }
+    .search-input { width: 100%; padding: 0.9rem 1.2rem 0.9rem 2.8rem; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 1rem; outline: none; transition: border-color .15s; }
+    .search-input:focus { border-color: #0f9d58; box-shadow: 0 0 0 3px rgba(15,157,88,0.15); }
+    .search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 1.1rem; }
+    .filter-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .pill { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 0.4rem 0.85rem; border-radius: 99px; font-size: 0.85rem; font-weight: 600; color: #475569; cursor: pointer; transition: all .15s; }
+    .pill:hover { background: #e2e8f0; color: #0f172a; }
+    .pill.active { background: #0f172a; color: #fff; border-color: #0f172a; }
+    .catalog-grid { max-width: 1200px; margin: 0 auto; padding: 0 1rem 4rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+    .item-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; transition: transform .2s, box-shadow .2s; }
+    .item-card:hover { transform: translateY(-3px); box-shadow: 0 12px 20px -5px rgba(0,0,0,0.08); }
+    .bundle-highlight { border: 2px solid #0f9d58; background: #f0fdf4; }
+    .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+    .type-badge { font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 6px; text-transform: uppercase; }
+    .type-badge.interactive { background: #e0f2fe; color: #0284c7; }
+    .type-badge.excel { background: #dcfce7; color: #15803d; }
+    .type-badge.pdf { background: #fee2e2; color: #b91c1c; }
+    .type-badge.bundle { background: #fef3c7; color: #b45309; }
+    .tier-badge { font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 6px; }
+    .tier-badge.free { background: #f1f5f9; color: #475569; }
+    .tier-badge.pro { background: #0f172a; color: #fff; }
+    .item-card h3 { font-size: 1.15rem; color: #0f172a; margin-bottom: 0.5rem; line-height: 1.4; }
+    .item-card h3 a { color: inherit; text-decoration: none; }
+    .card-desc { font-size: 0.9rem; color: #64748b; line-height: 1.5; margin-bottom: 1rem; flex-grow: 1; }
+    .card-meta { font-size: 0.78rem; color: #94a3b8; margin-bottom: 1rem; border-top: 1px solid #f1f5f9; padding-top: 0.5rem; }
+    .theme-options { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; }
+    .color-dot { width: 18px; height: 18px; border-radius: 50%; display: inline-block; cursor: pointer; border: 2px solid #fff; box-shadow: 0 0 0 1px #cbd5e1; transition: transform .15s; }
+    .color-dot:hover { transform: scale(1.2); }
+    .color-dot.ocean { background: #0284c7; }
+    .color-dot.sage { background: #0f9d58; }
+    .color-dot.rose { background: #e11d48; }
+    .card-footer { display: flex; gap: 0.5rem; }
+    .card-btn { flex: 1; text-align: center; padding: 0.65rem 0.85rem; border-radius: 8px; font-weight: 600; font-size: 0.88rem; text-decoration: none; cursor: pointer; transition: all .15s; border: none; }
+    .card-btn.primary { background: #0f9d58; color: #fff; }
+    .card-btn.primary:hover { background: #0b8043; }
+    .card-btn.secondary { background: #f8fafc; color: #0f172a; border: 1px solid #cbd5e1; }
+    .card-btn.secondary:hover { background: #e2e8f0; }
+    .card-btn.pro-btn { background: #0f172a; color: #fff; }
+    .card-btn.pro-btn:hover { background: #1e293b; }
+    .saas-showcase { max-width: 1200px; margin: 0 auto 3rem; padding: 0 1rem; }
+    .saas-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+    .saas-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem; text-align: left; transition: all .2s; text-decoration: none; color: inherit; display: block; }
+    .saas-card:hover { transform: translateY(-2px); border-color: #0f9d58; box-shadow: 0 8px 16px -4px rgba(0,0,0,0.06); }
+    .saas-title { font-weight: 700; font-size: 1rem; color: #0f172a; margin-bottom: 0.35rem; }
+    .saas-desc { font-size: 0.82rem; color: #64748b; line-height: 1.4; }
+  </style>
+</head>
+<body data-astro-cid-l4z7ivqh>
+  <header data-astro-cid-l4z7ivqh>
+    <a href="/" class="brand" data-astro-cid-l4z7ivqh>SmartCents</a>
+    <nav data-astro-cid-l4z7ivqh>
+      <a href="/category/saving/" data-astro-cid-l4z7ivqh>Saving</a>
+      <a href="/category/budgeting/" data-astro-cid-l4z7ivqh>Budgeting</a>
+      <a href="/category/investing/" data-astro-cid-l4z7ivqh>Investing</a>
+      <a href="/category/side-hustles/" data-astro-cid-l4z7ivqh>Side Hustles</a>
+      <a href="/tools/" class="active" data-astro-cid-l4z7ivqh>Tools & Templates (400+)</a>
+      <a href="/about/" data-astro-cid-l4z7ivqh>About</a>
+    </nav>
+  </header>
+
+  <div class="store-hero" data-astro-cid-l4z7ivqh>
+    <span class="tool-badge" style="background: rgba(15,157,88,0.2); color: #34d399; margin-bottom: 0.75rem;" data-astro-cid-l4z7ivqh>⭐ 400+ COMMERCIAL DIGITAL ASSETS</span>
+    <h1 data-astro-cid-l4z7ivqh>Digital Products & Template Empire</h1>
+    <p data-astro-cid-l4z7ivqh>Accelerate your business and wealth with 9 interactive SaaS utilities, 44 automated Excel financial models, 300+ vector PDF planners across 3 signature palettes, and 50+ AI prompt bibles & n8n automations.</p>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;" data-astro-cid-l4z7ivqh>
+      <button class="card-btn" style="background: #0f9d58; color: #fff; max-width: 280px; padding: 0.85rem 1.5rem; font-size: 1rem;" onclick="openUpgradeModal()" data-astro-cid-l4z7ivqh>Unlock VIP Lifetime Pass ($29) &rarr;</button>
+      <a href="/downloads/bundles/Complete-400-Digital-Products-Mega-Bundle.zip" class="card-btn" style="background: #1e293b; color: #fff; max-width: 280px; padding: 0.85rem 1.5rem; font-size: 1rem;" download data-astro-cid-l4z7ivqh>Download All 400+ Files (ZIP) &darr;</a>
     </div>
   </div>
-</section>
 
-<!-- Search & Filter Controls -->
-<section class="filter-section" data-astro-cid-l4z7ivqh>
-  <div class="search-box" data-astro-cid-l4z7ivqh>
-    <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor" data-astro-cid-l4z7ivqh><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" data-astro-cid-l4z7ivqh></path></svg>
-    <input type="text" id="tool-search" placeholder="Search 380+ tools, spreadsheets, planners, AI prompt vaults (e.g. invoice, crypto, adhd, roas)..." autocomplete="off" data-astro-cid-l4z7ivqh>
-    <button id="search-clear" class="clear-btn" style="display:none;" data-astro-cid-l4z7ivqh>&times;</button>
+  <div class="saas-showcase" data-astro-cid-l4z7ivqh>
+    <h2 style="font-size: 1.25rem; font-weight: 800; color: #0f172a; margin-bottom: 1rem; text-align: center;" data-astro-cid-l4z7ivqh>⚡ 9 FEATURED INTERACTIVE WEB SAAS SUITES</h2>
+    <div class="saas-grid" data-astro-cid-l4z7ivqh>
+      <a href="/tools/invoice/" class="saas-card" data-astro-cid-l4z7ivqh>
+        <div class="saas-title" data-astro-cid-l4z7ivqh>Smart Invoice Maker</div>
+        <div class="saas-desc" data-astro-cid-l4z7ivqh>Real-time taxes, multi-currency ($/€/£/MAD), vector PDF export & CSV.</div>
+      </a>
+      <a href="/tools/wealth-simulator/" class="saas-card" data-astro-cid-l4z7ivqh>
+        <div class="saas-title" data-astro-cid-l4z7ivqh>FIRE & Wealth Simulator</div>
+        <div class="saas-desc" data-astro-cid-l4z7ivqh>Visual compounding curves, inflation adjustment & retirement timeline.</div>
+      </a>
+      <a href="/tools/rate-calculator/" class="saas-card" data-astro-cid-l4z7ivqh>
+        <div class="saas-title" data-astro-cid-l4z7ivqh>Freelance Rate Estimator</div>
+        <div class="saas-desc" data-astro-cid-l4z7ivqh>Sustainable hourly/day rates, overhead buffers, and client quote builder.</div>
+      </a>
+      <a href="/tools/focus-os/" class="saas-card" data-astro-cid-l4z7ivqh>
+        <div class="saas-title" data-astro-cid-l4z7ivqh>Deep Work & Pomodoro OS</div>
+        <div class="saas-desc" data-astro-cid-l4z7ivqh>Sprint focus timers, audio chimes, and interactive 4-quadrant Eisenhower board.</div>
+      </a>
+      <a href="/tools/prompt-architect/" class="saas-card" data-astro-cid-l4z7ivqh>
+        <div class="saas-title" data-astro-cid-l4z7ivqh>AI Prompt Architect</div>
+        <div class="saas-desc" data-astro-cid-l4z7ivqh>Format enterprise system prompts with XML tags and role schemas for Claude & GPT.</div>
+      </a>
+      <a href="/tools/hook-analyzer/" class="saas-card" data-astro-cid-l4z7ivqh>
+        <div class="saas-title" data-astro-cid-l4z7ivqh>Viral Hook Scorer</div>
+        <div class="saas-desc" data-astro-cid-l4z7ivqh>Live 0-100% viral score, emotional triggers, and instant psychological rewrites.</div>
+      </a>
+      <a href="/tools/qr-studio/" class="saas-card" data-astro-cid-l4z7ivqh>
+        <div class="saas-title" data-astro-cid-l4z7ivqh>QR Code Studio</div>
+        <div class="saas-desc" data-astro-cid-l4z7ivqh>High-res custom QR codes for websites, WiFi networks, WhatsApp, and vCards.</div>
+      </a>
+      <a href="/tools/legal-generator/" class="saas-card" data-astro-cid-l4z7ivqh>
+        <div class="saas-title" data-astro-cid-l4z7ivqh>Legal Policy Maker</div>
+        <div class="saas-desc" data-astro-cid-l4z7ivqh>GDPR & CCPA-compliant Privacy Policies and Terms of Service in 60s.</div>
+      </a>
+      <a href="/tools/unit-economics/" class="saas-card" data-astro-cid-l4z7ivqh>
+        <div class="saas-title" data-astro-cid-l4z7ivqh>Unit Economics Simulator</div>
+        <div class="saas-desc" data-astro-cid-l4z7ivqh>LTV/CAC ratios, CAC payback velocity, and 24-month cohort decay charts.</div>
+      </a>
+    </div>
   </div>
-  <div class="filter-pills" id="filter-pills" data-astro-cid-l4z7ivqh>
-    <button class="pill active" data-filter="all" data-astro-cid-l4z7ivqh>All Products (190+ Cards / 380+ Files)</button>
-    <button class="pill" data-filter="bundle" data-astro-cid-l4z7ivqh>Mega Bundles (ZIP)</button>
-    <button class="pill" data-filter="interactive" data-astro-cid-l4z7ivqh>Interactive SaaS Apps (4)</button>
-    <button class="pill" data-filter="spreadsheet" data-astro-cid-l4z7ivqh>Business Excel (40)</button>
-    <button class="pill" data-filter="planner" data-astro-cid-l4z7ivqh>Printable Planners (300+)</button>
-    <button class="pill" data-filter="playbook" data-astro-cid-l4z7ivqh>AI Bibles &amp; SOP Kits (40)</button>
-    <button class="pill" data-filter="finance" data-astro-cid-l4z7ivqh>Finance &amp; Wealth</button>
-    <button class="pill" data-filter="productivity" data-astro-cid-l4z7ivqh>Productivity &amp; ADHD</button>
-    <button class="pill" data-filter="operations" data-astro-cid-l4z7ivqh>Operations &amp; E-Com</button>
-    <button class="pill" data-filter="wellness" data-astro-cid-l4z7ivqh>Health &amp; Wellness</button>
-    <button class="pill" data-filter="lifestyle" data-astro-cid-l4z7ivqh>Home &amp; Lifestyle</button>
-    <button class="pill" data-filter="academic" data-astro-cid-l4z7ivqh>Academic &amp; Creator</button>
-  </div>
-</section>
 
-<!-- Catalog Grid -->
-<div class="catalog-grid" id="catalog-grid" data-astro-cid-l4z7ivqh>
-  ${cardsHtml}
-</div>
-
-<!-- Empty search state -->
-<div id="no-results" class="no-results" style="display:none;" data-astro-cid-l4z7ivqh>
-  <p data-astro-cid-l4z7ivqh>No tools or templates match your search criteria.</p>
-  <button class="card-btn secondary" onclick="document.getElementById('tool-search').value=''; document.getElementById('tool-search').dispatchEvent(new Event('input'));" data-astro-cid-l4z7ivqh>Reset Search</button>
-</div>
-</div>
-
-<!-- Upgrade Modal -->
-<div id="upgrade-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title" style="display: none;" data-astro-cid-udg2w24d>
-  <div class="modal-card" data-astro-cid-udg2w24d>
-    <button class="modal-close-btn" id="modal-close" aria-label="Close modal" data-astro-cid-udg2w24d>&times;</button>
-    <div class="modal-header" data-astro-cid-udg2w24d>
-      <span class="pro-tag" data-astro-cid-udg2w24d>BIZTOOLS PRO SUITE</span>
-      <h2 id="modal-title" data-astro-cid-udg2w24d>Upgrade to Pro &amp; Unlock Everything</h2>
-      <p class="modal-subtitle" data-astro-cid-udg2w24d>Get instant, unrestricted commercial access to all 380+ digital templates, spreadsheets, printable planners, and AI books.</p>
-    </div>
-    <div class="feature-checklist" data-astro-cid-udg2w24d>
-      <div class="feature-item" data-astro-cid-udg2w24d>
-        <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor" data-astro-cid-udg2w24d><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" data-astro-cid-udg2w24d></path></svg>
-        <div data-astro-cid-udg2w24d><strong data-astro-cid-udg2w24d>All 40 Automated Excel Workbooks</strong><span data-astro-cid-udg2w24d>P&amp;L, SaaS, Cap Table, Real Estate ROI, ROAS, HR &amp; Cash Flow</span></div>
+  <div class="search-filter-section" data-astro-cid-l4z7ivqh>
+    <div class="search-card" data-astro-cid-l4z7ivqh>
+      <div class="search-input-wrapper" data-astro-cid-l4z7ivqh>
+        <span class="search-icon" data-astro-cid-l4z7ivqh>🔍</span>
+        <input type="text" id="catalogSearch" class="search-input" placeholder="Search 400+ templates, SaaS apps, planners, Excel models, or AI playbooks..." oninput="filterCatalog()" data-astro-cid-l4z7ivqh>
       </div>
-      <div class="feature-item" data-astro-cid-udg2w24d>
-        <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor" data-astro-cid-udg2w24d><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" data-astro-cid-udg2w24d></path></svg>
-        <div data-astro-cid-udg2w24d><strong data-astro-cid-udg2w24d>All 300+ Printable &amp; Tablet PDF Planners</strong><span data-astro-cid-udg2w24d>102 unique planners in 3 colors: Ocean, Sage, and Rose</span></div>
-      </div>
-      <div class="feature-item" data-astro-cid-udg2w24d>
-        <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor" data-astro-cid-udg2w24d><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" data-astro-cid-udg2w24d></path></svg>
-        <div data-astro-cid-udg2w24d><strong data-astro-cid-udg2w24d>All 40 AI Prompt Bibles &amp; Business SOP Kits</strong><span data-astro-cid-udg2w24d>500+ Prompts Bible, Agency Onboarding, AI Solopreneur OS &amp; Career Kits</span></div>
-      </div>
-      <div class="feature-item" data-astro-cid-udg2w24d>
-        <svg class="check-icon" viewBox="0 0 20 20" fill="currentColor" data-astro-cid-udg2w24d><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" data-astro-cid-udg2w24d></path></svg>
-        <div data-astro-cid-udg2w24d><strong data-astro-cid-udg2w24d>All 4 Interactive Web SaaS Apps</strong><span data-astro-cid-udg2w24d>White-label invoice generator, wealth simulator, and deep work OS</span></div>
-      </div>
-    </div>
-    <div class="pricing-grid" data-astro-cid-udg2w24d>
-      <div class="pricing-card" data-astro-cid-udg2w24d>
-        <div class="plan-name" data-astro-cid-udg2w24d>Pro Monthly</div>
-        <div class="price" data-astro-cid-udg2w24d><span class="currency" data-astro-cid-udg2w24d>$</span><span class="amount" data-astro-cid-udg2w24d>7</span><span class="period" data-astro-cid-udg2w24d>/month</span></div>
-        <p class="plan-desc" data-astro-cid-udg2w24d>Instant access to all 380+ templates &amp; interactive tools.</p>
-        <button class="plan-btn secondary-btn" id="btn-upgrade-monthly" data-astro-cid-udg2w24d>Pay $7 via PayPal &rarr;</button>
-      </div>
-      <div class="pricing-card popular" data-astro-cid-udg2w24d>
-        <div class="best-value-badge" data-astro-cid-udg2w24d>BEST VALUE</div>
-        <div class="plan-name" data-astro-cid-udg2w24d>Lifetime VIP All-Access</div>
-        <div class="price" data-astro-cid-udg2w24d><span class="currency" data-astro-cid-udg2w24d>$</span><span class="amount" data-astro-cid-udg2w24d>29</span><span class="period" data-astro-cid-udg2w24d>one-time</span></div>
-        <p class="plan-desc" data-astro-cid-udg2w24d>Pay once, own all 380+ templates + Mega ZIP archive forever.</p>
-        <button class="plan-btn primary-btn" id="btn-upgrade-lifetime" data-astro-cid-udg2w24d>Buy Lifetime ($29 PayPal) &rarr;</button>
-      </div>
-    </div>
-    <div class="modal-footer" data-astro-cid-udg2w24d>
-      <button class="text-dismiss-btn" id="btn-continue-free" data-astro-cid-udg2w24d>Continue with Free Plan</button>
-      <div class="test-pro-wrapper" data-astro-cid-udg2w24d>
-        <label class="test-pro-label" data-astro-cid-udg2w24d>
-          <input type="checkbox" id="test-pro-toggle" data-astro-cid-udg2w24d>
-          <span data-astro-cid-udg2w24d>Simulate Pro Mode (Preview / Testing)</span>
-        </label>
+      <div class="filter-pills" data-astro-cid-l4z7ivqh>
+        <button class="pill active" onclick="setCategory('all')" data-astro-cid-l4z7ivqh>All Products (400+ Files)</button>
+        <button class="pill" onclick="setCategory('bundle')" data-astro-cid-l4z7ivqh>Mega Bundles (ZIP)</button>
+        <button class="pill" onclick="setCategory('interactive')" data-astro-cid-l4z7ivqh>Interactive SaaS Apps (9)</button>
+        <button class="pill" onclick="setCategory('automations')" data-astro-cid-l4z7ivqh>Automation Workflows (6)</button>
+        <button class="pill" onclick="setCategory('notion')" data-astro-cid-l4z7ivqh>Notion Systems (5)</button>
+        <button class="pill" onclick="setCategory('excel')" data-astro-cid-l4z7ivqh>Business Excel (44)</button>
+        <button class="pill" onclick="setCategory('planner')" data-astro-cid-l4z7ivqh>Printable Planners (300+)</button>
+        <button class="pill" onclick="setCategory('ai')" data-astro-cid-l4z7ivqh>AI Bibles & Prompts (20)</button>
+        <button class="pill" onclick="setCategory('career')" data-astro-cid-l4z7ivqh>ATS Career & SOP Kits (24)</button>
       </div>
     </div>
   </div>
-</div>
 
-<script>
-  window.openUpgradeModal = function(featureReason) {
-    var modal = document.getElementById('upgrade-modal');
-    if (modal) {
-      modal.style.display = 'flex';
-      var title = document.getElementById('modal-title');
-      if (title && featureReason) {
-        title.setAttribute('data-original-title', title.innerText);
-        title.innerText = 'Unlock ' + featureReason + ' with Pro';
-      }
-    }
-  };
+  <div class="catalog-grid" id="catalogGrid" data-astro-cid-l4z7ivqh>
+    ${cardsHtml}
+  </div>
 
-  window.closeUpgradeModal = function() {
-    var modal = document.getElementById('upgrade-modal');
-    if (modal) {
-      modal.style.display = 'none';
-      var title = document.getElementById('modal-title');
-      if (title && title.getAttribute('data-original-title')) {
-        title.innerText = title.getAttribute('data-original-title');
-      }
-    }
-  };
+  <!-- PayPal Checkout Modal -->
+  <div id="upgradeModal" class="modal-backdrop" style="display: none;" data-astro-cid-l4z7ivqh>
+    <div class="modal-card" style="background: #fff; max-width: 500px; margin: 5vh auto; border-radius: 16px; padding: 2rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2); position: relative;" data-astro-cid-l4z7ivqh>
+      <button onclick="closeUpgradeModal()" style="position: absolute; right: 1.25rem; top: 1.25rem; background: none; border: none; font-size: 1.4rem; cursor: pointer;" data-astro-cid-l4z7ivqh>&times;</button>
+      <span class="tool-badge" style="background: #dcfce7; color: #15803d; margin-bottom: 0.5rem;" data-astro-cid-l4z7ivqh>⭐ VERIFIED COMMERCIAL LICENSE</span>
+      <h2 style="font-size: 1.6rem; color: #0f172a; margin-bottom: 0.5rem;" data-astro-cid-l4z7ivqh>Upgrade to Pro & Unlock Everything</h2>
+      <p style="font-size: 0.95rem; color: #64748b; margin-bottom: 1.5rem;" data-astro-cid-l4z7ivqh>Get immediate commercial download access to all 400+ digital assets, 44 financial Excel models, 300+ vector PDF planners across 3 palettes, 50+ AI prompt bibles and n8n workflows.</p>
 
-  window.switchPlannerTheme = function(dotEl, baseName, theme) {
-    var parent = dotEl.closest('.planner-meta');
-    if (parent) {
-      parent.querySelectorAll('.dot').forEach(function(d) { d.classList.remove('active-dot'); });
-      dotEl.classList.add('active-dot');
-    }
-    var link = document.getElementById('link-' + baseName);
-    if (link) {
-      link.href = '/downloads/planners/' + baseName + '_' + theme + '.pdf';
-      link.innerText = 'Get Free PDF (' + theme.toUpperCase() + ') \u2193';
-    }
-    var btn = document.getElementById('btn-' + baseName);
-    if (btn) {
-      btn.setAttribute('data-download-url', '/downloads/planners/' + baseName + '_' + theme + '.pdf');
-    }
-  };
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 1rem; margin-bottom: 1.5rem;" data-astro-cid-l4z7ivqh>
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem;" data-astro-cid-l4z7ivqh>
+          <span style="font-weight: 700; color: #0f172a;" data-astro-cid-l4z7ivqh>Lifetime VIP Unlimited Access</span>
+          <span style="font-size: 1.5rem; font-weight: 800; color: #0f9d58;" data-astro-cid-l4z7ivqh>$29 <span style="font-size: 0.85rem; color: #64748b; font-weight: 450;" data-astro-cid-l4z7ivqh>one-time</span></span>
+        </div>
+        <p style="font-size: 0.8rem; color: #64748b; margin: 0;" data-astro-cid-l4z7ivqh>Includes lifetime updates, all future templates, and direct instant delivery of the Mega ZIP bundle.</p>
+      </div>
 
-  document.addEventListener('DOMContentLoaded', function() {
-    var closeBtn = document.getElementById('modal-close');
-    var continueBtn = document.getElementById('btn-continue-free');
-    var modal = document.getElementById('upgrade-modal');
-    var monthlyBtn = document.getElementById('btn-upgrade-monthly');
-    var lifetimeBtn = document.getElementById('btn-upgrade-lifetime');
-    var testProToggle = document.getElementById('test-pro-toggle');
+      <!-- Live PayPal Button -->
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="text-align: center;" data-astro-cid-l4z7ivqh>
+        <input type="hidden" name="cmd" value="_xclick">
+        <input type="hidden" name="business" value="htcmobile.ab@gmail.com">
+        <input type="hidden" name="item_name" value="SmartCents Pro 400+ Complete Digital Products Mega Bundle">
+        <input type="hidden" name="amount" value="29.00">
+        <input type="hidden" name="currency_code" value="USD">
+        <input type="hidden" name="return" value="https://achrafbah.github.io/tools/">
+        <input type="hidden" name="cancel_return" value="https://achrafbah.github.io/tools/">
+        <button type="submit" class="card-btn primary" style="width: 100%; padding: 0.85rem; font-size: 1rem; border: none; cursor: pointer;" data-astro-cid-l4z7ivqh>
+          Pay $29 with PayPal Secure Checkout &rarr;
+        </button>
+      </form>
+      <div style="text-align: center; margin-top: 1rem; font-size: 0.78rem; color: #94a3b8;" data-astro-cid-l4z7ivqh>
+        🔒 256-Bit SSL Encrypted • Verified Merchant htcmobile.ab@gmail.com
+      </div>
+    </div>
+  </div>
 
-    if (closeBtn) closeBtn.addEventListener('click', window.closeUpgradeModal);
-    if (continueBtn) continueBtn.addEventListener('click', window.closeUpgradeModal);
-    if (modal) {
-      modal.addEventListener('click', function(e) {
-        if (e.target === modal) window.closeUpgradeModal();
+  <footer style="background: #0f172a; color: #94a3b8; padding: 3rem 1.5rem; text-align: center; border-top: 1px solid #1e293b;" data-astro-cid-l4z7ivqh>
+    <p style="margin-bottom: 0.5rem;" data-astro-cid-l4z7ivqh>&copy; 2026 SmartCents Studio &bull; Curated by Achraf Bahloul</p>
+    <p style="font-size: 0.85rem;" data-astro-cid-l4z7ivqh>Commercial Digital Assets, Interactive Web SaaS Tools & Automation Blueprints.</p>
+  </footer>
+
+  <script data-astro-cid-l4z7ivqh>
+    let activeCat = 'all';
+
+    function setCategory(cat) {
+      activeCat = cat;
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      event.target.classList.add('active');
+      filterCatalog();
+    }
+
+    function filterCatalog() {
+      const q = (document.getElementById('catalogSearch').value || '').toLowerCase().trim();
+      const cards = document.querySelectorAll('.item-card');
+
+      cards.forEach(card => {
+        const cat = (card.getAttribute('data-category') || '').toLowerCase();
+        const title = (card.getAttribute('data-title') || '').toLowerCase();
+        const desc = (card.getAttribute('data-desc') || '').toLowerCase();
+
+        const matchesCat = (activeCat === 'all') || cat.includes(activeCat);
+        const matchesQuery = !q || title.includes(q) || desc.includes(q);
+
+        card.style.display = (matchesCat && matchesQuery) ? 'flex' : 'none';
       });
     }
 
-    var PAYPAL_EMAIL = 'htcmobile.ab@gmail.com';
-    var RETURN_URL = 'https://achrafbah.github.io/tools/?pro_unlocked=1&bundle=1';
-    var CANCEL_URL = 'https://achrafbah.github.io/tools/';
+    // Color theme swapper on planner cards
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('color-dot')) {
+        e.preventDefault();
+        const parent = e.target.closest('.planner-card');
+        if (!parent) return;
 
-    var buildPayPalUrl = function(itemName, amount) {
-      return 'https://www.paypal.com/cgi-bin/webscr?cmd=_xclick'
-        + '&business=' + encodeURIComponent(PAYPAL_EMAIL)
-        + '&item_name=' + encodeURIComponent(itemName)
-        + '&amount=' + encodeURIComponent(amount)
-        + '&currency_code=USD'
-        + '&no_shipping=1'
-        + '&return=' + encodeURIComponent(RETURN_URL)
-        + '&cancel_return=' + encodeURIComponent(CANCEL_URL);
-    };
+        parent.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+        e.target.classList.add('active');
 
-    if (monthlyBtn) {
-      monthlyBtn.addEventListener('click', function() {
-        window.location.href = buildPayPalUrl('BizTools Pro Pass - All 380+ Templates & SaaS Apps (Monthly)', '7.00');
-      });
-    }
-    if (lifetimeBtn) {
-      lifetimeBtn.addEventListener('click', function() {
-        window.location.href = buildPayPalUrl('BizTools Lifetime VIP All-Access (380+ Digital Products + Mega ZIP Archive)', '29.00');
-      });
-    }
-
-    try {
-      var params = new URLSearchParams(window.location.search);
-      if (params.get('pro_unlocked') === '1') {
-        localStorage.setItem('biztools_pro_active', 'true');
-        window.dispatchEvent(new CustomEvent('biztools:pro_changed', { detail: { isPro: true } }));
-        if (params.get('bundle') === '1') {
-          setTimeout(function() {
-            window.location.href = '/downloads/bundles/Complete-380-Digital-Products-Mega-Bundle.zip';
-          }, 600);
+        const dlBtn = parent.querySelector('.planner-dl');
+        if (dlBtn) {
+          dlBtn.href = e.target.href;
+          const themeName = e.target.classList.contains('ocean') ? 'Ocean' : e.target.classList.contains('sage') ? 'Sage' : 'Rose';
+          dlBtn.textContent = 'Download PDF (' + themeName + ') ↓';
         }
       }
-    } catch (e) {}
-
-    var savedPro = localStorage.getItem('biztools_pro_active') === 'true';
-    if (testProToggle) {
-      testProToggle.checked = savedPro;
-      testProToggle.addEventListener('change', function(e) {
-        localStorage.setItem('biztools_pro_active', e.target.checked ? 'true' : 'false');
-        window.dispatchEvent(new CustomEvent('biztools:pro_changed', { detail: { isPro: e.target.checked } }));
-        window.closeUpgradeModal();
-      });
-    }
-
-    // Search and Filtering
-    var searchInput = document.getElementById('tool-search');
-    var clearBtn = document.getElementById('search-clear');
-    var pills = document.querySelectorAll('.pill');
-    var cards = document.querySelectorAll('.item-card');
-    var noResults = document.getElementById('no-results');
-
-    var currentFilter = 'all';
-    var currentQuery = '';
-
-    function filterItems() {
-      var visibleCount = 0;
-      cards.forEach(function(card) {
-        var category = card.getAttribute('data-category') || '';
-        var title = card.getAttribute('data-title') || '';
-        var desc = card.getAttribute('data-desc') || '';
-
-        var matchesCategory = (currentFilter === 'all') || category.indexOf(currentFilter) !== -1;
-        var matchesQuery = !currentQuery || (title.indexOf(currentQuery) !== -1) || (desc.indexOf(currentQuery) !== -1);
-
-        if (matchesCategory && matchesQuery) {
-          card.style.display = 'flex';
-          visibleCount++;
-        } else {
-          card.style.display = 'none';
-        }
-      });
-
-      if (noResults) {
-        noResults.style.display = visibleCount === 0 ? 'block' : 'none';
-      }
-    }
-
-    if (searchInput) {
-      searchInput.addEventListener('input', function(e) {
-        currentQuery = e.target.value.toLowerCase().trim();
-        if (clearBtn) clearBtn.style.display = currentQuery ? 'block' : 'none';
-        filterItems();
-      });
-    }
-
-    if (clearBtn) {
-      clearBtn.addEventListener('click', function() {
-        if (searchInput) {
-          searchInput.value = '';
-          currentQuery = '';
-          clearBtn.style.display = 'none';
-          filterItems();
-        }
-      });
-    }
-
-    pills.forEach(function(pill) {
-      pill.addEventListener('click', function() {
-        pills.forEach(function(p) { p.classList.remove('active'); });
-        pill.classList.add('active');
-        currentFilter = pill.getAttribute('data-filter') || 'all';
-        filterItems();
-      });
     });
 
-    function syncProButtons() {
-      var isPro = localStorage.getItem('biztools_pro_active') === 'true';
-      document.querySelectorAll('.pro-btn-label').forEach(function(el) {
-        el.innerText = isPro ? 'Download Pro Item \\u2193' : 'Unlock with Pro ($7)';
-      });
+    function openUpgradeModal() {
+      document.getElementById('upgradeModal').style.display = 'block';
     }
-    syncProButtons();
-    window.addEventListener('biztools:pro_changed', syncProButtons);
-  });
-</script>
-</main>
-<footer>
-  <p>Some links are affiliate links. We may earn a commission at no cost to you.</p>
-  <p>&copy; 2026 SmartCents Digital Products &middot; <a href="/tools/">Tools &amp; Templates (380+)</a> &middot; <a href="/about/">About</a> &middot; <a href="/privacy/">Privacy</a></p>
-</footer>
-</body></html>`;
 
-fs.writeFileSync(path.join(ROOT, 'tools/index.html'), catalogHtml, 'utf8');
-console.log('Successfully compiled achrafbah.github.io-main/tools/index.html!');
+    function closeUpgradeModal() {
+      document.getElementById('upgradeModal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>`;
+
+fs.writeFileSync(storefrontPath, storefrontHtml, 'utf8');
+console.log('Successfully updated tools/index.html with all 400+ assets!');
+
+// Also update homepage index.html
+const homePath = path.join(ROOT, 'index.html');
+let homeHtml = fs.readFileSync(homePath, 'utf8');
+homeHtml = homeHtml.replace(/380\+/g, '400+').replace(/4 interactive/g, '9 interactive');
+fs.writeFileSync(homePath, homeHtml, 'utf8');
+console.log('Successfully updated index.html with 400+ assets and 9 interactive SaaS tools!');

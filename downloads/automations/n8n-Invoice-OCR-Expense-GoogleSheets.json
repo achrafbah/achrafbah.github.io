@@ -1,0 +1,48 @@
+{
+  "name": "Invoice OCR to Google Sheets Financial Engine (n8n Production)",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": { "item": [{ "mode": "everyMinute" }] },
+        "filters": { "q": "has:attachment filename:pdf" }
+      },
+      "name": "Gmail Invoice Watcher",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "operation": "extractData",
+        "model": "gpt-4o",
+        "schema": "{\n  \"vendorName\": \"string\",\n  \"invoiceDate\": \"string\",\n  \"totalAmount\": \"number\",\n  \"currency\": \"string\",\n  \"taxAmount\": \"number\",\n  \"category\": \"string\"\n}"
+      },
+      "name": "AI Vision Invoice Parser",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "documentId": "={{ $env.ACCOUNTING_SHEET_ID }}",
+        "sheetName": "Expenses_2026",
+        "columns": {
+          "Vendor": "={{ $json.vendorName }}",
+          "Date": "={{ $json.invoiceDate }}",
+          "Amount": "={{ $json.totalAmount }}",
+          "Currency": "={{ $json.currency }}",
+          "Tax": "={{ $json.taxAmount }}",
+          "Category": "={{ $json.category }}"
+        }
+      },
+      "name": "Append to Accounting Spreadsheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [750, 300]
+    }
+  ],
+  "connections": {
+    "Gmail Invoice Watcher": { "main": [[{ "node": "AI Vision Invoice Parser", "type": "main", "index": 0 }]] },
+    "AI Vision Invoice Parser": { "main": [[{ "node": "Append to Accounting Spreadsheet", "type": "main", "index": 0 }]] }
+  }
+}

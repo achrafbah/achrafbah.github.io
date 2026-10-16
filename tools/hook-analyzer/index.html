@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Viral Hook & Headline Scorer | SmartCents SaaS Tools</title>
+  <meta name="description" content="Analyze your headlines, hooks, and opening lines for LinkedIn, TikTok, X, and YouTube with live viral potential scores and formula rewrites.">
+  <style>
+    :root {
+      --text: #0f172a;
+      --muted: #64748b;
+      --bg: #ffffff;
+      --card: #f8fafc;
+      --border: #e2e8f0;
+      --accent: #f59e0b;
+      --accent-hover: #d97706;
+      --navy: #0f172a;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      color: var(--text);
+      background: #f8fafc;
+      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    }
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 1rem max(1rem, 50% - 600px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .brand { font-size: 1.3rem; font-weight: 800; text-decoration: none; color: var(--navy); }
+    nav { display: flex; gap: 1.25rem; font-size: 0.95rem; }
+    nav a { color: var(--text); text-decoration: none; font-weight: 500; }
+    nav a:hover { color: #f59e0b; }
+    main { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+    .tool-header { text-align: center; margin-bottom: 2rem; }
+    .tool-badge { background: #fef3c7; color: #b45309; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem; font-weight: 700; display: inline-block; margin-bottom: 0.5rem; }
+    h1 { font-size: 2.2rem; color: var(--navy); margin-bottom: 0.5rem; }
+    .subtitle { color: var(--muted); font-size: 1.05rem; max-width: 720px; margin: 0 auto; }
+    .grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    @media (max-width: 900px) { .grid-layout { grid-template-columns: 1fr; } }
+    .card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; box-shadow: 0 4px 6px -1px #0000000a; }
+    textarea {
+      width: 100%; padding: 0.85rem; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 1.1rem; outline: none; transition: border-color .15s; font-family: inherit; resize: vertical; min-height: 110px; margin-bottom: 1rem;
+    }
+    textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #f59e0b26; }
+    .score-circle {
+      width: 130px; height: 130px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 0 auto 1.5rem; border: 8px solid #cbd5e1; font-weight: 800; transition: all .3s;
+    }
+    .score-circle.green { border-color: var(--success); color: var(--success); }
+    .score-circle.yellow { border-color: var(--accent); color: var(--accent); }
+    .score-circle.red { border-color: var(--danger); color: var(--danger); }
+    .score-num { font-size: 2.8rem; line-height: 1; }
+    .score-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }
+    .metric-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem; text-align: center; }
+    .metric-val { font-size: 1.25rem; font-weight: 800; color: var(--navy); }
+    .metric-name { font-size: 0.75rem; color: var(--muted); }
+    .checklist { list-style: none; margin-bottom: 1.5rem; }
+    .checklist li { display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .badge { padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
+    .badge-pass { background: #dcfce7; color: #15803d; }
+    .badge-warn { background: #fef9c3; color: #854d0e; }
+    .badge-fail { background: #fee2e2; color: #b91c1c; }
+    .rewrite-item { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 0.85rem; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+    .rewrite-text { font-size: 0.92rem; font-weight: 500; color: #1e293b; }
+    .copy-sm { background: #fff; border: 1px solid #cbd5e1; padding: 0.35rem 0.65rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .copy-sm:hover { background: #f1f5f9; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="brand">SmartCents</a>
+    <nav>
+      <a href="/tools/">Store & Catalog (400+)</a>
+      <a href="/tools/invoice/">Invoice Maker</a>
+      <a href="/tools/prompt-architect/">Prompt Architect</a>
+      <a href="/tools/hook-analyzer/">Hook Scorer</a>
+      <a href="/about/">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="tool-header">
+      <span class="tool-badge">🔥 VIRAL MARKETING SAAS</span>
+      <h1>Viral Social Media Hook & Headline Scorer</h1>
+      <p class="subtitle">Test your opening lines, post hooks, and video titles. Get real-time engagement potential scores and instant psychological formula rewrites.</p>
+    </div>
+
+    <div class="grid-layout">
+      <!-- Input Column -->
+      <div class="card">
+        <label for="hookInput" style="font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; display: block;">Paste Your Hook or Headline:</label>
+        <textarea id="hookInput" placeholder="e.g. 99% of people fail at building wealth because they make this one simple mistake..." oninput="analyzeHook()">99% of solopreneurs fail in their first year. Here are 5 painful lessons I learned reaching $20,000/month:</textarea>
+
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+          <button class="copy-sm" onclick="setSample(1)">Sample 1: Contrarian</button>
+          <button class="copy-sm" onclick="setSample(2)">Sample 2: Data Hook</button>
+          <button class="copy-sm" onclick="setSample(3)">Sample 3: Story Open</button>
+        </div>
+
+        <h3 style="font-size: 1.05rem; margin-bottom: 0.75rem;">Formula Rewrites for Your Idea:</h3>
+        <div id="rewritesContainer"></div>
+      </div>
+
+      <!-- Analysis Results Column -->
+      <div class="card">
+        <div class="score-circle yellow" id="scoreCircle">
+          <div class="score-num" id="scoreNum">78</div>
+          <div class="score-label" id="scoreText">High Potential</div>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-val" id="charCount">0</div>
+            <div class="metric-name">Characters</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val" id="wordCount">0</div>
+            <div class="metric-name">Words</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val" id="powerWordsCount">0</div>
+            <div class="metric-name">Power Words</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-val" id="gradeLevel">Grade 5</div>
+            <div class="metric-name">Readability</div>
+          </div>
+        </div>
+
+        <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem;">Psychological Trigger Audit</h4>
+        <ul class="checklist" id="checklist"></ul>
+
+        <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem;">Platform Optimal Green-Zones</h4>
+        <div style="font-size: 0.85rem; color: var(--muted); line-height: 1.8;">
+          <div>• <strong>LinkedIn 3-Line Cutoff:</strong> <span id="liStatus" class="badge">Check</span></div>
+          <div>• <strong>TikTok/Reels 3-Sec Speech:</strong> <span id="videoStatus" class="badge">Check</span></div>
+          <div>• <strong>X/Twitter Thread Hook:</strong> <span id="xStatus" class="badge">Check</span></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const powerWords = [
+      'secret', 'mistake', 'brutal', 'painful', 'never', 'always', 'ruined', 'insane', 'proven', 'shocking',
+      'blueprint', 'steal', 'hack', 'hidden', 'cheat', 'unpopular', 'truth', 'exposed', 'stopped', 'wasted',
+      'how to', 'lessons', 'framework', 'guaranteed', 'fail', 'growth', 'wealth', 'money', 'free'
+    ];
+
+    const samples = [
+      "99% of solopreneurs fail in their first year. Here are 5 painful lessons I learned reaching $20,000/month:",
+      "I spent 120 hours studying Warren Buffett's early portfolio. Here is the contrarian rule he followed that made him a billionaire:",
+      "Most productivity advice is complete garbage. Here are the 3 ruthless habits that actually 10x your output:"
+    ];
+
+    function setSample(idx) {
+      document.getElementById('hookInput').value = samples[idx - 1];
+      analyzeHook();
+    }
+
+    function analyzeHook() {
+      const text = document.getElementById('hookInput').value.trim();
+      const chars = text.length;
+      const words = text ? text.split(/\s+/).length : 0;
+
+      document.getElementById('charCount').textContent = chars;
+      document.getElementById('wordCount').textContent = words;
+
+      // Power words
+      let foundPower = 0;
+      const lower = text.toLowerCase();
+      powerWords.forEach(pw => {
+        if (lower.includes(pw)) foundPower++;
+      });
+      document.getElementById('powerWordsCount').textContent = foundPower;
+
+      // Score Calculation
+      let score = 40;
+      if (chars >= 40 && chars <= 140) score += 20;
+      else if (chars > 140 && chars <= 220) score += 10;
+
+      if (/\d+/.test(text)) score += 15; // Contains numbers
+      if (foundPower >= 1) score += Math.min(15, foundPower * 6);
+      if (/[?!:]/.test(text)) score += 5; // Punctuation/Cliffhanger
+      if (lower.includes('here') || lower.includes('how') || lower.includes('why') || lower.includes('lessons')) score += 10;
+
+      score = Math.min(98, Math.max(25, score));
+
+      const circle = document.getElementById('scoreCircle');
+      const scoreNum = document.getElementById('scoreNum');
+      const scoreText = document.getElementById('scoreText');
+      scoreNum.textContent = score;
+
+      circle.className = 'score-circle ' + (score >= 80 ? 'green' : score >= 60 ? 'yellow' : 'red');
+      scoreText.textContent = score >= 80 ? 'Viral Grade' : score >= 60 ? 'Solid Hook' : 'Needs Work';
+
+      // Checklist
+      const hasNumber = /\d+/.test(text);
+      const hasCliffy = text.endsWith(':') || text.endsWith('...');
+      const isConcise = words <= 24 && words >= 8;
+
+      document.getElementById('checklist').innerHTML = `
+        <li>${hasNumber ? '✅' : '❌'} <span>Contains specific numbers or data (Adds instant credibility)</span></li>
+        <li>${foundPower > 0 ? '✅' : '⚠️'} <span>Includes psychological power words (${foundPower} detected)</span></li>
+        <li>${hasCliffy ? '✅' : '⚠️'} <span>Cliffhanger ending (e.g. colon or ellipsis) to drive click-through</span></li>
+        <li>${isConcise ? '✅' : '⚠️'} <span>Concise length (Target: 8–24 words, current: ${words} words)</span></li>
+      `;
+
+      // Platform status
+      document.getElementById('liStatus').className = chars <= 160 ? 'badge badge-pass' : 'badge badge-warn';
+      document.getElementById('liStatus').textContent = chars <= 160 ? 'Perfect (<160 chars before "see more")' : 'Might be truncated';
+
+      document.getElementById('videoStatus').className = words <= 18 ? 'badge badge-pass' : 'badge badge-warn';
+      document.getElementById('videoStatus').textContent = words <= 18 ? 'Speaks in under 3.5 seconds' : 'Too long for 3s hook';
+
+      document.getElementById('xStatus').className = chars <= 240 ? 'badge badge-pass' : 'badge badge-fail';
+      document.getElementById('xStatus').textContent = chars <= 240 ? 'Optimal Thread Starter' : 'Exceeds single tweet';
+
+      // Generate instant rewrites
+      generateRewrites(text);
+    }
+
+    function generateRewrites(text) {
+      const topic = text.replace(/^(99%|most|here are|i spent).*?:/i, '').trim() || text;
+      const formulas = [
+        { label: "The Contrarian", text: `Unpopular truth about ${topic}: Most people do the exact opposite of what works.` },
+        { label: "The Data & Mistake", text: `I analyzed the biggest mistakes in ${topic}. Here is what separates the top 1%:` },
+        { label: "The Step-by-Step", text: `If I had to start over in ${topic} from $0, here is my exact 30-day roadmap:` },
+        { label: "The Ruthless Filter", text: `Stop overcomplicating ${topic}. You only need to master these 3 non-negotiables:` }
+      ];
+
+      let html = '';
+      formulas.forEach(f => {
+        html += `
+          <div class="rewrite-item">
+            <div>
+              <div style="font-size: 0.72rem; font-weight: 700; color: #f59e0b; text-transform: uppercase;">${f.label}</div>
+              <div class="rewrite-text">${f.text}</div>
+            </div>
+            <button class="copy-sm" onclick="copyText('${f.text.replace(/'/g, "\\'")}')">Copy</button>
+          </div>
+        `;
+      });
+      document.getElementById('rewritesContainer').innerHTML = html;
+    }
+
+    function copyText(str) {
+      navigator.clipboard.writeText(str).then(() => {
+        alert('Hook copied to clipboard!');
+      });
+    }
+
+    // Initialize
+    analyzeHook();
+  </script>
+</body>
+</html>

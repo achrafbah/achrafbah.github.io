@@ -1,0 +1,57 @@
+{
+  "name": "Multi-Platform AI Social Auto-Publisher (n8n Production)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [{ "field": "cronExpression", "expression": "0 9 * * *" }] }
+      },
+      "name": "Daily 9AM Cron Trigger",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "documentId": "={{ $env.GOOGLE_CONTENT_CALENDAR_ID }}",
+        "sheetName": "Backlog"
+      },
+      "name": "Read Next Content Topic",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "model": "claude-3-7-sonnet",
+        "prompt": "=Write an engaging LinkedIn post and a concise X (Twitter) thread (3 tweets) on this topic: {{ $json.Topic }}. Output JSON with keys: 'linkedinPost', 'tweet1', 'tweet2', 'tweet3'."
+      },
+      "name": "Claude Content Generator",
+      "type": "@n8n/n8n-nodes-langchain.anthropic",
+      "typeVersion": 1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.linkedinPost }}"
+      },
+      "name": "Publish to LinkedIn API",
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [920, 200]
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.tweet1 }}"
+      },
+      "name": "Publish to X (Twitter) API",
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [920, 400]
+    }
+  ],
+  "connections": {
+    "Daily 9AM Cron Trigger": { "main": [[{ "node": "Read Next Content Topic", "type": "main", "index": 0 }]] },
+    "Read Next Content Topic": { "main": [[{ "node": "Claude Content Generator", "type": "main", "index": 0 }]] },
+    "Claude Content Generator": { "main": [[{ "node": "Publish to LinkedIn API", "type": "main", "index": 0 }, { "node": "Publish to X (Twitter) API", "type": "main", "index": 0 }]] }
+  }
+}

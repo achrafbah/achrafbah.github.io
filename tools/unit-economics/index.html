@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SaaS & E-Commerce Unit Economics & LTV/CAC Simulator | SmartCents SaaS Tools</title>
+  <meta name="description" content="Calculate and simulate Customer Lifetime Value (LTV), CAC Payback Period, Net Retention, and 24-month cohort decay curves with interactive charts.">
+  <style>
+    :root {
+      --text: #0f172a;
+      --muted: #64748b;
+      --bg: #ffffff;
+      --card: #f8fafc;
+      --border: #e2e8f0;
+      --accent: #8b5cf6;
+      --accent-hover: #7c3aed;
+      --navy: #0f172a;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      color: var(--text);
+      background: #f8fafc;
+      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    }
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 1rem max(1rem, 50% - 600px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .brand { font-size: 1.3rem; font-weight: 800; text-decoration: none; color: var(--navy); }
+    nav { display: flex; gap: 1.25rem; font-size: 0.95rem; }
+    nav a { color: var(--text); text-decoration: none; font-weight: 500; }
+    nav a:hover { color: var(--accent); }
+    main { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+    .tool-header { text-align: center; margin-bottom: 2rem; }
+    .tool-badge { background: #ede9fe; color: #6d28d9; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem; font-weight: 700; display: inline-block; margin-bottom: 0.5rem; }
+    h1 { font-size: 2.2rem; color: var(--navy); margin-bottom: 0.5rem; }
+    .subtitle { color: var(--muted); font-size: 1.05rem; max-width: 720px; margin: 0 auto; }
+    .grid-layout { display: grid; grid-template-columns: 380px 1fr; gap: 2rem; }
+    @media (max-width: 900px) { .grid-layout { grid-template-columns: 1fr; } }
+    .card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; box-shadow: 0 4px 6px -1px #0000000a; }
+    .form-group { margin-bottom: 1.1rem; }
+    label { display: block; font-weight: 600; font-size: 0.88rem; color: #334155; margin-bottom: 0.35rem; }
+    input[type="number"], select {
+      width: 100%; padding: 0.65rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; outline: none; transition: border-color .15s;
+    }
+    input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #8b5cf626; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .kpi-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; }
+    .kpi-label { font-size: 0.75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 0.35rem; }
+    .kpi-value { font-size: 1.6rem; font-weight: 800; color: var(--navy); }
+    .kpi-value.green { color: var(--success); }
+    .kpi-value.purple { color: var(--accent); }
+    .kpi-value.red { color: var(--danger); }
+    .kpi-sub { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+    .chart-container { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .health-badge { display: inline-block; padding: 0.35rem 0.85rem; border-radius: 99px; font-size: 0.82rem; font-weight: 700; margin-bottom: 1rem; }
+    .btn { background: var(--accent); color: #fff; border: none; padding: 0.65rem 1.25rem; border-radius: 8px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; }
+    .btn:hover { background: var(--accent-hover); }
+    .btn-secondary { background: #f1f5f9; color: var(--navy); border: 1px solid #cbd5e1; }
+    .btn-secondary:hover { background: #e2e8f0; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/" class="brand">SmartCents</a>
+    <nav>
+      <a href="/tools/">Store & Catalog (400+)</a>
+      <a href="/tools/invoice/">Invoice Maker</a>
+      <a href="/tools/wealth-simulator/">FIRE Simulator</a>
+      <a href="/tools/unit-economics/">Unit Economics</a>
+      <a href="/about/">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="tool-header">
+      <span class="tool-badge">📊 VENTURE CAPITAL & SAAS METRICS</span>
+      <h1>SaaS & E-Commerce Unit Economics Simulator</h1>
+      <p class="subtitle">Simulate Customer Lifetime Value (LTV), Customer Acquisition Cost (CAC) payback velocity, churn curves, and startup unit economics viability.</p>
+    </div>
+
+    <div class="grid-layout">
+      <!-- Input Column -->
+      <div class="card">
+        <h3 style="font-size: 1.05rem; margin-bottom: 1rem;">1. Model Assumptions</h3>
+        <div class="form-group">
+          <label>Business Model</label>
+          <select id="bizModel" onchange="calculateMetrics()">
+            <option value="saas">B2B SaaS / Subscription ($/Month)</option>
+            <option value="ecom">E-Commerce Direct to Consumer (AOV)</option>
+            <option value="agency">Agency / Retainer Client</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Average Monthly Revenue Per User (ARPU / AOV $)</label>
+          <input type="number" id="arpu" value="120" min="1" step="5" oninput="calculateMetrics()">
+        </div>
+
+        <div class="form-group">
+          <label>Gross Margin Percentage (%)</label>
+          <input type="number" id="grossMargin" value="82" min="10" max="99" oninput="calculateMetrics()">
+        </div>
+
+        <div class="form-group">
+          <label>Monthly Customer Churn Rate (%)</label>
+          <input type="number" id="churnRate" value="3.5" min="0.1" max="50" step="0.1" oninput="calculateMetrics()">
+        </div>
+
+        <div class="form-group">
+          <label>Blended Customer Acquisition Cost (CAC $)</label>
+          <input type="number" id="cac" value="450" min="1" step="10" oninput="calculateMetrics()">
+        </div>
+
+        <div class="form-group">
+          <label>New Customers Added Per Month</label>
+          <input type="number" id="newCustomers" value="50" min="1" oninput="calculateMetrics()">
+        </div>
+      </div>
+
+      <!-- Analysis Results Column -->
+      <div class="card">
+        <div id="healthBadge" class="health-badge">Health Diagnostic</div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Customer LTV</div>
+            <div class="kpi-value purple" id="ltvVal">$2,811</div>
+            <div class="kpi-sub" id="lifespanSub">28.6 mo. avg life</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">LTV / CAC Ratio</div>
+            <div class="kpi-value green" id="ratioVal">6.2x</div>
+            <div class="kpi-sub">Target: &gt; 3.0x</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">CAC Payback</div>
+            <div class="kpi-value" id="paybackVal">4.6 mo</div>
+            <div class="kpi-sub">Target: &lt; 12 mo</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Annual Net Profit</div>
+            <div class="kpi-value green" id="annualProfitVal">$324,500</div>
+            <div class="kpi-sub">Per 600 users</div>
+          </div>
+        </div>
+
+        <div class="chart-container">
+          <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem;">24-Month Cohort Retention Decay Curve (% Remaining)</h4>
+          <svg id="decayChart" style="width: 100%; height: 180px; overflow: visible;"></svg>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-size: 0.85rem; color: var(--muted);" id="summaryText">
+            Unit economics are highly scalable and ready for growth capital investment.
+          </div>
+          <button class="btn btn-secondary" onclick="exportCSV()">⬇ Export Cohort CSV</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function calculateMetrics() {
+      const arpu = parseFloat(document.getElementById('arpu').value) || 0;
+      const margin = (parseFloat(document.getElementById('grossMargin').value) || 0) / 100;
+      const churn = (parseFloat(document.getElementById('churnRate').value) || 0) / 100;
+      const cac = parseFloat(document.getElementById('cac').value) || 0;
+      const newCust = parseInt(document.getElementById('newCustomers').value, 10) || 0;
+
+      const monthlyGrossProfitPerUser = arpu * margin;
+      const avgLifespanMonths = churn > 0 ? (1 / churn) : 100;
+      const ltv = monthlyGrossProfitPerUser * avgLifespanMonths;
+      const ltvCacRatio = cac > 0 ? (ltv / cac) : 0;
+      const paybackMonths = monthlyGrossProfitPerUser > 0 ? (cac / monthlyGrossProfitPerUser) : 0;
+      const annualNetProfit = (monthlyGrossProfitPerUser * avgLifespanMonths - cac) * newCust * 12;
+
+      document.getElementById('ltvVal').textContent = '$' + Math.round(ltv).toLocaleString();
+      document.getElementById('lifespanSub').textContent = avgLifespanMonths.toFixed(1) + ' mo. avg life';
+      document.getElementById('ratioVal').textContent = ltvCacRatio.toFixed(1) + 'x';
+      document.getElementById('paybackVal').textContent = paybackMonths.toFixed(1) + ' mo';
+      document.getElementById('annualProfitVal').textContent = '$' + Math.round(Math.max(0, annualNetProfit)).toLocaleString();
+
+      // Ratio Styling
+      const ratioElem = document.getElementById('ratioVal');
+      if (ltvCacRatio >= 4.0) {
+        ratioElem.className = 'kpi-value green';
+      } else if (ltvCacRatio >= 3.0) {
+        ratioElem.className = 'kpi-value purple';
+      } else {
+        ratioElem.className = 'kpi-value red';
+      }
+
+      // Diagnostic Badge
+      const badge = document.getElementById('healthBadge');
+      if (ltvCacRatio >= 4.0 && paybackMonths <= 12) {
+        badge.style.background = '#dcfce7'; badge.style.color = '#15803d';
+        badge.textContent = '🚀 Unicorn Tier: Exceptional Capital Efficiency (>4x LTV/CAC)';
+      } else if (ltvCacRatio >= 3.0 && paybackMonths <= 14) {
+        badge.style.background = '#ede9fe'; badge.style.color = '#6d28d9';
+        badge.textContent = '✅ Healthy Venture Grade: Sustainable Growth Engine';
+      } else if (ltvCacRatio >= 1.5) {
+        badge.style.background = '#fef9c3'; badge.style.color = '#854d0e';
+        badge.textContent = '⚠️ Moderate Margin: Churn or CAC reduction recommended';
+      } else {
+        badge.style.background = '#fee2e2'; badge.style.color = '#b91c1c';
+        badge.textContent = '🚨 Cash Burning: LTV is lower than CAC, losing money per user';
+      }
+
+      renderDecayChart(churn);
+    }
+
+    function renderDecayChart(churn) {
+      const svg = document.getElementById('decayChart');
+      const w = 600, h = 180, padL = 40, padB = 30;
+      let points = [];
+      let currentPercent = 100;
+
+      for (let m = 0; m <= 24; m++) {
+        const x = padL + (m / 24) * (w - padL - 20);
+        const y = (h - padB) - (currentPercent / 100) * (h - padB - 20);
+        points.push({ m, p: currentPercent, x, y });
+        currentPercent = currentPercent * (1 - churn);
+      }
+
+      let polylinePoints = points.map(pt => `${pt.x},${pt.y}`).join(' ');
+      let areaPoints = `${points[0].x},${h - padB} ` + polylinePoints + ` ${points[points.length-1].x},${h - padB}`;
+
+      svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+      svg.innerHTML = `
+        <defs>
+          <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.0"/>
+          </linearGradient>
+        </defs>
+        <line x1="${padL}" y1="${h - padB}" x2="${w - 20}" y2="${h - padB}" stroke="#cbd5e1" stroke-width="1"/>
+        <line x1="${padL}" y1="20}" x2="${padL}" y2="${h - padB}" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="${padL - 10}" y="25" font-size="10" fill="#94a3b8" text-anchor="end">100%</text>
+        <text x="${padL - 10}" y="${(h - padB) / 2 + 10}" font-size="10" fill="#94a3b8" text-anchor="end">50%</text>
+        <text x="${padL - 10}" y="${h - padB}" font-size="10" fill="#94a3b8" text-anchor="end">0%</text>
+        <text x="${padL}" y="${h - 10}" font-size="10" fill="#94a3b8">Mo 0</text>
+        <text x="${padL + (w - padL - 20) / 2}" y="${h - 10}" font-size="10" fill="#94a3b8" text-anchor="middle">Mo 12</text>
+        <text x="${w - 20}" y="${h - 10}" font-size="10" fill="#94a3b8" text-anchor="end">Mo 24</text>
+        <polygon points="${areaPoints}" fill="url(#grad)"/>
+        <polyline points="${polylinePoints}" fill="none" stroke="#8b5cf6" stroke-width="3"/>
+      `;
+    }
+
+    function exportCSV() {
+      const churn = (parseFloat(document.getElementById('churnRate').value) || 0) / 100;
+      let csv = 'Month,Remaining_Cohort_Percent,Estimated_Users\n';
+      let current = 100;
+      const initialUsers = parseInt(document.getElementById('newCustomers').value, 10) || 50;
+
+      for (let m = 0; m <= 24; m++) {
+        csv += `${m},${current.toFixed(1)}%,${Math.round(initialUsers * (current / 100))}\n`;
+        current = current * (1 - churn);
+      }
+
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'cohort-retention-decay.csv';
+      a.click();
+    }
+
+    // Initialize
+    calculateMetrics();
+  </script>
+</body>
+</html>

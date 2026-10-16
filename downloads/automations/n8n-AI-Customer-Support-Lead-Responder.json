@@ -1,0 +1,86 @@
+{
+  "name": "AI Customer Support & Lead Qualifier Bot (n8n Production)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-inquiry",
+        "options": {}
+      },
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are an automated B2B sales development representative. Score this inbound lead from 1 to 10 based on budget, company size, and urgency. Output JSON: { leadScore, category, responseEmail, requiresHumanEscalation }"
+            },
+            {
+              "role": "user",
+              "content": "={{ $json.body.message }}"
+            }
+          ]
+        }
+      },
+      "name": "AI Lead Classifier",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{ $json.leadScore }}",
+              "operation": "largerEqual",
+              "value2": 7
+            }
+          ]
+        }
+      },
+      "name": "Check Priority Lead",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [700, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $env.TELEGRAM_ADMIN_CHAT_ID }}",
+        "text": "=🔥 HIGH TICKET LEAD ALERT (Score: {{ $json.leadScore }}/10)\nFrom: {{ $('Webhook Trigger').item.json.body.email }}\nSummary: {{ $('Webhook Trigger').item.json.body.message }}\nSuggested Reply:\n{{ $json.responseEmail }}"
+      },
+      "name": "Send VIP Telegram Alert",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [950, 200]
+    },
+    {
+      "parameters": {
+        "toEmail": "={{ $('Webhook Trigger').item.json.body.email }}",
+        "subject": "Regarding your inquiry with SmartCents",
+        "emailFormat": "text",
+        "text": "={{ $json.responseEmail }}"
+      },
+      "name": "Send Automated Email Response",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [950, 400]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": { "main": [[{ "node": "AI Lead Classifier", "type": "main", "index": 0 }]] },
+    "AI Lead Classifier": { "main": [[{ "node": "Check Priority Lead", "type": "main", "index": 0 }]] },
+    "Check Priority Lead": {
+      "main": [
+        [{ "node": "Send VIP Telegram Alert", "type": "main", "index": 0 }, { "node": "Send Automated Email Response", "type": "main", "index": 0 }],
+        [{ "node": "Send Automated Email Response", "type": "main", "index": 0 }]
+      ]
+    }
+  }
+}

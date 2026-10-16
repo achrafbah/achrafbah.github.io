@@ -1,0 +1,48 @@
+{
+  "name": "B2B Cold Email Enrichment with Apollo & Claude (Make.com Blueprint)",
+  "version": 1,
+  "blueprint": {
+    "modules": [
+      {
+        "id": 1,
+        "module": "googleSheets:watchRows",
+        "parameters": { "sheet": "Target_Leads" },
+        "name": "New Target Lead in Sheet"
+      },
+      {
+        "id": 2,
+        "module": "http:makeRequest",
+        "parameters": {
+          "url": "https://api.apollo.io/v1/people/match",
+          "method": "POST",
+          "headers": { "Content-Type": "application/json", "Cache-Control": "no-cache" }
+        },
+        "name": "Apollo API Domain & Executive Enrichment"
+      },
+      {
+        "id": 3,
+        "module": "anthropic:createMessage",
+        "parameters": {
+          "model": "claude-3-7-sonnet",
+          "prompt": "Write a 1-sentence personalized opening icebreaker based on this person's recent company milestone: {{2.data.person.organization.latest_funding_round}} and tech stack: {{2.data.person.organization.technologies}}"
+        },
+        "name": "Claude Icebreaker Writer"
+      },
+      {
+        "id": 4,
+        "module": "instantly:addLeadToCampaign",
+        "parameters": {
+          "email": "{{1.Email}}",
+          "firstName": "{{1.FirstName}}",
+          "customVariables": { "icebreaker": "{{3.content[0].text}}" }
+        },
+        "name": "Push to Instantly.ai Cold Outbound Pod"
+      }
+    ],
+    "routes": [
+      { "source": 1, "target": 2 },
+      { "source": 2, "target": 3 },
+      { "source": 3, "target": 4 }
+    ]
+  }
+}

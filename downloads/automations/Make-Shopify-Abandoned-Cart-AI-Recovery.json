@@ -1,0 +1,53 @@
+{
+  "name": "Shopify Abandoned Cart AI Dynamic Recovery Engine (Make.com Blueprint)",
+  "version": 1,
+  "blueprint": {
+    "modules": [
+      {
+        "id": 1,
+        "module": "shopify:watchCheckouts",
+        "parameters": { "status": "open" },
+        "name": "Watch Abandoned Checkouts"
+      },
+      {
+        "id": 2,
+        "module": "builtin:sleep",
+        "parameters": { "delay": 3600 },
+        "name": "Wait 1 Hour Before Triggering"
+      },
+      {
+        "id": 3,
+        "module": "openai:createChatCompletion",
+        "parameters": {
+          "model": "gpt-4o",
+          "messages": [
+            {
+              "role": "system",
+              "content": "You are an empathetic e-commerce concierge for a luxury brand. Write a friendly, non-pushy email offering a 10% coupon code (COMEBACK10) for the items left behind."
+            },
+            {
+              "role": "user",
+              "content": "Customer: {{1.customer.first_name}}, Items: {{1.line_items[].title}}"
+            }
+          ]
+        },
+        "name": "Generate Hyper-Personalized Recovery Email"
+      },
+      {
+        "id": 4,
+        "module": "klaviyo:sendCampaignMessage",
+        "parameters": {
+          "email": "{{1.customer.email}}",
+          "subject": "Quick question about your cart, {{1.customer.first_name}}",
+          "html": "{{3.choices[].message.content}}"
+        },
+        "name": "Dispatch Recovery Email via Klaviyo"
+      }
+    ],
+    "routes": [
+      { "source": 1, "target": 2 },
+      { "source": 2, "target": 3 },
+      { "source": 3, "target": 4 }
+    ]
+  }
+}
