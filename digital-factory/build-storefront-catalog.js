@@ -236,7 +236,7 @@ notionFiles.forEach(f => {
 // E. Excel Models (44) - PAYWALLED (Except 1 sample)
 excelFiles.forEach((f, idx) => {
   const title = formatTitle(f);
-  const isFreeSample = (idx === 0); // Only first model is a free test sample!
+  const isFreeSample = (idx === 0);
 
   if (isFreeSample) {
     cardsHtml += `
@@ -278,7 +278,7 @@ excelFiles.forEach((f, idx) => {
 // F. Printable Planners (102 unique) - PAYWALLED (Except 1 sample)
 uniquePlanners.forEach((base, idx) => {
   const title = formatTitle(base);
-  const isFreeSample = (idx === 0); // Only first planner is a free preview sample
+  const isFreeSample = (idx === 0);
 
   if (isFreeSample) {
     cardsHtml += `
@@ -345,21 +345,62 @@ playbookFiles.forEach(f => {
     </div>`;
 });
 
-// Build Storefront HTML
+// Build Storefront HTML with 3D Mockup & High-Converting Layout
 const storefrontPath = path.join(ROOT, 'tools/index.html');
 const storefrontHtml = `<!DOCTYPE html>
 <html lang="en" data-astro-cid-l4z7ivqh>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tools & Business Templates Catalog (400+) | SmartCents Digital Studio</title>
+  <title>Complete 400+ Digital Products & Business Templates Empire | SmartCents Studio</title>
   <meta name="description" content="Explore 400+ commercial assets: 9 interactive SaaS apps, 44 automated Excel models, 300+ vector PDF planners across 3 color themes, and 50+ AI prompt bibles and n8n automations.">
+  
+  <!-- OpenGraph / Social Rich Cards Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="The Complete 400+ Digital Products & Business Templates Mega Bundle">
+  <meta property="og:description" content="Accelerate wealth and scale operations with 44 Excel models, 300+ vector PDF planners, 50+ AI bibles, and 9 interactive SaaS tools.">
+  <meta property="og:image" content="https://achrafbah.github.io/assets/mockups/devices-showcase.svg">
+  <meta property="og:url" content="https://achrafbah.github.io/tools/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://achrafbah.github.io/assets/mockups/devices-showcase.svg">
+
   <link rel="stylesheet" href="/_astro/index.HiuEWove.css">
   <link rel="stylesheet" href="/_astro/UpgradeModal.rCoh7SEV.css">
   <style data-astro-cid-l4z7ivqh>
-    .store-hero { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #fff; padding: 4rem 1.5rem; text-align: center; border-bottom: 1px solid #334155; }
-    .store-hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.02em; }
-    .store-hero p { font-size: 1.15rem; color: #94a3b8; max-width: 760px; margin: 0 auto 1.5rem; }
+    .store-hero {
+      background: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #1e293b 100%);
+      color: #fff;
+      padding: 4.5rem 1.5rem 3.5rem;
+      border-bottom: 1px solid #334155;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    @media (max-width: 980px) {
+      .hero-container { grid-template-columns: 1fr; text-align: center; }
+      .hero-bullets { justify-content: center; }
+    }
+    .store-hero h1 { font-size: 3rem; font-weight: 900; margin-bottom: 1.2rem; letter-spacing: -0.03em; line-height: 1.15; }
+    .hero-sub { font-size: 1.15rem; color: #94a3b8; line-height: 1.6; margin-bottom: 1.8rem; }
+    .hero-bullets { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; font-size: 0.9rem; color: #cbd5e1; }
+    .hero-bullet-item { display: flex; align-items: center; gap: 0.4rem; font-weight: 600; }
+    .hero-mockup-wrap {
+      background: rgba(30, 41, 59, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 1.25rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      transition: transform .3s ease;
+    }
+    .hero-mockup-wrap:hover { transform: translateY(-4px); }
     .vip-banner { background: #10b981; color: #fff; padding: 0.85rem 1.5rem; text-align: center; font-weight: 700; font-size: 1rem; display: none; }
     .search-filter-section { max-width: 1200px; margin: -2rem auto 2.5rem; padding: 0 1rem; position: relative; z-index: 10; }
     .search-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1.25rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 1rem; }
@@ -426,14 +467,32 @@ const storefrontHtml = `<!DOCTYPE html>
     </nav>
   </header>
 
+  <!-- High-Converting 2-Column Hero Section with 3D Mockup -->
   <div class="store-hero" data-astro-cid-l4z7ivqh>
-    <span class="tool-badge" style="background: rgba(15,157,88,0.2); color: #34d399; margin-bottom: 0.75rem;" data-astro-cid-l4z7ivqh>⭐ 400+ COMMERCIAL DIGITAL ASSETS</span>
-    <h1 data-astro-cid-l4z7ivqh>Digital Products & Template Empire</h1>
-    <p data-astro-cid-l4z7ivqh>Accelerate your business and wealth with 9 interactive SaaS utilities, 44 automated Excel financial models, 300+ vector PDF planners across 3 signature palettes, and 50+ AI prompt bibles & n8n automations.</p>
-    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;" data-astro-cid-l4z7ivqh>
-      <button id="heroUpgradeBtn" class="card-btn" style="background: #0f9d58; color: #fff; max-width: 320px; padding: 0.85rem 1.5rem; font-size: 1rem;" onclick="openUpgradeModal('Complete 400+ Mega Bundle', '/downloads/bundles/Complete-400-Digital-Products-Mega-Bundle.zip')" data-astro-cid-l4z7ivqh>
-        🔒 Unlock Lifetime VIP Pass ($29) &rarr;
-      </button>
+    <div class="hero-container" data-astro-cid-l4z7ivqh>
+      <!-- Left Copy Column -->
+      <div data-astro-cid-l4z7ivqh>
+        <span class="tool-badge" style="background: rgba(16,185,129,0.15); color: #34d399; margin-bottom: 1rem; border: 1px solid rgba(16,185,129,0.3);" data-astro-cid-l4z7ivqh>⭐ 400+ VERIFIED COMMERCIAL ASSETS</span>
+        <h1 data-astro-cid-l4z7ivqh>The Complete Digital Products Empire</h1>
+        <p class="hero-sub" data-astro-cid-l4z7ivqh>Accelerate your business and wealth with 9 interactive SaaS utilities, 44 automated Excel financial models, 300+ vector PDF planners across 3 signature palettes, and 50+ AI prompt bibles & n8n automations.</p>
+        
+        <div class="hero-bullets" data-astro-cid-l4z7ivqh>
+          <div class="hero-bullet-item" data-astro-cid-l4z7ivqh>✓ Instant Commercial License</div>
+          <div class="hero-bullet-item" data-astro-cid-l4z7ivqh>✓ Unlocked Formulas & Vector HD</div>
+          <div class="hero-bullet-item" data-astro-cid-l4z7ivqh>✓ Lifetime Updates Included</div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;" data-astro-cid-l4z7ivqh>
+          <button id="heroUpgradeBtn" class="card-btn" style="background: #0f9d58; color: #fff; min-width: 260px; padding: 0.95rem 1.75rem; font-size: 1.05rem;" onclick="openUpgradeModal('Complete 400+ Mega Bundle', '/downloads/bundles/Complete-400-Digital-Products-Mega-Bundle.zip')" data-astro-cid-l4z7ivqh>
+            🔒 Unlock Lifetime VIP Pass ($29) &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- Right 3D Visual Showcase Mockup Column -->
+      <div class="hero-mockup-wrap" data-astro-cid-l4z7ivqh>
+        <img src="/assets/mockups/devices-showcase.svg" alt="Complete 400+ Digital Products 3D Suite Mockup" style="width: 100%; height: auto; display: block; border-radius: 12px;" data-astro-cid-l4z7ivqh>
+      </div>
     </div>
   </div>
 
@@ -668,11 +727,4 @@ const storefrontHtml = `<!DOCTYPE html>
 </html>`;
 
 fs.writeFileSync(storefrontPath, storefrontHtml, 'utf8');
-console.log('Successfully applied strict paywall to tools/index.html!');
-
-// Also update homepage index.html hero section so it does not give away the bundle for free:
-const homePath = path.join(ROOT, 'index.html');
-let homeHtml = fs.readFileSync(homePath, 'utf8');
-homeHtml = homeHtml.replace(/href="\/downloads\/bundles\/Complete-[^"]*"/g, 'href="/tools/"');
-fs.writeFileSync(homePath, homeHtml, 'utf8');
-console.log('Successfully secured index.html hero links!');
+console.log('Successfully compiled storefront with 3D devices mockup!');

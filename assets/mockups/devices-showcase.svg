@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGlow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#1e293b" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="boxFront" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="boxSide" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="boxTop" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="100%" stop-color="#334155"/>
+    </linearGradient>
+    <linearGradient id="emeraldGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="indigoGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+    <filter id="boxShadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="25" stdDeviation="25" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <!-- Background Ambient Glow -->
+  <circle cx="450" cy="260" r="320" fill="#10b981" opacity="0.08" filter="blur(60px)"/>
+
+  <!-- Left: 3D Software Box Mockup -->
+  <g transform="translate(80, 50)" filter="url(#boxShadow)">
+    <!-- Top Face -->
+    <polygon points="120,40 280,20 220,0 60,20" fill="url(#boxTop)" stroke="#64748b" stroke-width="0.5"/>
+    <!-- Side Face -->
+    <polygon points="60,20 120,40 120,380 60,360" fill="url(#boxSide)"/>
+    <!-- Side Text Spine -->
+    <text x="-200" y="95" transform="rotate(-90)" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="14" font-weight="700" letter-spacing="3">COMPLETE 400+ MEGA BUNDLE • SMARTCENTS</text>
+    <circle cx="90" cy="340" r="14" fill="#10b981"/>
+    <text x="90" y="345" fill="#fff" font-family="system-ui" font-size="12" font-weight="900" text-anchor="middle">VIP</text>
+
+    <!-- Front Face -->
+    <polygon points="120,40 280,20 280,360 120,380" fill="url(#boxFront)" stroke="#334155" stroke-width="1"/>
+    
+    <!-- Front Face Design -->
+    <rect x="135" y="55" width="130" height="4" fill="url(#emeraldGrad)"/>
+    <text x="140" y="80" fill="#34d399" font-family="system-ui, sans-serif" font-size="11" font-weight="800" letter-spacing="1.5">LIFETIME ALL-ACCESS</text>
+    <text x="140" y="115" fill="#ffffff" font-family="system-ui, sans-serif" font-size="22" font-weight="900">400+ MEGA</text>
+    <text x="140" y="140" fill="#ffffff" font-family="system-ui, sans-serif" font-size="22" font-weight="900">BUNDLE</text>
+    <text x="140" y="165" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11" font-weight="500">Commercial Empire Vault</text>
+
+    <!-- Badges Grid on Box -->
+    <g transform="translate(140, 190)">
+      <rect width="125" height="28" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="10" y="18" fill="#38bdf8" font-family="system-ui" font-size="10" font-weight="700">📊 44 Excel Models</text>
+      
+      <rect y="36" width="125" height="28" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="10" y="54" fill="#f43f5e" font-family="system-ui" font-size="10" font-weight="700">📑 300+ PDF Planners</text>
+      
+      <rect y="72" width="125" height="28" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="10" y="90" fill="#a855f7" font-family="system-ui" font-size="10" font-weight="700">🤖 50+ AI & SOP Kits</text>
+
+      <rect y="108" width="125" height="28" rx="6" fill="#1e293b" stroke="#334155"/>
+      <text x="10" y="126" fill="#10b981" font-family="system-ui" font-size="10" font-weight="700">⚡ 9 Micro-SaaS Apps</text>
+    </g>
+
+    <!-- Bottom Price Tag on Box -->
+    <rect x="135" y="340" width="130" height="24" rx="4" fill="#0f9d58"/>
+    <text x="200" y="356" fill="#ffffff" font-family="system-ui" font-size="12" font-weight="800" text-anchor="middle">ONLY $29 • LIFETIME</text>
+  </g>
+
+  <!-- Right: Laptop & iPad Showcase Mockup -->
+  <g transform="translate(420, 60)" filter="url(#boxShadow)">
+    <!-- Laptop Base & Screen -->
+    <rect x="40" y="40" width="380" height="240" rx="14" fill="#0f172a" stroke="#475569" stroke-width="4"/>
+    <circle cx="230" cy="52" r="3" fill="#64748b"/>
+    <!-- Laptop Inner Display (Excel Dashboard) -->
+    <rect x="52" y="62" width="356" height="206" rx="6" fill="#ffffff"/>
+    
+    <!-- Excel Mock UI -->
+    <rect x="52" y="62" width="356" height="30" fill="#0f172a"/>
+    <text x="65" y="82" fill="#fff" font-family="system-ui" font-size="11" font-weight="700">SaaS Financial Model & MRR Forecast.xlsx</text>
+    <rect x="340" y="68" width="55" height="18" rx="4" fill="#10b981"/>
+    <text x="367" y="81" fill="#fff" font-family="system-ui" font-size="9" font-weight="800" text-anchor="middle">ACTIVE</text>
+
+    <!-- KPI Blocks -->
+    <rect x="62" y="100" width="75" height="42" rx="4" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="70" y="115" fill="#64748b" font-family="system-ui" font-size="8" font-weight="700">MRR</text>
+    <text x="70" y="134" fill="#0f172a" font-family="system-ui" font-size="14" font-weight="800">$48,250</text>
+
+    <rect x="145" y="100" width="75" height="42" rx="4" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="153" y="115" fill="#64748b" font-family="system-ui" font-size="8" font-weight="700">LTV / CAC</text>
+    <text x="153" y="134" fill="#10b981" font-family="system-ui" font-size="14" font-weight="800">4.8x</text>
+
+    <rect x="228" y="100" width="75" height="42" rx="4" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="236" y="115" fill="#64748b" font-family="system-ui" font-size="8" font-weight="700">CHURN</text>
+    <text x="236" y="134" fill="#f43f5e" font-family="system-ui" font-size="14" font-weight="800">1.8%</text>
+
+    <rect x="311" y="100" width="85" height="42" rx="4" fill="#f8fafc" stroke="#e2e8f0"/>
+    <text x="319" y="115" fill="#64748b" font-family="system-ui" font-size="8" font-weight="700">NET RUNWAY</text>
+    <text x="319" y="134" fill="#0284c7" font-family="system-ui" font-size="14" font-weight="800">28 Mos</text>
+
+    <!-- Spreadsheet Grid Mock -->
+    <rect x="62" y="152" width="334" height="20" fill="#f1f5f9"/>
+    <text x="70" y="166" fill="#334155" font-family="system-ui" font-size="8" font-weight="700">Month</text>
+    <text x="140" y="166" fill="#334155" font-family="system-ui" font-size="8" font-weight="700">New Users</text>
+    <text x="220" y="166" fill="#334155" font-family="system-ui" font-size="8" font-weight="700">Gross Rev</text>
+    <text x="310" y="166" fill="#334155" font-family="system-ui" font-size="8" font-weight="700">EBITDA</text>
+
+    <line x1="62" y1="190" x2="396" y2="190" stroke="#e2e8f0"/>
+    <text x="70" y="184" fill="#475569" font-family="system-ui" font-size="8">Jan 2026</text>
+    <text x="140" y="184" fill="#475569" font-family="system-ui" font-size="8">180</text>
+    <text x="220" y="184" fill="#10b981" font-family="system-ui" font-size="8" font-weight="700">$21,600</text>
+    <text x="310" y="184" fill="#0f172a" font-family="system-ui" font-size="8" font-weight="700">+$14,200</text>
+
+    <line x1="62" y1="210" x2="396" y2="210" stroke="#e2e8f0"/>
+    <text x="70" y="204" fill="#475569" font-family="system-ui" font-size="8">Feb 2026</text>
+    <text x="140" y="204" fill="#475569" font-family="system-ui" font-size="8">240</text>
+    <text x="220" y="204" fill="#10b981" font-family="system-ui" font-size="8" font-weight="700">$28,800</text>
+    <text x="310" y="204" fill="#0f172a" font-family="system-ui" font-size="8" font-weight="700">+$19,450</text>
+
+    <line x1="62" y1="230" x2="396" y2="230" stroke="#e2e8f0"/>
+    <text x="70" y="224" fill="#475569" font-family="system-ui" font-size="8">Mar 2026</text>
+    <text x="140" y="224" fill="#475569" font-family="system-ui" font-size="8">310</text>
+    <text x="220" y="224" fill="#10b981" font-family="system-ui" font-size="8" font-weight="700">$37,200</text>
+    <text x="310" y="224" fill="#0f172a" font-family="system-ui" font-size="8" font-weight="700">+$26,100</text>
+
+    <!-- Laptop Bottom Hinge & Keyboard Base -->
+    <polygon points="10,280 450,280 420,296 40,296" fill="#94a3b8"/>
+    <rect x="200" y="280" width="60" height="4" rx="2" fill="#cbd5e1"/>
+
+    <!-- Overlapping Tablet / iPad Mockup (Foreground) -->
+    <g transform="translate(190, 140)" filter="url(#boxShadow)">
+      <rect width="210" height="280" rx="14" fill="#1e293b" stroke="#cbd5e1" stroke-width="3"/>
+      <!-- iPad Screen -->
+      <rect x="10" y="10" width="190" height="260" rx="8" fill="#ffffff"/>
+      <!-- Header Banner Ocean Theme -->
+      <rect x="10" y="10" width="190" height="45" fill="#0284c7"/>
+      <text x="20" y="28" fill="#e0f2fe" font-family="system-ui" font-size="8" font-weight="800">EXECUTIVE PLANNER</text>
+      <text x="20" y="44" fill="#ffffff" font-family="system-ui" font-size="12" font-weight="900">ADHD Focus OS</text>
+
+      <!-- Dopamine Menu Box -->
+      <rect x="20" y="65" width="170" height="40" rx="4" fill="#f0f9ff" stroke="#bae6fd"/>
+      <text x="26" y="78" fill="#0369a1" font-family="system-ui" font-size="8" font-weight="800">🎯 TOP 3 NON-NEGOTIABLES</text>
+      <text x="26" y="94" fill="#334155" font-family="system-ui" font-size="8">[ ] Launch B2B Client Engine</text>
+
+      <!-- Eisenhower 4-Quadrant Mini Grid -->
+      <rect x="20" y="115" width="80" height="65" rx="4" fill="#fef2f2" stroke="#fecaca"/>
+      <text x="25" y="128" fill="#b91c1c" font-family="system-ui" font-size="7" font-weight="800">Q1: DO FIRST</text>
+      <text x="25" y="142" fill="#475569" font-family="system-ui" font-size="7">• Close Series A term</text>
+      <text x="25" y="154" fill="#475569" font-family="system-ui" font-size="7">• Fix revenue bug</text>
+
+      <rect x="110" y="115" width="80" height="65" rx="4" fill="#f0fdf4" stroke="#bbf7d0"/>
+      <text x="115" y="128" fill="#15803d" font-family="system-ui" font-size="7" font-weight="800">Q2: SCHEDULE</text>
+      <text x="115" y="142" fill="#475569" font-family="system-ui" font-size="7">• Deep Work 90m</text>
+      <text x="115" y="154" fill="#475569" font-family="system-ui" font-size="7">• Gym & Sauna</text>
+
+      <!-- Bottom Routine Checkboxes -->
+      <rect x="20" y="190" width="170" height="70" rx="4" fill="#f8fafc" stroke="#e2e8f0"/>
+      <text x="26" y="204" fill="#475569" font-family="system-ui" font-size="8" font-weight="800">EVENING SHUTDOWN PROTOCOL</text>
+      <text x="26" y="220" fill="#64748b" font-family="system-ui" font-size="7.5">[✓] Clear Inbound Inbox (Zero)</text>
+      <text x="26" y="233" fill="#64748b" font-family="system-ui" font-size="7.5">[✓] Review Tomorrow's Top 3</text>
+      <text x="26" y="246" fill="#64748b" font-family="system-ui" font-size="7.5">[✓] Disconnect Screen Devices</text>
+    </g>
+  </g>
+</svg>
