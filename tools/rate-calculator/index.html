@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Freelance Rate &amp; Project Quote Calculator | SmartCents SaaS Tools</title>
+  <meta name="description" content="Calculate your true minimum hourly rate, day rate, monthly retainers, and build professional client-ready project proposals.">
+  <link rel="canonical" href="https://smartcents.example.com/tools/rate-calculator/">
+  <style>
+    :root {
+      --text: #0f172a;
+      --muted: #64748b;
+      --bg: #ffffff;
+      --card: #f8fafc;
+      --border: #e2e8f0;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --navy: #0f172a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      color: var(--text);
+      background: #f8fafc;
+      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    }
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 1rem max(1rem, 50% - 600px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand { font-size: 1.3rem; font-weight: 800; text-decoration: none; color: var(--navy); }
+    nav { display: flex; gap: 1.25rem; font-size: 0.95rem; }
+    nav a { color: var(--text); text-decoration: none; font-weight: 500; }
+    nav a:hover { color: var(--accent); }
+    main { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+    .tool-header { text-align: center; margin-bottom: 2rem; }
+    .tool-badge { background: #dbeafe; color: #1e40af; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem; font-weight: 700; display: inline-block; margin-bottom: 0.5rem; }
+    h1 { font-size: 2.2rem; color: var(--navy); margin-bottom: 0.5rem; }
+    .subtitle { color: var(--muted); font-size: 1.05rem; max-width: 700px; margin: 0 auto; }
+    .grid-layout { display: grid; grid-template-columns: 380px 1fr; gap: 2rem; }
+    @media (max-width: 900px) { .grid-layout { grid-template-columns: 1fr; } }
+    .card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; box-shadow: 0 4px 6px -1px #0000000a; }
+    .form-group { margin-bottom: 1.2rem; }
+    label { display: block; font-weight: 600; font-size: 0.88rem; color: #334155; margin-bottom: 0.35rem; }
+    input[type="number"], select, input[type="text"] {
+      width: 100%; padding: 0.65rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; outline: none; transition: border-color .15s;
+    }
+    input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #2563eb26; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .kpi-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; }
+    .kpi-label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 0.35rem; }
+    .kpi-value { font-size: 1.5rem; font-weight: 800; color: var(--navy); }
+    .kpi-value.blue { color: var(--accent); }
+    .kpi-sub { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+    .proposal-box { background: #fff; border: 2px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-top: 1.5rem; }
+    .proposal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.65rem 1.25rem; border-radius: 8px; font-weight: 600; cursor: pointer; text-decoration: none; border: none; font-size: 0.9rem; transition: all .15s; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-secondary { background: #f1f5f9; color: var(--text); border: 1px solid #cbd5e1; }
+    .btn-secondary:hover { background: #e2e8f0; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; }
+    th, td { padding: 0.65rem; border-bottom: 1px solid #e2e8f0; text-align: left; }
+    th { background: #f8fafc; color: #475569; }
+    @media print {
+      header, .grid-layout > div:first-child, .btn { display: none !important; }
+      .grid-layout { grid-template-columns: 1fr; }
+      body { background: #fff; }
+      .card { border: none; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="brand" href="/">SmartCents</a>
+    <nav>
+      <a href="/category/saving/">Saving</a>
+      <a href="/category/budgeting/">Budgeting</a>
+      <a href="/category/investing/">Investing</a>
+      <a href="/tools/">Tools &amp; Templates</a>
+      <a href="/about/">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="tool-header">
+      <span class="tool-badge">CONSULTING &amp; FREELANCE SaaS</span>
+      <h1>Freelance Rate &amp; Proposal Estimator</h1>
+      <p class="subtitle">Calculate your sustainable hourly rate, day rate, and client project proposals factoring in self-employment taxes, overhead, and profit margin buffers.</p>
+    </div>
+
+    <div class="grid-layout">
+      <!-- Input Parameters -->
+      <div class="card">
+        <h3 style="margin-bottom: 1.25rem; color: var(--navy); font-size: 1.15rem;">Income &amp; Overhead Target</h3>
+        <div class="form-group">
+          <label for="inp-takehome">Desired Annual Take-Home ($)</label>
+          <input type="number" id="inp-takehome" value="85000" step="5000">
+        </div>
+        <div class="form-group">
+          <label for="inp-overhead">Annual Business Overhead ($)</label>
+          <input type="number" id="inp-overhead" value="12000" step="1000" title="Software, hardware, accounting, office, insurance">
+        </div>
+        <div class="form-group">
+          <label for="inp-tax">Estimated Tax Reserve (%)</label>
+          <input type="number" id="inp-tax" value="28" min="0" max="50">
+        </div>
+        <div class="form-group">
+          <label for="inp-profit">Profit Margin Buffer (%)</label>
+          <input type="number" id="inp-profit" value="15" min="0" max="50" title="Safety reserve for unbillable bench time">
+        </div>
+        <div class="form-group">
+          <label for="inp-vacation">Vacation / Sick Weeks / Year</label>
+          <input type="number" id="inp-vacation" value="5" min="0" max="15">
+        </div>
+        <div class="form-group">
+          <label for="inp-hours">Billable Hours / Week</label>
+          <input type="number" id="inp-hours" value="25" min="5" max="50" title="Typical full-time freelancers bill 20-25 hrs/week due to admin">
+        </div>
+        <button class="btn btn-primary" style="width: 100%;" onclick="calculateRates()">Recalculate Rate Card</button>
+      </div>
+
+      <!-- Rate Results & Proposal Generator -->
+      <div>
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Minimum Hourly Rate</div>
+            <div class="kpi-value blue" id="res-hourly">$0</div>
+            <div class="kpi-sub">Breakeven baseline</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Recommended Day Rate</div>
+            <div class="kpi-value" id="res-daily">$0</div>
+            <div class="kpi-sub">Based on 8-hr day block</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Weekly Client Retainer</div>
+            <div class="kpi-value blue" id="res-weekly">$0</div>
+            <div class="kpi-sub">20-Hour dedicated slot</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Monthly Retainer</div>
+            <div class="kpi-value" id="res-monthly">$0</div>
+            <div class="kpi-sub">Predictable recurring fee</div>
+          </div>
+        </div>
+
+        <!-- Project Quote Builder -->
+        <div class="card proposal-box">
+          <div class="proposal-header">
+            <div>
+              <h3 style="font-size: 1.15rem; color: var(--navy);">Interactive Project Quote Builder</h3>
+              <p style="font-size: 0.85rem; color: var(--muted);">Build a transparent client proposal with custom task scopes.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="window.print()">Print Client Proposal</button>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 2fr 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+            <input type="text" id="prop-task" placeholder="Scope Item (e.g. Website UX Design &amp; Prototype)">
+            <input type="number" id="prop-hours" placeholder="Est. Hours (e.g. 25)">
+            <button class="btn btn-primary" onclick="addQuoteItem()">+ Add Task</button>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Scope Deliverable</th>
+                <th style="width: 100px; text-align: right;">Est. Hours</th>
+                <th style="width: 130px; text-align: right;">Rate ($/hr)</th>
+                <th style="width: 140px; text-align: right;">Total Price</th>
+                <th style="width: 60px;"></th>
+              </tr>
+            </thead>
+            <tbody id="quote-items-body"></tbody>
+            <tfoot>
+              <tr>
+                <th colspan="3" style="text-align: right; font-size: 1.05rem;">Total Project Proposal Fee:</th>
+                <th id="quote-total" style="text-align: right; font-size: 1.15rem; color: var(--accent);">$0</th>
+                <th></th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let hourlyRate = 95;
+    let quoteItems = [
+      { task: 'Initial Discovery, Technical Audit & User Persona Architecture', hours: 15 },
+      { task: 'Wireframing, UI Design System & Interactive Figma Prototype', hours: 35 },
+      { task: 'Frontend Implementation, Mobile Responsiveness & Testing', hours: 40 }
+    ];
+
+    function fmt(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+
+    function calculateRates() {
+      const takeHome = parseFloat(document.getElementById('inp-takehome').value) || 85000;
+      const overhead = parseFloat(document.getElementById('inp-overhead').value) || 12000;
+      const taxRate = (parseFloat(document.getElementById('inp-tax').value) || 28) / 100;
+      const profitRate = (parseFloat(document.getElementById('inp-profit').value) || 15) / 100;
+      const vacation = parseInt(document.getElementById('inp-vacation').value) || 5;
+      const weeklyHours = parseFloat(document.getElementById('inp-hours').value) || 25;
+
+      const grossRequiredPreTax = (takeHome + overhead) / (1 - taxRate);
+      const grossTargetWithProfit = grossRequiredPreTax * (1 + profitRate);
+
+      const workingWeeks = 52 - vacation;
+      const annualBillableHours = workingWeeks * weeklyHours;
+
+      hourlyRate = Math.ceil(grossTargetWithProfit / annualBillableHours);
+      const dayRate = hourlyRate * 8;
+      const weeklyRetainer = hourlyRate * 20;
+      const monthlyRetainer = weeklyRetainer * 4.33;
+
+      document.getElementById('res-hourly').innerText = '$' + hourlyRate + '/hr';
+      document.getElementById('res-daily').innerText = fmt(dayRate) + '/day';
+      document.getElementById('res-weekly').innerText = fmt(weeklyRetainer) + '/wk';
+      document.getElementById('res-monthly').innerText = fmt(monthlyRetainer) + '/mo';
+
+      renderQuoteItems();
+    }
+
+    function renderQuoteItems() {
+      const tbody = document.getElementById('quote-items-body');
+      tbody.innerHTML = '';
+      let total = 0;
+
+      quoteItems.forEach((item, idx) => {
+        const itemTotal = item.hours * hourlyRate;
+        total += itemTotal;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${item.task}</strong></td>
+          <td style="text-align: right;">${item.hours} hrs</td>
+          <td style="text-align: right;">$${hourlyRate}/hr</td>
+          <td style="text-align: right; font-weight:600;">${fmt(itemTotal)}</td>
+          <td style="text-align: center;"><button style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:1.1rem;" onclick="removeQuoteItem(${idx})">&times;</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('quote-total').innerText = fmt(total);
+    }
+
+    function addQuoteItem() {
+      const taskInp = document.getElementById('prop-task');
+      const hoursInp = document.getElementById('prop-hours');
+      const task = taskInp.value.trim();
+      const hours = parseFloat(hoursInp.value) || 0;
+
+      if (!task || hours <= 0) return;
+      quoteItems.push({ task, hours });
+      taskInp.value = '';
+      hoursInp.value = '';
+      renderQuoteItems();
+    }
+
+    function removeQuoteItem(idx) {
+      quoteItems.splice(idx, 1);
+      renderQuoteItems();
+    }
+
+    window.addEventListener('DOMContentLoaded', calculateRates);
+  </script>
+</body>
+</html>

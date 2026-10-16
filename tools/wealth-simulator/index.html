@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compound Interest, FIRE & Wealth Simulator | SmartCents SaaS Tools</title>
+  <meta name="description" content="Simulate portfolio growth, monthly compound interest, inflation adjustments, and calculate your exact years to FIRE financial freedom.">
+  <link rel="canonical" href="https://smartcents.example.com/tools/wealth-simulator/">
+  <style>
+    :root {
+      --text: #0f172a;
+      --muted: #64748b;
+      --bg: #ffffff;
+      --card: #f8fafc;
+      --border: #e2e8f0;
+      --accent: #0f9d58;
+      --accent-hover: #0b8043;
+      --navy: #0f172a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      color: var(--text);
+      background: #f8fafc;
+      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    }
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 1rem max(1rem, 50% - 600px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand { font-size: 1.3rem; font-weight: 800; text-decoration: none; color: var(--navy); }
+    nav { display: flex; gap: 1.25rem; font-size: 0.95rem; }
+    nav a { color: var(--text); text-decoration: none; font-weight: 500; }
+    nav a:hover { color: var(--accent); }
+    main { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+    .tool-header { text-align: center; margin-bottom: 2rem; }
+    .tool-badge { background: #e0f2fe; color: #0369a1; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem; font-weight: 700; display: inline-block; margin-bottom: 0.5rem; }
+    h1 { font-size: 2.2rem; color: var(--navy); margin-bottom: 0.5rem; }
+    .subtitle { color: var(--muted); font-size: 1.05rem; max-width: 700px; margin: 0 auto; }
+    .grid-layout { display: grid; grid-template-columns: 380px 1fr; gap: 2rem; }
+    @media (max-width: 900px) { .grid-layout { grid-template-columns: 1fr; } }
+    .card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 1.5rem; box-shadow: 0 4px 6px -1px #0000000a; }
+    .form-group { margin-bottom: 1.2rem; }
+    label { display: block; font-weight: 600; font-size: 0.88rem; color: #334155; margin-bottom: 0.35rem; }
+    input[type="number"], select {
+      width: 100%; padding: 0.65rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; outline: none; transition: border-color .15s;
+    }
+    input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px #0f9d5826; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .kpi-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; }
+    .kpi-label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 0.35rem; }
+    .kpi-value { font-size: 1.5rem; font-weight: 800; color: var(--navy); }
+    .kpi-value.green { color: var(--accent); }
+    .kpi-sub { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+    .chart-container { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .chart-title { font-weight: 700; font-size: 1rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
+    svg.growth-chart { width: 100%; height: 260px; overflow: visible; }
+    .table-container { overflow-x: auto; max-height: 380px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: right; }
+    th, td { padding: 0.6rem 0.75rem; border-bottom: 1px solid #f1f5f9; }
+    th { background: #f8fafc; font-weight: 700; color: #475569; position: sticky; top: 0; }
+    th:first-child, td:first-child { text-align: left; }
+    tr:hover td { background: #f8fafc; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.65rem 1.25rem; border-radius: 8px; font-weight: 600; cursor: pointer; text-decoration: none; border: none; font-size: 0.9rem; transition: all .15s; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-secondary { background: #f1f5f9; color: var(--text); border: 1px solid #cbd5e1; }
+    .btn-secondary:hover { background: #e2e8f0; }
+    .action-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem; }
+    @media print {
+      header, .grid-layout > div:first-child, .action-row { display: none !important; }
+      .grid-layout { grid-template-columns: 1fr; }
+      body { background: #fff; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="brand" href="/">SmartCents</a>
+    <nav>
+      <a href="/category/saving/">Saving</a>
+      <a href="/category/budgeting/">Budgeting</a>
+      <a href="/category/investing/">Investing</a>
+      <a href="/tools/">Tools &amp; Templates</a>
+      <a href="/about/">About</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="tool-header">
+      <span class="tool-badge">INTERACTIVE WEALTH SaaS</span>
+      <h1>Compound Interest &amp; FIRE Simulator</h1>
+      <p class="subtitle">Calculate long-term portfolio growth, total interest earned, inflation adjustment, and your exact timeline to complete financial independence.</p>
+    </div>
+
+    <div class="grid-layout">
+      <!-- Input Controls -->
+      <div class="card">
+        <h3 style="margin-bottom: 1.25rem; color: var(--navy); font-size: 1.15rem;">Simulator Parameters</h3>
+        <div class="form-group">
+          <label for="inp-initial">Initial Investment ($)</label>
+          <input type="number" id="inp-initial" value="15000" min="0" step="500">
+        </div>
+        <div class="form-group">
+          <label for="inp-monthly">Monthly Contribution ($)</label>
+          <input type="number" id="inp-monthly" value="1000" min="0" step="50">
+        </div>
+        <div class="form-group">
+          <label for="inp-rate">Est. Annual Return Rate (%)</label>
+          <input type="number" id="inp-rate" value="9.0" min="0" max="30" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="inp-years">Investment Horizon (Years)</label>
+          <input type="number" id="inp-years" value="25" min="1" max="50">
+        </div>
+        <div class="form-group">
+          <label for="inp-inflation">Annual Inflation Rate (%)</label>
+          <input type="number" id="inp-inflation" value="2.5" min="0" max="15" step="0.1">
+        </div>
+        <div class="form-group">
+          <label for="inp-expenses">Target Annual Living Expenses ($)</label>
+          <input type="number" id="inp-expenses" value="60000" min="10000" step="1000">
+        </div>
+        <div class="form-group">
+          <label for="inp-swr">Safe Withdrawal Rate (SWR %)</label>
+          <input type="number" id="inp-swr" value="4.0" min="2.0" max="6.0" step="0.1">
+        </div>
+        <button class="btn btn-primary" style="width: 100%;" onclick="calculateSimulation()">Recalculate Wealth Path</button>
+      </div>
+
+      <!-- Results & Visualizer -->
+      <div>
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Future Portfolio Value</div>
+            <div class="kpi-value green" id="res-future">$0</div>
+            <div class="kpi-sub" id="res-inflation-adj">Adj for inflation</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Total Interest Earned</div>
+            <div class="kpi-value" id="res-interest">$0</div>
+            <div class="kpi-sub" id="res-interest-pct">0% of total wealth</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">FIRE Target Number</div>
+            <div class="kpi-value" id="res-fire-target">$1,500,000</div>
+            <div class="kpi-sub">Based on 4% SWR Rule</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Years to FIRE Freedom</div>
+            <div class="kpi-value green" id="res-years-fire">0 Yrs</div>
+            <div class="kpi-sub" id="res-fire-year">By Year 2051</div>
+          </div>
+        </div>
+
+        <div class="chart-container">
+          <div class="chart-title">
+            <span>Portfolio Growth Trajectory (Principal vs Compound Interest)</span>
+            <span style="font-size: 0.8rem; font-weight: normal; color: var(--muted);"><span style="color:#0f9d58;">■ Total Balance</span> &nbsp; <span style="color:#cbd5e1;">■ Contributions</span></span>
+          </div>
+          <svg class="growth-chart" id="chart-svg" viewBox="0 0 700 240"></svg>
+        </div>
+
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
+            <h3 style="font-size: 1rem; color: var(--navy);">Year-by-Year Amortization &amp; Wealth Breakdown</h3>
+            <div class="action-row" style="margin-top:0;">
+              <button class="btn btn-secondary" onclick="exportCSV()">Export CSV</button>
+              <button class="btn btn-secondary" onclick="window.print()">Print Report (PDF)</button>
+            </div>
+          </div>
+          <div class="table-container">
+            <table id="breakdown-table">
+              <thead>
+                <tr>
+                  <th>Year</th>
+                  <th>Age Milestone</th>
+                  <th>Annual Contrib</th>
+                  <th>Total Principal</th>
+                  <th>Interest Earned</th>
+                  <th>Total Portfolio</th>
+                </tr>
+              </thead>
+              <tbody id="table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let simData = [];
+
+    function fmt(n) {
+      return '$' + Math.round(n).toLocaleString('en-US');
+    }
+
+    function calculateSimulation() {
+      const initial = parseFloat(document.getElementById('inp-initial').value) || 0;
+      const monthly = parseFloat(document.getElementById('inp-monthly').value) || 0;
+      const rate = (parseFloat(document.getElementById('inp-rate').value) || 0) / 100;
+      const years = parseInt(document.getElementById('inp-years').value) || 25;
+      const inflation = (parseFloat(document.getElementById('inp-inflation').value) || 0) / 100;
+      const expenses = parseFloat(document.getElementById('inp-expenses').value) || 60000;
+      const swr = (parseFloat(document.getElementById('inp-swr').value) || 4.0) / 100;
+
+      const fireTarget = expenses / swr;
+      document.getElementById('res-fire-target').innerText = fmt(fireTarget);
+
+      simData = [];
+      let balance = initial;
+      let totalContrib = initial;
+      let fireReachedYear = null;
+      const curYear = new Date().getFullYear();
+
+      for (let y = 1; y <= years; y++) {
+        let yearInterest = 0;
+        for (let m = 1; m <= 12; m++) {
+          balance += monthly;
+          totalContrib += monthly;
+          const monthlyInt = balance * (rate / 12);
+          balance += monthlyInt;
+          yearInterest += monthlyInt;
+        }
+
+        if (!fireReachedYear && balance >= fireTarget) {
+          fireReachedYear = y;
+        }
+
+        const realPurchasingPower = balance / Math.pow(1 + inflation, y);
+
+        simData.push({
+          year: y,
+          calendarYear: curYear + y,
+          annualContrib: monthly * 12,
+          totalContrib: totalContrib,
+          interestEarned: balance - totalContrib,
+          balance: balance,
+          realBalance: realPurchasingPower
+        });
+      }
+
+      const final = simData[simData.length - 1];
+      document.getElementById('res-future').innerText = fmt(final.balance);
+      document.getElementById('res-inflation-adj').innerText = 'Adj for inflation: ' + fmt(final.realBalance);
+      document.getElementById('res-interest').innerText = fmt(final.interestEarned);
+      const intPct = Math.round((final.interestEarned / final.balance) * 100);
+      document.getElementById('res-interest-pct').innerText = intPct + '% generated from pure compounding';
+
+      if (fireReachedYear) {
+        document.getElementById('res-years-fire').innerText = fireReachedYear + ' Years';
+        document.getElementById('res-fire-year').innerText = 'Target Year: ' + (curYear + fireReachedYear);
+      } else {
+        document.getElementById('res-years-fire').innerText = '> ' + years + ' Yrs';
+        document.getElementById('res-fire-year').innerText = 'Increase contributions to reach FIRE sooner';
+      }
+
+      renderChart(simData);
+      renderTable(simData);
+    }
+
+    function renderChart(data) {
+      const svg = document.getElementById('chart-svg');
+      if (!data || data.length === 0) return;
+      const maxVal = Math.max(...data.map(d => d.balance));
+      const W = 700;
+      const H = 220;
+      const padL = 40;
+      const padB = 25;
+      const chartW = W - padL;
+      const chartH = H - padB;
+
+      let pointsTotal = [];
+      let pointsContrib = [];
+
+      data.forEach((d, i) => {
+        const x = padL + (i / (data.length - 1)) * chartW;
+        const yTotal = chartH - (d.balance / maxVal) * chartH;
+        const yContrib = chartH - (d.totalContrib / maxVal) * chartH;
+        pointsTotal.push(`${x},${yTotal}`);
+        pointsContrib.push(`${x},${yContrib}`);
+      });
+
+      const polyTotal = `${padL},${chartH} ` + pointsTotal.join(' ') + ` ${padL + chartW},${chartH}`;
+      const polyContrib = `${padL},${chartH} ` + pointsContrib.join(' ') + ` ${padL + chartW},${chartH}`;
+
+      svg.innerHTML = `
+        <defs>
+          <linearGradient id="gradTotal" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0f9d58" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#0f9d58" stop-opacity="0.0"/>
+          </linearGradient>
+          <linearGradient id="gradContrib" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#94a3b8" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#94a3b8" stop-opacity="0.0"/>
+          </linearGradient>
+        </defs>
+        <line x1="${padL}" y1="${chartH}" x2="${W}" y2="${chartH}" stroke="#cbd5e1" stroke-width="1.5"/>
+        <line x1="${padL}" y1="0" x2="${padL}" y2="${chartH}" stroke="#cbd5e1" stroke-width="1.5"/>
+        <polygon points="${polyTotal}" fill="url(#gradTotal)"/>
+        <polyline points="${pointsTotal.join(' ')}" fill="none" stroke="#0f9d58" stroke-width="3"/>
+        <polygon points="${polyContrib}" fill="url(#gradContrib)"/>
+        <polyline points="${pointsContrib.join(' ')}" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4,4"/>
+        <text x="${padL}" y="${H - 5}" font-size="11" fill="#64748b">Year 1</text>
+        <text x="${W - 50}" y="${H - 5}" font-size="11" fill="#64748b">Year ${data.length}</text>
+      `;
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = '';
+      data.forEach(d => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>Year ${d.year}</strong> (${d.calendarYear})</td>
+          <td>Age ${28 + d.year}</td>
+          <td>${fmt(d.annualContrib)}</td>
+          <td>${fmt(d.totalContrib)}</td>
+          <td style="color:#0f9d58; font-weight:600;">+${fmt(d.interestEarned)}</td>
+          <td><strong>${fmt(d.balance)}</strong></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function exportCSV() {
+      let csv = 'Year,CalendarYear,AnnualContribution,TotalPrincipal,TotalInterestEarned,TotalPortfolioBalance,RealInflationAdjustedBalance\n';
+      simData.forEach(d => {
+        csv += `${d.year},${d.calendarYear},${d.annualContrib},${d.totalContrib},${d.interestEarned},${d.balance},${d.realBalance}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'SmartCents-Wealth-FIRE-Simulation.csv';
+      a.click();
+    }
+
+    window.addEventListener('DOMContentLoaded', calculateSimulation);
+  </script>
+</body>
+</html>
