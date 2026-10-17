@@ -62,7 +62,7 @@
       <text x="10" y="54" fill="#f43f5e" font-family="system-ui" font-size="10" font-weight="700">📑 300+ PDF Planners</text>
       
       <rect y="72" width="125" height="28" rx="6" fill="#1e293b" stroke="#334155"/>
-      <text x="10" y="90" fill="#a855f7" font-family="system-ui" font-size="10" font-weight="700">🤖 50+ AI & SOP Kits</text>
+      <text x="10" y="90" fill="#a855f7" font-family="system-ui" font-size="10" font-weight="700">🤖 50+ AI &amp; SOP Kits</text>
 
       <rect y="108" width="125" height="28" rx="6" fill="#1e293b" stroke="#334155"/>
       <text x="10" y="126" fill="#10b981" font-family="system-ui" font-size="10" font-weight="700">⚡ 9 Micro-SaaS Apps</text>
@@ -73,9 +73,9 @@
     <text x="200" y="356" fill="#ffffff" font-family="system-ui" font-size="12" font-weight="800" text-anchor="middle">ONLY $29 • LIFETIME</text>
   </g>
 
-  <!-- Right: Laptop & iPad Showcase Mockup -->
+  <!-- Right: Laptop &amp; iPad Showcase Mockup -->
   <g transform="translate(420, 60)" filter="url(#boxShadow)">
-    <!-- Laptop Base & Screen -->
+    <!-- Laptop Base &amp; Screen -->
     <rect x="40" y="40" width="380" height="240" rx="14" fill="#0f172a" stroke="#475569" stroke-width="4"/>
     <circle cx="230" cy="52" r="3" fill="#64748b"/>
     <!-- Laptop Inner Display (Excel Dashboard) -->
@@ -83,7 +83,7 @@
     
     <!-- Excel Mock UI -->
     <rect x="52" y="62" width="356" height="30" fill="#0f172a"/>
-    <text x="65" y="82" fill="#fff" font-family="system-ui" font-size="11" font-weight="700">SaaS Financial Model & MRR Forecast.xlsx</text>
+    <text x="65" y="82" fill="#fff" font-family="system-ui" font-size="11" font-weight="700">SaaS Financial Model &amp; MRR Forecast.xlsx</text>
     <rect x="340" y="68" width="55" height="18" rx="4" fill="#10b981"/>
     <text x="367" y="81" fill="#fff" font-family="system-ui" font-size="9" font-weight="800" text-anchor="middle">ACTIVE</text>
 
@@ -129,7 +129,7 @@
     <text x="220" y="224" fill="#10b981" font-family="system-ui" font-size="8" font-weight="700">$37,200</text>
     <text x="310" y="224" fill="#0f172a" font-family="system-ui" font-size="8" font-weight="700">+$26,100</text>
 
-    <!-- Laptop Bottom Hinge & Keyboard Base -->
+    <!-- Laptop Bottom Hinge &amp; Keyboard Base -->
     <polygon points="10,280 450,280 420,296 40,296" fill="#94a3b8"/>
     <rect x="200" y="280" width="60" height="4" rx="2" fill="#cbd5e1"/>
 
@@ -157,7 +157,7 @@
       <rect x="110" y="115" width="80" height="65" rx="4" fill="#f0fdf4" stroke="#bbf7d0"/>
       <text x="115" y="128" fill="#15803d" font-family="system-ui" font-size="7" font-weight="800">Q2: SCHEDULE</text>
       <text x="115" y="142" fill="#475569" font-family="system-ui" font-size="7">• Deep Work 90m</text>
-      <text x="115" y="154" fill="#475569" font-family="system-ui" font-size="7">• Gym & Sauna</text>
+      <text x="115" y="154" fill="#475569" font-family="system-ui" font-size="7">• Gym &amp; Sauna</text>
 
       <!-- Bottom Routine Checkboxes -->
       <rect x="20" y="190" width="170" height="70" rx="4" fill="#f8fafc" stroke="#e2e8f0"/>
