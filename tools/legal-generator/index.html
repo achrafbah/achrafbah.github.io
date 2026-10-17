@@ -69,6 +69,7 @@
   </style>
 
   
+  
   <meta name="google-adsense-account" content="ca-pub-9914567654480158" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9914567654480158" crossorigin="anonymous"></script>
   <style id="subtle-adsense-css">
@@ -77,6 +78,58 @@
     .subtle-ad-label { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 4px; }
     ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; }
     @media print { .subtle-ad-slot { display: none !important; } }
+
+    /* Multi-Device Adaptive Layout (Desktop / Tablet / Smartphone) */
+    html, body { overflow-x: hidden; max-width: 100vw; }
+    @media (min-width: 641px) and (max-width: 1024px) {
+      .hero-container { grid-template-columns: 1fr !important; text-align: center !important; gap: 2rem !important; }
+      .hero-bullets { justify-content: center !important; }
+      .catalog-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 1.25rem !important; }
+      .saas-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .invoice-workspace, .workspace-grid, .calc-grid, .sim-grid, .studio-grid, .architect-grid { grid-template-columns: 1fr !important; }
+    }
+    @media (max-width: 640px) {
+      header { padding: 0.75rem 1rem !important; flex-wrap: wrap !important; gap: 0.45rem !important; }
+      header .brand { font-size: 1.15rem !important; }
+      header nav {
+        width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        flex-wrap: nowrap !important;
+        white-space: nowrap !important;
+        gap: 1rem !important;
+        padding: 0.4rem 0 0.15rem 0 !important;
+        border-top: 1px solid #f1f5f9 !important;
+        font-size: 0.84rem !important;
+        scrollbar-width: none !important;
+      }
+      header nav::-webkit-scrollbar { display: none !important; }
+      .store-hero { padding: 2.25rem 1rem 2rem !important; }
+      .store-hero h1, main h1 { font-size: clamp(1.55rem, 6vw, 2.05rem) !important; line-height: 1.22 !important; }
+      .hero-sub, .subtitle { font-size: 0.95rem !important; line-height: 1.5 !important; }
+      .hero-mockup-wrap { padding: 0.65rem !important; border-radius: 14px !important; }
+      .saas-showcase, .search-filter-section, .catalog-grid, main { padding-left: 0.85rem !important; padding-right: 0.85rem !important; }
+      .saas-grid, .catalog-grid, .grid, .matrix-grid, .invoice-workspace, .workspace-grid, .calc-grid, .sim-grid, .studio-grid, .architect-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+      }
+      .filter-pills {
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        padding-bottom: 4px !important;
+        white-space: nowrap !important;
+        scrollbar-width: none !important;
+      }
+      .filter-pills::-webkit-scrollbar { display: none !important; }
+      .item-card { padding: 1.15rem !important; }
+      .card-footer { flex-direction: column !important; gap: 0.5rem !important; }
+      .card-btn { width: 100% !important; }
+      .timer-hero { padding: 1.5rem 1rem !important; }
+      .timer-display { font-size: 3.1rem !important; }
+      .timer-modes { flex-wrap: wrap !important; }
+      table { display: block; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    }
   </style>
 </head>
 <body>
@@ -258,6 +311,7 @@
     function downloadHTML() {
       const html = document.getElementById('docPreview').innerHTML;
       const full = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${currentDoc.toUpperCase()}</title><style>body{font-family:system-ui,sans-serif;max-width:800px;margin:2rem auto;line-height:1.7;padding:0 1rem;color:#0f172a;}</style></head><body>${html}
+  
   
   <aside class="subtle-ad-slot" aria-label="Sponsored">
     <div class="subtle-ad-inner">
